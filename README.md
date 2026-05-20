@@ -18,9 +18,9 @@ Hệ thống quản lý giao hàng nhanh (**CDMS - Courier Delivery Management S
 
 ---
 
-## 🏗️ Kiến Trúc Hệ Thống & Cấu Trúc Thư Mục
+## 🏗️ Cấu Trúc Thư Mục Đầy Đủ (20 Files Core)
 
-Dự án được phân chia thư mục rõ ràng theo mô hình phân tầng tiêu chuẩn giúp giảm thiểu tối đa xung đột (merge conflicts) khi làm việc nhóm:
+Dưới đây là sơ đồ chi tiết toàn bộ cấu trúc mã nguồn đã được tạo sẵn để tránh xung đột (merge conflicts) khi các thành viên trong nhóm code song song:
 
 ```text
 cdms_project15/
@@ -29,28 +29,39 @@ cdms_project15/
 │       └── java/
 │           └── com/
 │               └── cdms/
-│                   ├── core/          # Tiện ích hệ thống, cấu hình Gson & Khởi chạy chính
-│                   │   ├── InputHelper.java
-│                   │   ├── JSONDataManager.java
-│                   │   ├── LocalDateAdapter.java
-│                   │   ├── ParcelDeserializer.java
-│                   │   └── MainApp.java
-│                   ├── model/         # Các thực thể nghiệp vụ (OOP Model)
-│                   │   ├── Customer.java
-│                   │   ├── Parcel.java (Abstract Class)
-│                   │   ├── DocumentParcel.java
-│                   │   ├── GoodsParcel.java
-│                   │   ├── DeliveryStaff.java
-│                   │   ├── DeliveryOrder.java
-│                   │   └── Invoice.java
-│                   └── view/          # Giao diện Console phân quyền theo vai trò (Stubs)
-│                       ├── CustomerStaffView.java
-│                       ├── ParcelOrderView.java
-│                       ├── TrackingView.java
-│                       └── BillingReportView.java
-├── data/                              # Nơi tự động lưu trữ các tệp cơ sở dữ liệu JSON
-├── pom.xml                            # Cấu hình Maven của dự án
-└── README.md                          # Tài liệu hướng dẫn dự án
+│                   ├── core/                          # Tiện ích hệ thống, cấu hình Gson & Khởi chạy chính
+│                   │   ├── InputHelper.java          # Bộ quét console an toàn chống crash
+│                   │   ├── JSONDataManager.java      # Bộ quản lý cơ sở dữ liệu in-memory/JSON
+│                   │   ├── LocalDateAdapter.java     # Cấu hình chuyển đổi Gson cho Ngày tháng
+│                   │   ├── ParcelDeserializer.java   # Cấu hình Gson đa hình lớp trừu tượng Parcel
+│                   │   └── MainApp.java              # Lớp khởi chạy chính & Vòng lặp Menu phân quyền
+│                   │
+│                   ├── model/                         # Các thực thể nghiệp vụ dữ liệu (OOP Model)
+│                   │   ├── Customer.java             # Thực thể khách hàng
+│                   │   ├── Parcel.java               # Lớp cha trừu tượng (Abstract) của Kiện hàng
+│                   │   ├── DocumentParcel.java       # Kiện hàng tài liệu (Tính phí cố định)
+│                   │   ├── GoodsParcel.java          # Kiện hàng hàng hóa (Tính phí theo cân nặng)
+│                   │   ├── DeliveryStaff.java        # Thực thể nhân viên giao hàng (Shipper)
+│                   │   ├── DeliveryOrder.java        # Thực thể Đơn hàng vận chuyển
+│                   │   └── Invoice.java              # Thực thể hóa đơn tính tiền
+│                   │
+│                   ├── repository/                    # Tầng TRUY XUẤT DỮ LIỆU CRUD (RAM/JSON)
+│                   │   ├── package-info.java         # Hướng dẫn quy định & Phân công phát triển Repo
+│                   │   └── CustomerRepository.java   # Code mẫu CRUD Khách hàng (Developer A)
+│                   │
+│                   ├── service/                       # Tầng LOGIC NGHIỆP VỤ (Business Logic)
+│                   │   ├── package-info.java         # Hướng dẫn quy định & Phân công phát triển Service
+│                   │   └── CustomerStaffService.java # Code mẫu logic kiểm tra & Lưu trữ (Developer A)
+│                   │
+│                   └── view/                          # Tầng GIAO DIỆN Console phân quyền
+│                       ├── CustomerStaffView.java    # Giao diện cho Nhân viên tiếp nhận (Lễ tân)
+│                       ├── ParcelOrderView.java      # Giao diện xem/tạo đơn hàng & kiện hàng chi tiết
+│                       ├── TrackingView.java         # Giao diện Điều phối & Ghi nhận hành trình (Shipper)
+│                       └── BillingReportView.java    # Giao diện Kế toán & Báo cáo quản lý (Manager)
+│
+├── data/                                              # Thư mục cơ sở dữ liệu tự sinh chứa các file *.json
+├── pom.xml                                            # File cấu hình thư viện Maven
+└── README.md                                          # Tài liệu hướng dẫn dự án (File này)
 ```
 
 ---
