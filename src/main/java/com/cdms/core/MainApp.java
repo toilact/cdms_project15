@@ -9,8 +9,9 @@ package com.cdms.core;
 
 import com.cdms.view.BillingReportView;
 import com.cdms.view.CustomerStaffView;
+import com.cdms.view.DispatcherView;
 import com.cdms.view.ParcelOrderView;
-import com.cdms.view.TrackingView;
+import com.cdms.view.ShipperView;
 
 public class MainApp {
 
@@ -48,12 +49,12 @@ public class MainApp {
 
                 case 2:
                     System.out.println("\n>>> Đăng nhập với vai trò: DISPATCHER <<<\n");
-                    TrackingView.showDispatcherMenu();
+                    DispatcherView.showDispatcherMenu();
                     break;
 
                 case 3:
                     System.out.println("\n>>> Đăng nhập với vai trò: DELIVERY STAFF (SHIPPER) <<<\n");
-                    TrackingView.showShipperMenu();
+                    ShipperView.showShipperMenu();
                     break;
 
                 case 4:
