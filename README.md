@@ -1,19 +1,125 @@
-# Dự án Quản Lý Giao Hàng
+# 📦 Courier Delivery Management System (CDMS)
 
-## Giới thiệu
-Dự án này là một ứng dụng quản lý giao hàng được xây dựng bằng cách áp dụng các nguyên tắc lập trình hướng đối tượng (OOP). Mục tiêu của dự án là cung cấp một hệ thống đơn giản và hiệu quả để quản lý các đơn hàng, khách hàng, và quá trình giao hàng.
+[![Java Version](https://img.shields.io/badge/Java-17%2B-oracle.svg?style=flat-square&logo=openjdk&color=ED8B00)](https://www.oracle.com/java/)
+[![Maven](https://img.shields.io/badge/Maven-3.x-blue.svg?style=flat-square&logo=apache-maven&color=C71A36)](https://maven.apache.org/)
+[![Gson](https://img.shields.io/badge/Gson-2.11.0-blue.svg?style=flat-square&logo=google&color=4285F4)](https://github.com/google/gson)
+[![Project Status](https://img.shields.io/badge/Status-Skeleton_Ready-brightgreen.svg?style=flat-square)](#)
 
-## Tính năng chính
-- Quản lý thông tin khách hàng.
-- Quản lý danh sách đơn hàng.
-- Theo dõi trạng thái giao hàng.
-- Báo cáo và thống kê hiệu suất giao hàng.
+Hệ thống quản lý giao hàng nhanh (**CDMS - Courier Delivery Management System**) là ứng dụng console được xây dựng trên nền tảng **Java 17 (OOP)** và quản lý bởi **Maven**. Dự án áp dụng chặt chẽ các nguyên lý thiết kế hướng đối tượng (Solid/OOP) và mô hình phân tầng (Layered Architecture) chuẩn mực để làm nền tảng (Skeleton) bàn giao cho đội ngũ 5 thành viên cùng phát triển song song.
 
-## Công nghệ sử dụng
-- Ngôn ngữ lập trình: Java
-- Kiến trúc: Lập trình hướng đối tượng (OOP)
+---
 
-## Cách sử dụng
-1. Clone dự án về máy:
-   ```sh
-   git clone <repository-url>
+## 🛠️ Công Nghệ & Thư Viện Sử Dụng
+
+- **Ngôn ngữ:** Java Core (Phiên bản 17 trở lên).
+- **Quản lý dự án:** Apache Maven.
+- **Lưu trữ dữ liệu:** Đồng bộ In-Memory với File cơ sở dữ liệu JSON thông qua **Google Gson (v2.11.0)**.
+- **Đóng gói:** JAR.
+
+---
+
+## 🏗️ Kiến Trúc Hệ Thống & Cấu Trúc Thư Mục
+
+Dự án được phân chia thư mục rõ ràng theo mô hình phân tầng tiêu chuẩn giúp giảm thiểu tối đa xung đột (merge conflicts) khi làm việc nhóm:
+
+```text
+cdms_project15/
+├── src/
+│   └── main/
+│       └── java/
+│           └── com/
+│               └── cdms/
+│                   ├── core/          # Tiện ích hệ thống, cấu hình Gson & Khởi chạy chính
+│                   │   ├── InputHelper.java
+│                   │   ├── JSONDataManager.java
+│                   │   ├── LocalDateAdapter.java
+│                   │   ├── ParcelDeserializer.java
+│                   │   └── MainApp.java
+│                   ├── model/         # Các thực thể nghiệp vụ (OOP Model)
+│                   │   ├── Customer.java
+│                   │   ├── Parcel.java (Abstract Class)
+│                   │   ├── DocumentParcel.java
+│                   │   ├── GoodsParcel.java
+│                   │   ├── DeliveryStaff.java
+│                   │   ├── DeliveryOrder.java
+│                   │   └── Invoice.java
+│                   └── view/          # Giao diện Console phân quyền theo vai trò (Stubs)
+│                       ├── CustomerStaffView.java
+│                       ├── ParcelOrderView.java
+│                       ├── TrackingView.java
+│                       └── BillingReportView.java
+├── data/                              # Nơi tự động lưu trữ các tệp cơ sở dữ liệu JSON
+├── pom.xml                            # Cấu hình Maven của dự án
+└── README.md                          # Tài liệu hướng dẫn dự án
+```
+
+---
+
+## 💎 Đặc Điểm Thiết Kế Hướng Đối Tượng (OOP) Nổi Bật
+
+### 1. Đóng gói (Encapsulation) Chặt Chẽ
+Mọi Model trong hệ thống đều được thiết kế bảo mật với `private fields`, cung cấp dữ liệu qua `Getters/Setters` an toàn, đầy đủ constructor và phương thức `toString()` chuẩn hóa (không sử dụng Lombok để đảm bảo tương thích 100% trên mọi IDE thuần).
+
+### 2. Kế thừa & Đa hình (Inheritance & Polymorphism)
+- Lớp cha trừu tượng **`Parcel.java`** định nghĩa phương thức tính toán phí vận chuyển chung: 
+  ```java
+  public abstract double calculateFee();
+  ```
+- Lớp con **`DocumentParcel.java`** override tính phí cố định (**15,000 VND**).
+- Lớp con **`GoodsParcel.java`** override tính phí động theo trọng lượng (**Cân nặng × 10,000 VND**).
+
+### 3. Gson Polymorphic Deserialization
+Gson thông thường không thể tự động nhận diện và khôi phục (deserialize) các đối tượng từ lớp trừu tượng `Parcel`. Hệ thống đã cài đặt bộ chuyển đổi tùy chỉnh **`ParcelDeserializer`** và **`LocalDateAdapter`** giúp tự động phân tách loại kiện hàng (`DOCUMENT` hoặc `GOODS`) và chuyển đổi kiểu dữ liệu `LocalDate` của Java 8+ một cách mượt mà.
+
+---
+
+## ⚡ Tiện Ích Cốt Lõi (Core Utilities)
+
+- **`InputHelper`**: Bộ quét dữ liệu Console an toàn, bắt lỗi `try-catch` trong vòng lặp chống crash ứng dụng khi người dùng nhập sai kiểu dữ liệu (ngày tháng DD/MM/YYYY, số thực lớn hơn min, số nguyên trong khoảng).
+- **`JSONDataManager`**: Bộ lưu trữ/nạp dữ liệu trung tâm. Khi khởi chạy, hệ thống tải toàn bộ dữ liệu vào RAM để ứng dụng truy xuất với tốc độ cực nhanh, khi thoát sẽ tự động lưu lại vào các file JSON tại thư mục `data/`.
+
+---
+
+## 👥 Phân Công Vai Trò & Nhiệm Vụ Trong Team
+
+Dự án được thiết kế dưới dạng khung xương (skeleton) hoàn chỉnh, chia nhiệm vụ cụ thể cho **5 thành viên** thông qua các file Stub View chứa sẵn đánh dấu `// TODO`:
+
+| Thành Viên | Vai Trò Đảm Nhiệm | Module Phụ Trách | File Logic Cần Lập Trình |
+| :--- | :--- | :--- | :--- |
+| **Thành viên 1**<br>*(Leader)* | **Architect & Core Setup** | Khởi tạo cấu hình, Utilities, Models và luồng Menu điều hướng chính | Đã hoàn thành 100% khung xương |
+| **Thành viên 2** | **Developer A** | Quản lý thông tin Khách hàng (`Customer`) & Nhân viên giao hàng (`DeliveryStaff`) | `CustomerStaffView.java` & tạo `CustomerStaffService.java` |
+| **Thành viên 3** | **Developer B** | Quản lý Kiện hàng (`Parcel`) & Đơn hàng (`DeliveryOrder`) | `ParcelOrderView.java` & tạo `ParcelOrderService.java` |
+| **Thành viên 4** | **Developer C** | Quản lý Điều phối & Theo dõi hành trình (`Tracking`) | `TrackingView.java` & tạo `TrackingService.java` |
+| **Thành viên 5** | **Developer D** | Quản lý Hóa đơn kế toán (`Invoice`) & Báo cáo thống kê (`Report`) | `BillingReportView.java` & tạo `BillingReportService.java` |
+
+---
+
+## 🚀 Hướng Dẫn Cài Đặt & Chạy Ứng Dụng
+
+### 1. Yêu cầu hệ thống
+- Máy tính đã cài đặt **JDK 17** hoặc mới hơn.
+- Đã cài đặt công cụ quản lý build **Apache Maven 3.x**.
+
+### 2. Cài đặt các thư viện phụ thuộc (Build dự án)
+Di chuyển vào thư mục dự án và thực hiện build để Maven tải các dependency (Gson):
+```bash
+mvn clean install
+```
+
+### 3. Khởi chạy ứng dụng trực tiếp từ Terminal
+Nhờ cấu hình `exec-maven-plugin` tích hợp sẵn trong `pom.xml`, bạn có thể khởi chạy ứng dụng trực tiếp chỉ bằng một câu lệnh:
+```bash
+mvn exec:java -Dexec.mainClass="com.cdms.core.MainApp"
+```
+
+---
+
+## 🌳 Quy Trình Git & Làm Việc Nhóm (Git Workflow)
+
+1. Dự án hiện đã được đẩy lên nhánh gốc phát triển chung là: `feature/project-skeleton`.
+2. Mỗi thành viên khi bắt đầu làm nhiệm vụ cần **checkout một nhánh riêng** từ nhánh gốc này:
+   ```bash
+   git checkout feature/project-skeleton
+   git checkout -b feature/ten-thanh-vien-module-name
+   ```
+3. Sau khi hoàn thành và kiểm thử logic chạy ổn định, tạo **Pull Request (PR)** gửi cho Leader duyệt trước khi merge vào nhánh chính.
