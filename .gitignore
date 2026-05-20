@@ -1,0 +1,12 @@
+target/
+*.class
+.idea/
+*.iml
+.DS_Store
+*.log
+data/*.json
+
+# Loại bỏ tất cả các file Markdown...
+*.md
+# ...nhưng giữ lại README.md
+!README.md
