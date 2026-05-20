@@ -16,9 +16,9 @@ public class CustomerStaffView {
     }
 
     // ==========================================================
-    //  SUBMENU: RECEPTION STAFF (Nhân viên lễ tân)
-    //  Các tính năng: B1, B2, B3 (Khách hàng) + B4, B5 (Kiện hàng)
-    //  + B6, B7, B8 (Đơn hàng)
+    // SUBMENU: RECEPTION STAFF (Nhân viên lễ tân)
+    // Các tính năng: B1, B2, B3 (Khách hàng) + B4, B5 (Kiện hàng)
+    // + B6, B7, B8 (Đơn hàng)
     // ==========================================================
 
     /**
@@ -54,7 +54,8 @@ public class CustomerStaffView {
             switch (choice) {
                 case 1:
                     // TODO: Thành viên 2 - Gọi CustomerService.addCustomer()
-                    System.out.println("  🔧 [B1] Chức năng 'Thêm khách hàng' đang được phát triển bởi Thành viên 2.\n");
+                    System.out
+                            .println("  🔧 [B1] Chức năng 'Thêm khách hàng' đang được phát triển bởi Thành viên 2.\n");
                     break;
                 case 2:
                     // TODO: Thành viên 2 - Gọi CustomerService.updateCustomer()
@@ -70,11 +71,13 @@ public class CustomerStaffView {
                     break;
                 case 5:
                     // TODO: Thành viên 3 - Gọi ParcelService.displayAll()
-                    System.out.println("  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Thành viên 3.\n");
+                    System.out
+                            .println("  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Thành viên 3.\n");
                     break;
                 case 6:
                     // TODO: Thành viên 3 - Gọi OrderService.createOrder()
-                    System.out.println("  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println(
+                            "  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Thành viên 3.\n");
                     break;
                 case 7:
                     // TODO: Thành viên 3 - Gọi OrderService.updateOrder()
@@ -82,7 +85,8 @@ public class CustomerStaffView {
                     break;
                 case 8:
                     // TODO: Thành viên 3 - Gọi OrderService.viewOrderDetail()
-                    System.out.println("  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Thành viên 3.\n");
+                    System.out
+                            .println("  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Thành viên 3.\n");
                     break;
                 case 0:
                     running = false;
