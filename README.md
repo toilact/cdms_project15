@@ -7,6 +7,9 @@
 
 Hệ thống quản lý giao hàng nhanh (**CDMS - Courier Delivery Management System**) là ứng dụng console được xây dựng trên nền tảng **Java 17 (OOP)** và quản lý bởi **Maven**. Dự án áp dụng chặt chẽ các nguyên lý thiết kế hướng đối tượng (Solid/OOP) và mô hình phân tầng (Layered Architecture) chuẩn mực để làm nền tảng (Skeleton) bàn giao cho đội ngũ 5 thành viên cùng phát triển song song.
 
+> [!IMPORTANT]
+> **Trạng thái dự án:** Khung xương (Skeleton) đã được thiết lập hoàn chỉnh, kiểm thử và biên dịch thành công. Dự án đã sẵn sàng để bàn giao cho các thành viên trong nhóm triển khai các module song song.
+
 ---
 
 ## 🛠️ Công Nghệ & Thư Viện Sử Dụng
