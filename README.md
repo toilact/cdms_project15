@@ -281,6 +281,12 @@ mvn clean compile exec:java -Dexec.mainClass="com.cdms.core.MainApp"
 
 Để đảm bảo mã nguồn dự án luôn hoạt động ổn định, tránh tối đa việc đè code của nhau hoặc gây ra xung đột (merge conflicts), toàn bộ thành viên trong nhóm **bắt buộc** phải tuân thủ nghiêm ngặt quy trình làm việc Git dưới đây:
 
+> [!CAUTION]
+> **🚫 TUYỆT ĐỐI KHÔNG ĐẨY (PUSH) TRỰC TIẾP CODE LÊN NHÁNH `main`!**
+> Nhánh `main` của dự án đã được thiết lập **Luật bảo vệ nhánh nghiêm ngặt (Branch Protection Rules)** trên GitHub. 
+> * Mọi lệnh `git push origin main` hoặc cố gắng ghi đè lên nhánh `main` trực tiếp từ Terminal **sẽ bị máy chủ GitHub từ chối và báo lỗi ngay lập tức**.
+> * **Quy trình đúng:** Mọi thành viên chỉ làm việc trên nhánh phụ của mình (`feature/...`), đẩy nhánh đó lên GitHub và tạo **Pull Request (PR)** để Leader duyệt trước khi gộp vào `main`.
+
 <div id="git-setup"></div>
 
 ### ⚙️ Bước chuẩn bị ban đầu (Chỉ làm 1 lần duy nhất)
