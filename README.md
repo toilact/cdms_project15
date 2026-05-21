@@ -126,13 +126,75 @@ mvn clean compile exec:java -Dexec.mainClass="com.cdms.core.MainApp"
 
 ---
 
-## 🌳 Quy Trình Git & Làm Việc Nhóm (Git Workflow)
+## 🌳 Quy Trình Git & Làm Việc Nhóm (Git & GitHub Flow)
 
-1. Dự án hiện đã được hợp nhất lên nhánh chính phát triển chung là: `main`.
-2. Mỗi thành viên khi bắt đầu làm nhiệm vụ cần **checkout một nhánh riêng** từ nhánh `main` này:
-   ```bash
-   git checkout main
-   git pull origin main
-   git checkout -b feature/ten-thanh-vien-module-name
-   ```
-3. Sau khi hoàn thành và kiểm thử logic chạy ổn định, tạo **Pull Request (PR)** gửi cho Leader duyệt trước khi merge vào nhánh chính.
+Để đảm bảo mã nguồn dự án luôn hoạt động ổn định, tránh xung đột mã nguồn (merge conflicts) và giữ lịch sử git sạch đẹp, toàn bộ thành viên trong nhóm phát triển **bắt buộc** phải tuân thủ nghiêm ngặt quy trình làm việc sau đây:
+
+### 📌 Sơ Đồ Quy Trình
+1. **Pull** code mới từ `main` ➡️ 2. **Tạo nhánh** tính năng ➡️ 3. **Lập trình & Test** ➡️ 4. **Pull & Đồng bộ** ➡️ 5. **Push** lên nhánh phụ ➡️ 6. **Tạo PR** trên GitHub ➡️ 7. **Review & Hợp nhất** vào `main`.
+
+---
+
+### 🚀 Chi Tiết 3 Giai Đoạn Thực Hiện
+
+#### GIAI ĐOẠN 1: CHUẨN BỊ & TẠO NHÁNH TÍNH NĂNG
+Trước khi code bất cứ dòng nào, bạn phải đồng bộ hóa môi trường local của bạn với GitHub để đảm bảo đang phát triển trên phiên bản mới nhất:
+```bash
+# 1. Chuyển về nhánh chính
+git checkout main
+
+# 2. Cập nhật mã nguồn mới nhất từ GitHub về máy
+git pull origin main
+
+# 3. Tạo nhánh tính năng mới từ nhánh main sạch
+git checkout -b feature/ten-thanh-vien-module-name
+```
+> **Quy chuẩn đặt tên nhánh (Branch Naming Convention):**
+> * Nhánh tính năng mới: `feature/ten-thanh-vien-ten-chức-năng` (Ví dụ: `feature/thanh-shipper-view`)
+> * Nhánh sửa lỗi: `bugfix/ten-thanh-vien-loại-lỗi` (Ví dụ: `bugfix/an-fix-gson-date`)
+
+---
+
+#### GIAI ĐOẠN 2: LẬP TRÌNH & COMMIT NỘI BỘ (LOCAL)
+Thành viên thực hiện viết code, kiểm tra chất lượng compile tại local trước khi commit:
+```bash
+# 1. Kiểm tra các file bạn đã thay đổi
+git status
+
+# 2. Đưa các file muốn commit vào khu vực chờ (Staging Area)
+git add src/main/java/com/cdms/view/ShipperView.java
+
+# 3. CHẠY THỬ NGHIỆM biên dịch và kiểm tra lỗi cú pháp (BẮT BUỘC)
+mvn clean compile
+
+# 4. Khi quá trình biên dịch báo BUILD SUCCESS, thực hiện Commit
+git commit -m "feat: implement shipper main menu and validation checks"
+```
+> **Quy chuẩn viết Commit Message (Conventional Commit):**
+> * `feat: ...` -> Khi thêm tính năng mới (Ví dụ: `feat: add customer staff layout`)
+> * `fix: ...` -> Khi sửa lỗi code (Ví dụ: `fix: handle empty input scanner`)
+> * `docs: ...` -> Khi cập nhật tài liệu hoặc README (Ví dụ: `docs: update system architecture diagram`)
+
+---
+
+#### GIAI ĐOẠN 3: ĐỒNG BỘ, ĐẨY CODE & GỘP VÀO NHÁNH CHÍNH (PULL, PUSH & MERGE)
+Trước khi đẩy code của bạn lên GitHub, hãy chủ động cập nhật những thay đổi của các thành viên khác đã hợp nhất lên `main` trước đó:
+```bash
+# 1. Đồng bộ mã nguồn mới nhất từ main trực tiếp vào nhánh con của bạn
+git pull origin main
+```
+* **Trường hợp có Xung đột (Conflict):** Git sẽ đánh dấu các vùng code bị trùng dòng. Mở các file bị lỗi lên, trao đổi với đồng đội để chọn dòng code đúng, lưu lại và chạy:
+  ```bash
+  git add <file-hết-conflict>
+  git commit -m "merge: resolve merge conflicts with main"
+  ```
+* **Trường hợp gộp thành công (hoặc sau khi đã sửa xong conflict):**
+  ```bash
+  # 2. Đẩy nhánh tính năng của bạn lên GitHub
+  git push origin feature/ten-thanh-vien-module-name
+  ```
+* **3. Tạo Pull Request (PR) trên giao diện GitHub:**
+  * Truy cập vào kho chứa dự án trên GitHub và bấm **Compare & pull request**.
+  * Chọn merge nhánh `feature/ten-thanh-vien-module-name` vào `main`.
+  * Viết mô tả ngắn gọn về các thay đổi và tag Leader / Thành viên khác review.
+  * Sau khi được thông qua, bấm **Merge pull request** để chính thức đưa tính năng của bạn vào nhánh chính.
