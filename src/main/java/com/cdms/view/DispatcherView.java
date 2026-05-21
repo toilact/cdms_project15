@@ -31,19 +31,19 @@ public class DispatcherView {
 
         while (running) {
             System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║       DISPATCHER - MENU CHÍNH        ║");
+            System.out.println("║       DISPATCHER - MENU CHÍNH         ║");
             System.out.println("╠═══════════════════════════════════════╣");
-            System.out.println("║  [QUẢN LÝ SHIPPER]                   ║");
-            System.out.println("║  1. Thêm nhân viên giao hàng   (B9)  ║");
+            System.out.println("║  [QUẢN LÝ SHIPPER]                    ║");
+            System.out.println("║  1. Thêm nhân viên giao hàng   (B9)   ║");
             System.out.println("║  2. Phân công đơn cho shipper  (B10)  ║");
             System.out.println("║  3. Xem đơn đã giao của shipper(B11)  ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  [THEO DÕI GIAO HÀNG]               ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  [THEO DÕI GIAO HÀNG]                 ║");
             System.out.println("║  4. Cập nhật trạng thái đơn    (B12)  ║");
             System.out.println("║  5. Hiển thị đơn đang giao     (B13)  ║");
             System.out.println("║  6. Hiển thị đơn giao thất bại (B14)  ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  0. Quay lại Menu chính              ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  0. Quay lại Menu chính               ║");
             System.out.println("╚═══════════════════════════════════════╝");
 
             int choice = InputHelper.getIntInput("Chọn chức năng (0-6): ", 0, 6);

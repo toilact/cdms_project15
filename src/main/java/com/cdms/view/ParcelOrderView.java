@@ -30,17 +30,17 @@ public class ParcelOrderView {
 
         while (running) {
             System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║   QUẢN LÝ KIỆN HÀNG & ĐƠN HÀNG     ║");
+            System.out.println("║   QUẢN LÝ KIỆN HÀNG & ĐƠN HÀNG        ║");
             System.out.println("╠═══════════════════════════════════════╣");
-            System.out.println("║  1. Thêm kiện hàng mới         (B4)  ║");
-            System.out.println("║  2. Xem danh sách kiện hàng    (B5)  ║");
-            System.out.println("║  3. Tạo đơn giao hàng mới      (B6)  ║");
-            System.out.println("║  4. Cập nhật đơn giao hàng     (B7)  ║");
-            System.out.println("║  5. Xem chi tiết đơn giao hàng (B8)  ║");
-            System.out.println("║  6. Tìm kiếm đơn theo KH             ║");
-            System.out.println("║  7. Hủy đơn giao hàng                ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  0. Quay lại Menu chính              ║");
+            System.out.println("║  1. Thêm kiện hàng mới         (B4)   ║");
+            System.out.println("║  2. Xem danh sách kiện hàng    (B5)   ║");
+            System.out.println("║  3. Tạo đơn giao hàng mới      (B6)   ║");
+            System.out.println("║  4. Cập nhật đơn giao hàng     (B7)   ║");
+            System.out.println("║  5. Xem chi tiết đơn giao hàng (B8)   ║");
+            System.out.println("║  6. Tìm kiếm đơn theo KH              ║");
+            System.out.println("║  7. Hủy đơn giao hàng                 ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  0. Quay lại Menu chính               ║");
             System.out.println("╚═══════════════════════════════════════╝");
 
             int choice = InputHelper.getIntInput("Chọn chức năng (0-7): ", 0, 7);
