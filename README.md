@@ -124,14 +124,25 @@ Nhờ cấu hình `exec-maven-plugin` tích hợp sẵn trong `pom.xml`, bạn c
 mvn exec:java -Dexec.mainClass="com.cdms.core.MainApp"
 ```
 
+### 4. Đóng gói & Khởi chạy từ tệp JAR (Khuyên dùng)
+Hệ thống có thể đóng gói cực kỳ gọn nhẹ thành một tệp JAR duy nhất:
+```bash
+mvn clean package
+```
+Sau khi Maven báo **BUILD SUCCESS**, chạy ứng dụng trực tiếp bằng Java Runtime:
+```bash
+java -jar target/cdms-project15-1.0-SNAPSHOT.jar
+```
+
 ---
 
 ## 🌳 Quy Trình Git & Làm Việc Nhóm (Git Workflow)
 
-1. Dự án hiện đã được đẩy lên nhánh gốc phát triển chung là: `feature/project-skeleton`.
-2. Mỗi thành viên khi bắt đầu làm nhiệm vụ cần **checkout một nhánh riêng** từ nhánh gốc này:
+1. Dự án hiện đã được hợp nhất lên nhánh chính phát triển chung là: `main`.
+2. Mỗi thành viên khi bắt đầu làm nhiệm vụ cần **checkout một nhánh riêng** từ nhánh `main` này:
    ```bash
-   git checkout feature/project-skeleton
+   git checkout main
+   git pull origin main
    git checkout -b feature/ten-thanh-vien-module-name
    ```
 3. Sau khi hoàn thành và kiểm thử logic chạy ổn định, tạo **Pull Request (PR)** gửi cho Leader duyệt trước khi merge vào nhánh chính.

@@ -30,23 +30,23 @@ public class CustomerStaffView {
 
         while (running) {
             System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║      RECEPTION STAFF - MENU CHÍNH    ║");
+            System.out.println("║      RECEPTION STAFF - MENU CHÍNH     ║");
             System.out.println("╠═══════════════════════════════════════╣");
-            System.out.println("║  [QUẢN LÝ KHÁCH HÀNG]               ║");
-            System.out.println("║  1. Thêm khách hàng mới       (B1)  ║");
-            System.out.println("║  2. Cập nhật thông tin KH      (B2)  ║");
-            System.out.println("║  3. Hiển thị danh sách KH      (B3)  ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  [QUẢN LÝ KIỆN HÀNG]                ║");
-            System.out.println("║  4. Thêm kiện hàng mới         (B4)  ║");
-            System.out.println("║  5. Xem danh sách kiện hàng    (B5)  ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  [QUẢN LÝ ĐƠN GIAO HÀNG]           ║");
-            System.out.println("║  6. Tạo đơn giao hàng mới      (B6)  ║");
-            System.out.println("║  7. Cập nhật đơn giao hàng     (B7)  ║");
-            System.out.println("║  8. Xem chi tiết đơn giao hàng (B8)  ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  0. Quay lại Menu chính              ║");
+            System.out.println("║  [QUẢN LÝ KHÁCH HÀNG]                 ║");
+            System.out.println("║  1. Thêm khách hàng mới       (B1)    ║");
+            System.out.println("║  2. Cập nhật thông tin KH      (B2)   ║");
+            System.out.println("║  3. Hiển thị danh sách KH      (B3)   ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  [QUẢN LÝ KIỆN HÀNG]                  ║");
+            System.out.println("║  4. Thêm kiện hàng mới         (B4)   ║");
+            System.out.println("║  5. Xem danh sách kiện hàng    (B5)   ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  [QUẢN LÝ ĐƠN GIAO HÀNG]              ║");
+            System.out.println("║  6. Tạo đơn giao hàng mới      (B6)   ║");
+            System.out.println("║  7. Cập nhật đơn giao hàng     (B7)   ║");
+            System.out.println("║  8. Xem chi tiết đơn giao hàng (B8)   ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  0. Quay lại Menu chính               ║");
             System.out.println("╚═══════════════════════════════════════╝");
 
             int choice = InputHelper.getIntInput("Chọn chức năng (0-8): ", 0, 8);

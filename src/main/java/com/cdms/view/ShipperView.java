@@ -31,15 +31,15 @@ public class ShipperView {
 
         while (running) {
             System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║    DELIVERY STAFF (SHIPPER) - MENU   ║");
+            System.out.println("║    DELIVERY STAFF (SHIPPER) - MENU    ║");
             System.out.println("╠═══════════════════════════════════════╣");
-            System.out.println("║  1. Xem danh sách đơn được giao      ║");
-            System.out.println("║  2. Cập nhật ngày nhận hàng          ║");
-            System.out.println("║  3. Cập nhật ngày giao hàng          ║");
-            System.out.println("║  4. Thêm ghi chú giao hàng    (B15)  ║");
-            System.out.println("║  5. Cập nhật trạng thái đơn          ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  0. Quay lại Menu chính              ║");
+            System.out.println("║  1. Xem danh sách đơn được giao       ║");
+            System.out.println("║  2. Cập nhật ngày nhận hàng           ║");
+            System.out.println("║  3. Cập nhật ngày giao hàng           ║");
+            System.out.println("║  4. Thêm ghi chú giao hàng    (B15).  ║");
+            System.out.println("║  5. Cập nhật trạng thái đơn           ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  0. Quay lại Menu chính               ║");
             System.out.println("╚═══════════════════════════════════════╝");
 
             int choice = InputHelper.getIntInput("Chọn chức năng (0-5): ", 0, 5);

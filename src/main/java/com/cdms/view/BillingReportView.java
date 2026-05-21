@@ -30,20 +30,20 @@ public class BillingReportView {
 
         while (running) {
             System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║        MANAGER - MENU CHÍNH          ║");
+            System.out.println("║        MANAGER - MENU CHÍNH           ║");
             System.out.println("╠═══════════════════════════════════════╣");
-            System.out.println("║  [QUẢN LÝ THANH TOÁN]               ║");
-            System.out.println("║  1. Tính hóa đơn cho đơn hàng (B16)  ║");
-            System.out.println("║  2. Xem chi tiết hóa đơn      (B17)  ║");
+            System.out.println("║  [QUẢN LÝ THANH TOÁN]                 ║");
+            System.out.println("║  1. Tính hóa đơn cho đơn hàng (B16)   ║");
+            System.out.println("║  2. Xem chi tiết hóa đơn      (B17)   ║");
             System.out.println("║  3. Ghi nhận thanh toán        (B18)  ║");
-            System.out.println("║                                      ║");
-            System.out.println("║  [BÁO CÁO & THỐNG KÊ]               ║");
-            System.out.println("║  4. Báo cáo doanh thu theo ngày(B19) ║");
-            System.out.println("║  5. Báo cáo doanh thu theo tháng(B20)║");
+            System.out.println("║                                       ║");
+            System.out.println("║  [BÁO CÁO & THỐNG KÊ]                 ║");
+            System.out.println("║  4. Báo cáo doanh thu theo ngày(B19)  ║");
+            System.out.println("║  5. Báo cáo doanh thu theo tháng(B20) ║");
             System.out.println("║  6. Shipper tích cực nhất      (B21)  ║");
-            System.out.println("║  7. Thống kê đơn giao thành công(B22)║");
-            System.out.println("║                                      ║");
-            System.out.println("║  0. Quay lại Menu chính              ║");
+            System.out.println("║  7. Thống kê đơn giao thành công(B22) ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  0. Quay lại Menu chính               ║");
             System.out.println("╚═══════════════════════════════════════╝");
 
             int choice = InputHelper.getIntInput("Chọn chức năng (0-7): ", 0, 7);

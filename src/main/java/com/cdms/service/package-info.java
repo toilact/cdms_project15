@@ -50,6 +50,8 @@
 //                  vận chuyển (PENDING → IN_TRANSIT → DELIVERED),
 //                  ghi nhận thời gian giao, thêm ghi chú.
 //      Gọi: DeliveryOrderRepository, DeliveryStaffRepository
+//      Phục vụ cho 2 giao diện: ShipperView (cho Shipper) và
+//                              DispatcherView (cho Điều phối viên).
 //
 //   4. BillingReportService.java    → Thành viên 5 (Developer D)
 //      Nghiệp vụ: Tạo hóa đơn từ đơn hàng, thống kê doanh thu
