@@ -3,7 +3,7 @@
 // Package: com.cdms.view
 // Description: Giao diện Console cho phân hệ Khách hàng &
 //              Nhân viên giao hàng.
-//              🔧 BÀN GIAO CHO: THÀNH VIÊN 2 (Developer A)
+//              🔧 BÀN GIAO CHO: THÀNH VIÊN 2 (Nguyên Quốc Cường - Developer A)
 // ============================================================
 package com.cdms.view;
 
@@ -53,40 +53,40 @@ public class CustomerStaffView {
 
             switch (choice) {
                 case 1:
-                    // TODO: Thành viên 2 - Gọi CustomerService.addCustomer()
+                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.addCustomer()
                     System.out
-                            .println("  🔧 [B1] Chức năng 'Thêm khách hàng' đang được phát triển bởi Thành viên 2.\n");
+                            .println("  🔧 [B1] Chức năng 'Thêm khách hàng' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n");
                     break;
                 case 2:
-                    // TODO: Thành viên 2 - Gọi CustomerService.updateCustomer()
-                    System.out.println("  🔧 [B2] Chức năng 'Cập nhật KH' đang được phát triển bởi Thành viên 2.\n");
+                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.updateCustomer()
+                    System.out.println("  🔧 [B2] Chức năng 'Cập nhật KH' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n");
                     break;
                 case 3:
-                    // TODO: Thành viên 2 - Gọi CustomerService.displayAll()
-                    System.out.println("  🔧 [B3] Chức năng 'Hiển thị DS KH' đang được phát triển bởi Thành viên 2.\n");
+                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.displayAll()
+                    System.out.println("  🔧 [B3] Chức năng 'Hiển thị DS KH' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n");
                     break;
                 case 4:
-                    // TODO: Thành viên 3 - Gọi ParcelService.addParcel()
-                    System.out.println("  🔧 [B4] Chức năng 'Thêm kiện hàng' đang được phát triển bởi Thành viên 3.\n");
+                    // TODO: Thành viên 3 (Trương Đan Huy) - Gọi ParcelService.addParcel()
+                    System.out.println("  🔧 [B4] Chức năng 'Thêm kiện hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 5:
-                    // TODO: Thành viên 3 - Gọi ParcelService.displayAll()
+                    // TODO: Thành viên 3 (Trương Đan Huy) - Gọi ParcelService.displayAll()
                     System.out
-                            .println("  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Thành viên 3.\n");
+                            .println("  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 6:
-                    // TODO: Thành viên 3 - Gọi OrderService.createOrder()
+                    // TODO: Thành viên 3 (Trương Đan Huy) - Gọi OrderService.createOrder()
                     System.out.println(
-                            "  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Thành viên 3.\n");
+                            "  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 7:
-                    // TODO: Thành viên 3 - Gọi OrderService.updateOrder()
-                    System.out.println("  🔧 [B7] Chức năng 'Cập nhật đơn' đang được phát triển bởi Thành viên 3.\n");
+                    // TODO: Thành viên 3 (Trương Đan Huy) - Gọi OrderService.updateOrder()
+                    System.out.println("  🔧 [B7] Chức năng 'Cập nhật đơn' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 8:
-                    // TODO: Thành viên 3 - Gọi OrderService.viewOrderDetail()
+                    // TODO: Thành viên 3 (Trương Đan Huy) - Gọi OrderService.viewOrderDetail()
                     System.out
-                            .println("  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Thành viên 3.\n");
+                            .println("  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 0:
                     running = false;

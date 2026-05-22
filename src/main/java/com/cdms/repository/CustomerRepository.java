@@ -1,7 +1,7 @@
 // ============================================================
 // File: CustomerRepository.java
 // Package: com.cdms.repository
-// Phân công: Thành viên 2 (Developer A)
+// Phân công: Nguyên Quốc Cường (Developer A - Thành viên 2)
 // ============================================================
 // MỤC ĐÍCH:
 //   Cung cấp các thao tác CRUD thuần túy trên danh sách
@@ -9,7 +9,7 @@
 //
 // LƯU Ý QUAN TRỌNG:
 //   - File này là VÍ DỤ MẪU do Leader viết sẵn.
-//   - Developer A cần HOÀN THIỆN các phương thức TODO bên dưới
+//   - Nguyên Quốc Cường (Developer A) cần HOÀN THIỆN các phương thức TODO bên dưới
 //     và tạo thêm file DeliveryStaffRepository.java tương tự.
 // ============================================================
 package com.cdms.repository;
@@ -94,8 +94,35 @@ public class CustomerRepository {
         return removed;
     }
 
-    // TODO [Developer A]: Bổ sung thêm các phương thức tìm kiếm nâng cao
-    //   nếu cần, ví dụ:
-    //   - findByName(String name)   → Tìm theo tên
-    //   - findByPhone(String phone) → Tìm theo số điện thoại
+    /**
+     * Tìm kiếm danh sách khách hàng theo tên (chấp nhận khớp một phần, không phân biệt hoa thường).
+     *
+     * @param name Tên hoặc một phần tên khách hàng cần tìm
+     * @return Danh sách khách hàng thỏa mãn điều kiện lọc
+     */
+    public static List<Customer> findByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return new java.util.ArrayList<>();
+        }
+        return JSONDataManager.customers.stream()
+                .filter(c -> c.getName().toLowerCase().contains(name.trim().toLowerCase()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Tìm kiếm khách hàng theo số điện thoại (chính xác).
+     *
+     * @param phone Số điện thoại cần tìm kiếm
+     * @return Đối tượng Customer thỏa mãn, hoặc null nếu không tìm thấy
+     */
+    public static Customer findByPhone(String phone) {
+        if (phone == null || phone.trim().isEmpty()) {
+            return null;
+        }
+        return JSONDataManager.customers.stream()
+                .filter(c -> c.getPhone().equals(phone.trim()))
+                .findFirst()
+                .orElse(null);
+    }
 }
+

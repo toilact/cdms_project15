@@ -36,16 +36,16 @@
 //   JSONDataManager (File JSON)
 //
 // ► CÁC FILE CẦN TẠO TRONG PACKAGE NÀY:
-//   1. CustomerStaffService.java    → Thành viên 2 (Developer A)
+//   1. CustomerStaffService.java    → Nguyên Quốc Cường (Developer A - Thành viên 2)
 //      Nghiệp vụ: Thêm/sửa/xóa/tìm kiếm khách hàng và shipper.
 //      Gọi: CustomerRepository, DeliveryStaffRepository
 //
-//   2. ParcelOrderService.java      → Thành viên 3 (Developer B)
+//   2. ParcelOrderService.java      → Trương Đan Huy (Developer B - Thành viên 3)
 //      Nghiệp vụ: Tạo kiện hàng (Document/Goods), tạo đơn hàng,
 //                  gán kiện vào đơn, tính phí calculateFee().
 //      Gọi: ParcelRepository, DeliveryOrderRepository
 //
-//   3. TrackingService.java         → Thành viên 4 (Developer C)
+//   3. TrackingService.java         → Nguyễn Thanh Tùng (Developer C - Thành viên 4)
 //      Nghiệp vụ: Phân công shipper cho đơn, cập nhật trạng thái
 //                  vận chuyển (PENDING → IN_TRANSIT → DELIVERED),
 //                  ghi nhận thời gian giao, thêm ghi chú.
@@ -53,7 +53,7 @@
 //      Phục vụ cho 2 giao diện: ShipperView (cho Shipper) và
 //                              DispatcherView (cho Điều phối viên).
 //
-//   4. BillingReportService.java    → Thành viên 5 (Developer D)
+//   4. BillingReportService.java    → Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
 //      Nghiệp vụ: Tạo hóa đơn từ đơn hàng, thống kê doanh thu
 //                  theo ngày/tháng, báo cáo hiệu suất shipper.
 //      Gọi: InvoiceRepository, DeliveryOrderRepository,

@@ -35,11 +35,11 @@
 //     - JSONDataManager.invoices   → List<Invoice>
 //
 // ► CÁC FILE CẦN TẠO TRONG PACKAGE NÀY:
-//   1. CustomerRepository.java     → Thành viên 2 (Developer A)
-//   2. DeliveryStaffRepository.java → Thành viên 2 (Developer A)
-//   3. ParcelRepository.java       → Thành viên 3 (Developer B)
-//   4. DeliveryOrderRepository.java → Thành viên 3 (Developer B)
-//   5. InvoiceRepository.java      → Thành viên 5 (Developer D)
+//   1. CustomerRepository.java     → Nguyên Quốc Cường (Developer A - Thành viên 2)
+//   2. DeliveryStaffRepository.java → Nguyên Quốc Cường (Developer A - Thành viên 2)
+//   3. ParcelRepository.java       → Trương Đan Huy (Developer B - Thành viên 3)
+//   4. DeliveryOrderRepository.java → Trương Đan Huy (Developer B - Thành viên 3)
+//   5. InvoiceRepository.java      → Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
 //
 // ► VÍ DỤ MẪU (xem file CustomerRepository.java trong package này)
 //

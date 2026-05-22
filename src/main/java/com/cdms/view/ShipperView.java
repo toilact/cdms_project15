@@ -4,7 +4,7 @@
 // Description: Giao diện Console cho vai trò Shipper (Nhân viên giao hàng).
 //              Xem đơn được phân công, cập nhật ngày nhận/giao hàng thực tế,
 //              và thêm ghi chú giao hàng.
-//              🔧 BÀN GIAO CHO: THÀNH VIÊN 4 (Developer C)
+//              🔧 BÀN GIAO CHO: Nguyễn Thanh Tùng (Developer C - Thành viên 4)
 // ============================================================
 package com.cdms.view;
 
@@ -46,24 +46,24 @@ public class ShipperView {
 
             switch (choice) {
                 case 1:
-                    // TODO: Thành viên 4 - Gọi TrackingService.viewAssignedOrders()
-                    System.out.println("  🔧 Chức năng 'Xem đơn được giao' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.viewAssignedOrders()
+                    System.out.println("  🔧 Chức năng 'Xem đơn được giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 2:
-                    // TODO: Thành viên 4 - Gọi TrackingService.updatePickupDate()
-                    System.out.println("  🔧 Chức năng 'Cập nhật ngày nhận' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updatePickupDate()
+                    System.out.println("  🔧 Chức năng 'Cập nhật ngày nhận' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 3:
-                    // TODO: Thành viên 4 - Gọi TrackingService.updateDeliveryDate()
-                    System.out.println("  🔧 Chức năng 'Cập nhật ngày giao' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updateDeliveryDate()
+                    System.out.println("  🔧 Chức năng 'Cập nhật ngày giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 4:
-                    // TODO: Thành viên 4 - Gọi TrackingService.addDeliveryNote()
-                    System.out.println("  🔧 [B15] Chức năng 'Thêm ghi chú' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.addDeliveryNote()
+                    System.out.println("  🔧 [B15] Chức năng 'Thêm ghi chú' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 5:
-                    // TODO: Thành viên 4 - Gọi TrackingService.updateOrderStatus()
-                    System.out.println("  🔧 Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updateOrderStatus()
+                    System.out.println("  🔧 Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 0:
                     running = false;

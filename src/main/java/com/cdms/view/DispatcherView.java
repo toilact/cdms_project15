@@ -4,7 +4,7 @@
 // Description: Giao diện Console cho vai trò Điều phối viên (Dispatcher).
 //              Quản lý việc gán shipper, cập nhật hành trình,
 //              và theo dõi trạng thái giao nhận.
-//              🔧 BÀN GIAO CHO: THÀNH VIÊN 4 (Developer C)
+//              🔧 BÀN GIAO CHO: Nguyễn Thanh Tùng (Developer C - Thành viên 4)
 // ============================================================
 package com.cdms.view;
 
@@ -50,28 +50,28 @@ public class DispatcherView {
 
             switch (choice) {
                 case 1:
-                    // TODO: Thành viên 2 - Gọi StaffService.addStaff()
-                    System.out.println("  🔧 [B9] Chức năng 'Thêm shipper' đang được phát triển bởi Thành viên 2.\n");
+                    // TODO: Nguyên Quốc Cường (Thành viên 2) - Gọi StaffService.addStaff()
+                    System.out.println("  🔧 [B9] Chức năng 'Thêm shipper' đang được phát triển bởi Nguyên Quốc Cường (Thành viên 2).\n");
                     break;
                 case 2:
-                    // TODO: Thành viên 4 - Gọi TrackingService.assignStaff()
-                    System.out.println("  🔧 [B10] Chức năng 'Phân công đơn' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.assignStaff()
+                    System.out.println("  🔧 [B10] Chức năng 'Phân công đơn' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 3:
-                    // TODO: Thành viên 4 - Gọi TrackingService.viewDeliveredByStaff()
-                    System.out.println("  🔧 [B11] Chức năng 'Xem đơn đã giao' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.viewDeliveredByStaff()
+                    System.out.println("  🔧 [B11] Chức năng 'Xem đơn đã giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 4:
-                    // TODO: Thành viên 4 - Gọi TrackingService.updateStatus()
-                    System.out.println("  🔧 [B12] Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updateStatus()
+                    System.out.println("  🔧 [B12] Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 5:
-                    // TODO: Thành viên 4 - Gọi TrackingService.showInTransit()
-                    System.out.println("  🔧 [B13] Chức năng 'Đơn đang giao' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.showInTransit()
+                    System.out.println("  🔧 [B13] Chức năng 'Đơn đang giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 6:
-                    // TODO: Thành viên 4 - Gọi TrackingService.showFailed()
-                    System.out.println("  🔧 [B14] Chức năng 'Đơn giao thất bại' đang được phát triển bởi Thành viên 4.\n");
+                    // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.showFailed()
+                    System.out.println("  🔧 [B14] Chức năng 'Đơn giao thất bại' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
                     break;
                 case 0:
                     running = false;

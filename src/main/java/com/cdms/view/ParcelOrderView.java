@@ -4,7 +4,7 @@
 // Description: Giao diện Console bổ sung cho phân hệ Kiện hàng
 //              & Đơn giao hàng (dành cho các chức năng mà
 //              Reception chưa phủ hết hoặc cần xem riêng).
-//              🔧 BÀN GIAO CHO: THÀNH VIÊN 3 (Developer B)
+//              🔧 BÀN GIAO CHO: Trương Đan Huy (Developer B - Thành viên 3)
 // ============================================================
 package com.cdms.view;
 
@@ -22,7 +22,7 @@ public class ParcelOrderView {
 
     /**
      * Menu quản lý chi tiết kiện hàng và đơn hàng.
-     * Thành viên 3 có thể mở rộng menu này để thêm các tính năng
+     * Trương Đan Huy (Thành viên 3) có thể mở rộng menu này để thêm các tính năng
      * nâng cao như: tìm kiếm đơn, hủy đơn, xem lịch sử KH...
      */
     public static void showMenu() {
@@ -47,25 +47,25 @@ public class ParcelOrderView {
 
             switch (choice) {
                 case 1:
-                    System.out.println("  🔧 [B4] Chức năng 'Thêm kiện hàng' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println("  🔧 [B4] Chức năng 'Thêm kiện hàng' đang được phát triển bởi Trương Đan Huy (Thành viên 3).\n");
                     break;
                 case 2:
-                    System.out.println("  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println("  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Trương Đan Huy (Thành viên 3).\n");
                     break;
                 case 3:
-                    System.out.println("  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println("  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Trương Đan Huy (Thành viên 3).\n");
                     break;
                 case 4:
-                    System.out.println("  🔧 [B7] Chức năng 'Cập nhật đơn' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println("  🔧 [B7] Chức năng 'Cập nhật đơn' đang được phát triển bởi Trương Đan Huy (Thành viên 3).\n");
                     break;
                 case 5:
-                    System.out.println("  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println("  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Trương Đan Huy (Thành viên 3).\n");
                     break;
                 case 6:
-                    System.out.println("  🔧 Chức năng 'Tìm kiếm đơn theo KH' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println("  🔧 Chức năng 'Tìm kiếm đơn theo KH' đang được phát triển bởi Trương Đan Huy (Thành viên 3).\n");
                     break;
                 case 7:
-                    System.out.println("  🔧 Chức năng 'Hủy đơn giao hàng' đang được phát triển bởi Thành viên 3.\n");
+                    System.out.println("  🔧 Chức năng 'Hủy đơn giao hàng' đang được phát triển bởi Trương Đan Huy (Thành viên 3).\n");
                     break;
                 case 0:
                     running = false;

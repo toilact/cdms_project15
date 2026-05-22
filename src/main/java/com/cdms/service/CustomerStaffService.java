@@ -1,7 +1,7 @@
 // ============================================================
 // File: CustomerStaffService.java
 // Package: com.cdms.service
-// Phân công: Thành viên 2 (Developer A)
+// Phân công: Nguyên Quốc Cường (Developer A - Thành viên 2)
 // ============================================================
 // MỤC ĐÍCH:
 //   Xử lý toàn bộ logic nghiệp vụ liên quan đến quản lý
@@ -14,7 +14,7 @@
 //
 // LƯU Ý QUAN TRỌNG:
 //   - File này là VÍ DỤ MẪU do Leader viết sẵn.
-//   - Developer A cần HOÀN THIỆN các phương thức TODO bên dưới.
+//   - Nguyên Quốc Cường (Developer A) cần HOÀN THIỆN các phương thức TODO bên dưới.
 // ============================================================
 package com.cdms.service;
 
@@ -100,7 +100,7 @@ public class CustomerStaffService {
     //       QUẢN LÝ NHÂN VIÊN GIAO HÀNG (DELIVERY STAFF)
     // ==========================================================
 
-    // TODO [Developer A]: Tạo file DeliveryStaffRepository.java
+    // TODO [Nguyên Quốc Cường - Developer A]: Tạo file DeliveryStaffRepository.java
     //   trong package repository trước, sau đó viết các phương thức
     //   quản lý DeliveryStaff tương tự như Customer ở trên:
     //

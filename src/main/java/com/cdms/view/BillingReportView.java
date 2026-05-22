@@ -3,7 +3,7 @@
 // Package: com.cdms.view
 // Description: Giao diện Console cho phân hệ Thanh toán &
 //              Báo cáo thống kê. Phục vụ vai trò Manager.
-//              🔧 BÀN GIAO CHO: THÀNH VIÊN 5 (Developer D)
+//              🔧 BÀN GIAO CHO: Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
 // ============================================================
 package com.cdms.view;
 
@@ -50,32 +50,32 @@ public class BillingReportView {
 
             switch (choice) {
                 case 1:
-                    // TODO: Thành viên 5 - Gọi BillingService.generateInvoice()
-                    System.out.println("  🔧 [B16] Chức năng 'Tính hóa đơn' đang được phát triển bởi Thành viên 5.\n");
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi BillingService.generateInvoice()
+                    System.out.println("  🔧 [B16] Chức năng 'Tính hóa đơn' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 2:
-                    // TODO: Thành viên 5 - Gọi BillingService.viewInvoiceDetail()
-                    System.out.println("  🔧 [B17] Chức năng 'Xem chi tiết HĐ' đang được phát triển bởi Thành viên 5.\n");
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi BillingService.viewInvoiceDetail()
+                    System.out.println("  🔧 [B17] Chức năng 'Xem chi tiết HĐ' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 3:
-                    // TODO: Thành viên 5 - Gọi BillingService.recordPayment()
-                    System.out.println("  🔧 [B18] Chức năng 'Ghi nhận thanh toán' đang được phát triển bởi Thành viên 5.\n");
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi BillingService.recordPayment()
+                    System.out.println("  🔧 [B18] Chức năng 'Ghi nhận thanh toán' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 4:
-                    // TODO: Thành viên 5 - Gọi ReportService.dailyRevenue()
-                    System.out.println("  🔧 [B19] Chức năng 'Doanh thu ngày' đang được phát triển bởi Thành viên 5.\n");
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.dailyRevenue()
+                    System.out.println("  🔧 [B19] Chức năng 'Doanh thu ngày' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 5:
-                    // TODO: Thành viên 5 - Gọi ReportService.monthlyRevenue()
-                    System.out.println("  🔧 [B20] Chức năng 'Doanh thu tháng' đang được phát triển bởi Thành viên 5.\n");
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.monthlyRevenue()
+                    System.out.println("  🔧 [B20] Chức năng 'Doanh thu tháng' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 6:
-                    // TODO: Thành viên 5 - Gọi ReportService.topShipper()
-                    System.out.println("  🔧 [B21] Chức năng 'Shipper tích cực nhất' đang được phát triển bởi Thành viên 5.\n");
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.topShipper()
+                    System.out.println("  🔧 [B21] Chức năng 'Shipper tích cực nhất' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 7:
-                    // TODO: Thành viên 5 - Gọi ReportService.successfulDeliveries()
-                    System.out.println("  🔧 [B22] Chức năng 'Đơn giao thành công' đang được phát triển bởi Thành viên 5.\n");
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.successfulDeliveries()
+                    System.out.println("  🔧 [B22] Chức năng 'Đơn giao thành công' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 0:
                     running = false;
