@@ -1,0 +1,14 @@
+[
+    {
+        "id": "CUST001",
+        "name": "Nguyễn Văn An",
+        "phone": "0987654321",
+        "address": "123 Đường Láng, Đống Đa, Hà Nội"
+    },
+    {
+        "id": "CUST002",
+        "name": "Trần Thị Bình",
+        "phone": "0912345678",
+        "address": "456 Lê Lợi, Quận 1, TP. Hồ Chí Minh"
+    }
+]

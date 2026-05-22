@@ -1,0 +1,18 @@
+[
+  {
+    "id": "SHIP001",
+    "name": "Lê Văn Chung",
+    "phone": "0909112233",
+    "vehicleType": "Motorbike",
+    "status": "Active",
+    "deliveredOrdersCount": 12
+  },
+  {
+    "id": "SHIP002",
+    "name": "Phạm Hoàng Đạt",
+    "phone": "0933445566",
+    "vehicleType": "Truck",
+    "status": "Active",
+    "deliveredOrdersCount": 5
+  }
+]

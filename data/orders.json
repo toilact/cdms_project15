@@ -1,0 +1,29 @@
+[
+  {
+    "id": "ORD001",
+    "parcelId": "PAR001",
+    "staffId": null,
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": null,
+    "deliveryDate": null,
+    "deliveryType": "Standard",
+    "status": "Pending",
+    "notes": []
+  },
+  {
+    "id": "ORD002",
+    "parcelId": "PAR002",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-21",
+    "expectedDeliveryDate": "2026-05-23",
+    "pickupDate": "2026-05-22",
+    "deliveryDate": null,
+    "deliveryType": "Urgent",
+    "status": "In Transit",
+    "notes": [
+      "Đã lấy hàng từ người gửi, hàng nguyên vẹn.",
+      "Đang trên đường vận chuyển liên tỉnh."
+    ]
+  }
+]

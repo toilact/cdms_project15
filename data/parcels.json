@@ -1,0 +1,24 @@
+[
+  {
+    "id": "PAR001",
+    "senderId": "CUST001",
+    "receiverName": "Nguyễn Thị Mai",
+    "receiverPhone": "0977888999",
+    "pickupAddress": "123 Đường Láng, Hà Nội",
+    "deliveryAddress": "789 Điện Biên Phủ, Đà Nẵng",
+    "weight": 0.5,
+    "type": "Document",
+    "status": "Pending"
+  },
+  {
+    "id": "PAR002",
+    "senderId": "CUST002",
+    "receiverName": "Vũ Minh Quân",
+    "receiverPhone": "0966555444",
+    "pickupAddress": "456 Lê Lợi, TP. HCM",
+    "deliveryAddress": "101 Nguyễn Trãi, Cần Thơ",
+    "weight": 4.5,
+    "type": "Goods",
+    "status": "Pending"
+  }
+]
