@@ -27,6 +27,7 @@ public class BillingReportView {
     private static final String WHITE = "\u001B[37m";
     private static final String BOLD_WHITE = "\u001B[1;37m";
     private static final String PURPLE = "\u001B[35m";
+    private static final String BOLD_RED = "\u001B[1;31m";
 
     private BillingReportView() {
     }
