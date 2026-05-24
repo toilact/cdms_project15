@@ -10,7 +10,6 @@ package com.cdms.core;
 import com.cdms.view.BillingReportView;
 import com.cdms.view.CustomerStaffView;
 import com.cdms.view.DispatcherView;
-import com.cdms.view.ParcelOrderView;
 import com.cdms.view.ShipperView;
 
 public class MainApp {

@@ -68,4 +68,15 @@ public class InvoiceRepository {
         }
         return false;
     }
+
+    public static boolean delete(String invoiceId) {
+        if (invoiceId == null) {
+            return false;
+        }
+        boolean removed = JSONDataManager.invoices.removeIf(invoice -> invoice.getId().equalsIgnoreCase(invoiceId));
+        if (removed) {
+            JSONDataManager.saveAllData();
+        }
+        return removed;
+    }
 }

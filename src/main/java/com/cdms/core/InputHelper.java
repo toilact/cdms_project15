@@ -81,6 +81,34 @@ public class InputHelper {
         }
     }
 
+    /**
+     * Yêu cầu người dùng nhập một số thực trong khoảng [min, max].
+     *
+     * @param prompt Thông báo hiển thị
+     * @param min    Giá trị tối thiểu (bao gồm)
+     * @param max    Giá trị tối đa (bao gồm)
+     * @return Số thực hợp lệ
+     */
+    public static double getDoubleInput(String prompt, double min, double max) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                String line = scanner.nextLine().trim();
+                double value = Double.parseDouble(line);
+                if (value >= min && value <= max) {
+                    return value;
+                }
+                if (max == Double.MAX_VALUE) {
+                    System.out.printf("  ⚠ Vui lòng nhập số >= %.1f.%n", min);
+                } else {
+                    System.out.printf("  ⚠ Vui lòng nhập số từ %.1f đến %.1f.%n", min, max);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("  ⚠ Dữ liệu không hợp lệ. Vui lòng nhập một số.");
+            }
+        }
+    }
+
     // ---------------------------------------------------------
     // 3. NHẬP CHUỖI (không cho phép trống)
     // ---------------------------------------------------------

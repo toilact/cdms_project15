@@ -39,10 +39,15 @@ public class BillingReportView {
             System.out.println("║  6. Shipper tích cực nhất      (B21)  ║");
             System.out.println("║  7. Thống kê đơn giao thành công(B22) ║");
             System.out.println("║                                       ║");
+            System.out.println("║  [QUẢN LÝ DỮ LIỆU]                    ║");
+            System.out.println("║  8. Thêm dữ liệu (CRUD)               ║");
+            System.out.println("║  9. Sửa dữ liệu  (CRUD)               ║");
+            System.out.println("║  10. Xóa dữ liệu (CRUD)               ║");
+            System.out.println("║                                       ║");
             System.out.println("║  0. Quay lại Menu chính               ║");
             System.out.println("╚═══════════════════════════════════════╝");
 
-            int choice = InputHelper.getIntInput("Chọn chức năng (0-7): ", 0, 7);
+            int choice = InputHelper.getIntInput("Chọn chức năng (0-10): ", 0, 10);
 
             switch (choice) {
                 case 1:
@@ -68,6 +73,15 @@ public class BillingReportView {
                 case 7:
                     handleDeliveryStatistics();
                     break;
+                case 8:
+                    handleAddInvoice();
+                    break;
+                case 9:
+                    handleUpdateInvoice();
+                    break;
+                case 10:
+                    handleDeleteInvoice();
+                    break;
                 case 0:
                     running = false;
                     System.out.println("  ↩ Quay lại Menu chính...\n");
@@ -76,6 +90,114 @@ public class BillingReportView {
                     break;
             }
         }
+    }
+
+    private static void handleAddInvoice() {
+        System.out.println("\n--- Thêm dữ liệu (Hóa đơn) ---");
+        String id = InputHelper.getStringInput("Nhập mã hóa đơn (VD: INV-001): ");
+        if (BillingReportService.findInvoiceById(id) != null) {
+            System.out.println("⚠️  Mã hóa đơn này đã tồn tại.\n");
+            InputHelper.pressEnterToContinue();
+            return;
+        }
+
+        String orderId = InputHelper.getStringInput("Nhập mã đơn hàng tương ứng: ");
+        double baseFee = InputHelper.getDoubleInput("Nhập phí cơ bản (VND): ", 0, Double.MAX_VALUE);
+        double urgentCharge = InputHelper.getDoubleInput("Nhập phụ phí hỏa tốc (VND): ", 0, Double.MAX_VALUE);
+        double totalAmount = baseFee + urgentCharge;
+        
+        System.out.println("Nhập trạng thái thanh toán:");
+        System.out.println("1. Unpaid");
+        System.out.println("2. Paid");
+        int statusChoice = InputHelper.getIntInput("Chọn trạng thái (1-2): ", 1, 2);
+        String status = (statusChoice == 1) ? "Unpaid" : "Paid";
+
+        String paymentMethod = null;
+        LocalDate paymentDate = null;
+        if ("Paid".equals(status)) {
+            paymentMethod = InputHelper.getStringInput("Nhập phương thức thanh toán (Cash/Banking): ");
+            paymentDate = InputHelper.getDateInput("Nhập ngày thanh toán (DD/MM/YYYY): ", false);
+        }
+
+        Invoice newInvoice = new Invoice(id, orderId, baseFee, urgentCharge, totalAmount, status, paymentMethod, paymentDate);
+        String result = BillingReportService.addInvoice(newInvoice);
+        System.out.println(result + "\n");
+        InputHelper.pressEnterToContinue();
+    }
+
+    private static void handleUpdateInvoice() {
+        System.out.println("\n--- Sửa dữ liệu (Hóa đơn) ---");
+        String id = InputHelper.getStringInput("Nhập mã hóa đơn cần sửa: ");
+        Invoice existing = BillingReportService.findInvoiceById(id);
+        
+        if (existing == null) {
+            System.out.println("⚠️  Không tìm thấy hóa đơn.\n");
+            InputHelper.pressEnterToContinue();
+            return;
+        }
+
+        System.out.println("\nThông tin hiện tại:");
+        System.out.println(existing);
+        System.out.println("\nNhập thông tin mới (nhấn Enter để giữ nguyên giá trị cũ nếu không phải là số):");
+
+        System.out.println("Trạng thái thanh toán hiện tại: " + existing.getPaymentStatus());
+        String newStatus = InputHelper.getStringInput("Nhập trạng thái mới (Unpaid/Paid) [Enter để bỏ qua]: ");
+        if (newStatus.isEmpty()) {
+            newStatus = existing.getPaymentStatus();
+        }
+
+        String newMethod = existing.getPaymentMethod();
+        LocalDate newDate = existing.getPaymentDate();
+
+        if ("Paid".equalsIgnoreCase(newStatus)) {
+            newMethod = InputHelper.getStringInput("Nhập phương thức thanh toán (Cash/Banking) [Enter để giữ cũ]: ");
+            if (newMethod.isEmpty()) newMethod = existing.getPaymentMethod();
+            
+            System.out.println("Nhập ngày thanh toán (DD/MM/YYYY) [Nhập 'skip' để giữ ngày cũ]: ");
+            String dateStr = InputHelper.getStringInput("");
+            if (!dateStr.equalsIgnoreCase("skip") && !dateStr.isEmpty()) {
+                 try {
+                     java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                     newDate = LocalDate.parse(dateStr, formatter);
+                 } catch (Exception e) {
+                     System.out.println("Sai định dạng ngày, giữ nguyên ngày cũ.");
+                 }
+            }
+        } else {
+             newMethod = null;
+             newDate = null;
+        }
+
+        existing.setPaymentStatus(newStatus);
+        existing.setPaymentMethod(newMethod);
+        existing.setPaymentDate(newDate);
+
+        String result = BillingReportService.updateInvoice(existing);
+        System.out.println(result + "\n");
+        InputHelper.pressEnterToContinue();
+    }
+
+    private static void handleDeleteInvoice() {
+        System.out.println("\n--- Xóa dữ liệu (Hóa đơn) ---");
+        String id = InputHelper.getStringInput("Nhập mã hóa đơn cần xóa: ");
+        Invoice existing = BillingReportService.findInvoiceById(id);
+        
+        if (existing == null) {
+            System.out.println("⚠️  Không tìm thấy hóa đơn.\n");
+            InputHelper.pressEnterToContinue();
+            return;
+        }
+
+        System.out.println("\nThông tin hóa đơn:");
+        System.out.println(existing);
+        String confirm = InputHelper.getStringInput("Bạn có chắc chắn muốn xóa hóa đơn này? (Y/N): ");
+        if (confirm.equalsIgnoreCase("Y")) {
+            String result = BillingReportService.deleteInvoice(id);
+            System.out.println(result + "\n");
+        } else {
+            System.out.println("Đã hủy thao tác xóa.\n");
+        }
+        InputHelper.pressEnterToContinue();
     }
 
     private static void handleCreateInvoice() {

@@ -114,6 +114,30 @@ public class BillingReportService {
         return InvoiceRepository.update(invoice);
     }
 
+    public static String addInvoice(Invoice invoice) {
+        if (InvoiceRepository.findById(invoice.getId()) != null) {
+            return "❌ Lỗi: Mã hóa đơn '" + invoice.getId() + "' đã tồn tại!";
+        }
+        InvoiceRepository.add(invoice);
+        return "✅ Đã thêm hóa đơn thành công: " + invoice.getId();
+    }
+
+    public static String updateInvoice(Invoice updated) {
+        boolean success = InvoiceRepository.update(updated);
+        if (success) {
+            return "✅ Đã cập nhật hóa đơn: " + updated.getId();
+        }
+        return "❌ Lỗi: Không tìm thấy hóa đơn với mã '" + updated.getId() + "'!";
+    }
+
+    public static String deleteInvoice(String invoiceId) {
+        boolean success = InvoiceRepository.delete(invoiceId);
+        if (success) {
+            return "✅ Đã xóa hóa đơn: " + invoiceId;
+        }
+        return "❌ Lỗi: Không tìm thấy hóa đơn với mã '" + invoiceId + "'!";
+    }
+
     public static Map<String, Object> getDeliveryStatistics() {
         long totalOrders = DeliveryOrderRepository.findAll().size();
         long delivered = DeliveryOrderRepository.countByStatus("Delivered");
