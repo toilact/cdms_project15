@@ -20,5 +20,82 @@
     "weight": 4.5,
     "type": "Goods",
     "status": "Pending"
+  },
+  {
+    "id": "PAR003",
+    "senderId": "CUST003",
+    "receiverName": "Lê Thu Trang",
+    "receiverPhone": "0955443322",
+    "pickupAddress": "789 Điện Biên Phủ, Đà Nẵng",
+    "deliveryAddress": "123 Đường Láng, Hà Nội",
+    "weight": 0.2,
+    "type": "Document",
+    "status": "Delivered"
+  },
+  {
+    "id": "PAR004",
+    "senderId": "CUST004",
+    "receiverName": "Nguyễn Gia Bảo",
+    "receiverPhone": "0933221100",
+    "pickupAddress": "101 Nguyễn Trãi, Cần Thơ",
+    "deliveryAddress": "456 Lê Lợi, TP. HCM",
+    "weight": 12.0,
+    "type": "Goods",
+    "status": "Delivered"
+  },
+  {
+    "id": "PAR005",
+    "senderId": "CUST005",
+    "receiverName": "Phan Thanh Hải",
+    "receiverPhone": "0922110099",
+    "pickupAddress": "55 Lạch Tray, Hải Phòng",
+    "deliveryAddress": "88 Trần Phú, Nha Trang",
+    "weight": 2.5,
+    "type": "Goods",
+    "status": "In Transit"
+  },
+  {
+    "id": "PAR006",
+    "senderId": "CUST006",
+    "receiverName": "Trần Đức Nam",
+    "receiverPhone": "0944556677",
+    "pickupAddress": "88 Trần Phú, Nha Trang",
+    "deliveryAddress": "55 Lạch Tray, Hải Phòng",
+    "weight": 0.8,
+    "type": "Document",
+    "status": "Assigned"
+  },
+  {
+    "id": "PAR007",
+    "senderId": "CUST001",
+    "receiverName": "Nguyễn Hoài An",
+    "receiverPhone": "0911223344",
+    "pickupAddress": "123 Đường Láng, Hà Nội",
+    "deliveryAddress": "101 Nguyễn Trãi, Cần Thơ",
+    "weight": 1.5,
+    "type": "Goods",
+    "status": "Failed"
+  },
+  {
+    "id": "PAR008",
+    "senderId": "CUST003",
+    "receiverName": "Đặng Minh Khôi",
+    "receiverPhone": "0988990011",
+    "pickupAddress": "789 Điện Biên Phủ, Đà Nẵng",
+    "deliveryAddress": "88 Trần Phú, Nha Trang",
+    "weight": 3.0,
+    "type": "Goods",
+    "status": "Pending"
+  },
+  {
+    "id": "PAR009",
+    "senderId": "CUST002",
+    "receiverName": "Nguyễn Hoàng Nam",
+    "receiverPhone": "0902446688",
+    "pickupAddress": "456 Lê Lợi, TP. HCM",
+    "deliveryAddress": "55 Lạch Tray, Hải Phòng",
+    "weight": 5.0,
+    "type": "Goods",
+    "status": "Delivered"
   }
 ]

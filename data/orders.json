@@ -2,11 +2,8 @@
   {
     "id": "ORD001",
     "parcelId": "PAR001",
-    "staffId": null,
     "orderDate": "2026-05-22",
     "expectedDeliveryDate": "2026-05-25",
-    "pickupDate": null,
-    "deliveryDate": null,
     "deliveryType": "Standard",
     "status": "Pending",
     "notes": []
@@ -18,12 +15,104 @@
     "orderDate": "2026-05-21",
     "expectedDeliveryDate": "2026-05-23",
     "pickupDate": "2026-05-22",
-    "deliveryDate": null,
     "deliveryType": "Urgent",
     "status": "In Transit",
     "notes": [
       "Đã lấy hàng từ người gửi, hàng nguyên vẹn.",
       "Đang trên đường vận chuyển liên tỉnh."
+    ]
+  },
+  {
+    "id": "ORD003",
+    "parcelId": "PAR003",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-18",
+    "expectedDeliveryDate": "2026-05-21",
+    "pickupDate": "2026-05-19",
+    "deliveryDate": "2026-05-20",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Đã lấy hàng thành công.",
+      "Người nhận đã nhận hàng và ký tên xác nhận."
+    ]
+  },
+  {
+    "id": "ORD004",
+    "parcelId": "PAR004",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-19",
+    "expectedDeliveryDate": "2026-05-21",
+    "pickupDate": "2026-05-20",
+    "deliveryDate": "2026-05-21",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Hàng cồng kềnh, cần đi xe tải.",
+      "Đã giao cho người nhận lúc 15:30 ngày 21/05."
+    ]
+  },
+  {
+    "id": "ORD005",
+    "parcelId": "PAR005",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-26",
+    "pickupDate": "2026-05-23",
+    "deliveryType": "Standard",
+    "status": "In Transit",
+    "notes": [
+      "Đã lấy hàng từ bưu cục Hải Phòng."
+    ]
+  },
+  {
+    "id": "ORD006",
+    "parcelId": "PAR006",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-23",
+    "expectedDeliveryDate": "2026-05-27",
+    "deliveryType": "Standard",
+    "status": "Assigned",
+    "notes": [
+      "Đã phân công cho shipper Lê Văn Chung."
+    ]
+  },
+  {
+    "id": "ORD007",
+    "parcelId": "PAR007",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-15",
+    "expectedDeliveryDate": "2026-05-18",
+    "pickupDate": "2026-05-16",
+    "deliveryDate": "2026-05-18",
+    "deliveryType": "Standard",
+    "status": "Failed",
+    "notes": [
+      "Giao hàng thất bại: Người nhận không nghe máy sau 3 lần gọi."
+    ]
+  },
+  {
+    "id": "ORD008",
+    "parcelId": "PAR008",
+    "orderDate": "2026-05-24",
+    "expectedDeliveryDate": "2026-05-25",
+    "deliveryType": "Urgent",
+    "status": "Pending",
+    "notes": []
+  },
+  {
+    "id": "ORD009",
+    "parcelId": "PAR009",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-20",
+    "expectedDeliveryDate": "2026-05-23",
+    "pickupDate": "2026-05-21",
+    "deliveryDate": "2026-05-22",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Hàng dễ vỡ, đã bọc chống sốc kỹ càng.",
+      "Đã bàn giao cho người nhận nguyên vẹn."
     ]
   }
 ]

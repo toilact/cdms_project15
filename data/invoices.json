@@ -1,0 +1,31 @@
+[
+  {
+    "id": "INV001",
+    "orderId": "ORD003",
+    "baseFee": 15000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 15000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-20"
+  },
+  {
+    "id": "INV002",
+    "orderId": "ORD004",
+    "baseFee": 120000.0,
+    "urgentCharge": 30000.0,
+    "totalAmount": 150000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-21"
+  },
+  {
+    "id": "INV003",
+    "orderId": "ORD009",
+    "baseFee": 50000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 50000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  }
+]
