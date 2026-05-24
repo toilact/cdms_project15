@@ -1,74 +1,14 @@
 [
-  {
-    "id": "CUST001",
-    "name": "Nguyễn Văn An",
-    "phone": "0987654321",
-    "address": "123 Đường Láng, Đống Đa, Hà Nội"
-  },
-  {
-    "id": "CUST002",
-    "name": "Trần Thị Bình",
-    "phone": "0912345678",
-    "address": "456 Lê Lợi, Quận 1, TP. Hồ Chí Minh"
-  },
-  {
-    "id": "CUST003",
-    "name": "Lê Thị Hòa",
-    "phone": "0901234567",
-    "address": "789 Hoàng Hoa Thám, Ba Đình, Hà Nội"
-  },
-  {
-    "id": "CUST004",
-    "name": "Phạm Văn Dũng",
-    "phone": "0977555333",
-    "address": "222 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh"
-  },
-  {
-    "id": "CUST005",
-    "name": "Võ Thị Lan",
-    "phone": "0919888777",
-    "address": "55 Trần Phú, Hải Châu, Đà Nẵng"
-  },
-  {
-    "id": "CUST006",
-    "name": "Hoàng Minh Đức",
-    "phone": "0966888777",
-    "address": "18 Phan Đình Phùng, Ba Đình, Hà Nội"
-  },
-  {
-    "id": "CUST007",
-    "name": "Đặng Thị Mai",
-    "phone": "0933222111",
-    "address": "310 Trường Chinh, Thanh Xuân, Hà Nội"
-  },
-  {
-    "id": "CUST008",
-    "name": "Ngô Văn Thành",
-    "phone": "0944555666",
-    "address": "178 Lê Duẩn, Bình Thạnh, TP. Hồ Chí Minh"
-  },
-  {
-    "id": "CUST009",
-    "name": "Bùi Thị Phương",
-    "phone": "0909999888",
-    "address": "1 Nguyễn Văn Cừ, Long Biên, Hà Nội"
-  },
-  {
-    "id": "CUST010",
-    "name": "Trịnh Quốc Khánh",
-    "phone": "0911222333",
-    "address": "410 Phạm Văn Đồng, Gò Vấp, TP. Hồ Chí Minh"
-  },
-  {
-    "id": "CUST011",
-    "name": "Lương Thị Hạnh",
-    "phone": "0987651234",
-    "address": "37 Nguyễn Chí Thanh, Đống Đa, Hà Nội"
-  },
-  {
-    "id": "CUST012",
-    "name": "Nguyễn Hoàng Nam",
-    "phone": "0933447788",
-    "address": "24 Lê Duẩn, Quận 3, TP. Hồ Chí Minh"
-  }
+    {
+        "id": "CUST001",
+        "name": "Nguyễn Văn An",
+        "phone": "0987654321",
+        "address": "123 Đường Láng, Đống Đa, Hà Nội"
+    },
+    {
+        "id": "CUST002",
+        "name": "Trần Thị Bình",
+        "phone": "0912345678",
+        "address": "456 Lê Lợi, Quận 1, TP. Hồ Chí Minh"
+    }
 ]
