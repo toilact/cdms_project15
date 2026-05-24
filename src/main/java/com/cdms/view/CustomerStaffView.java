@@ -40,7 +40,7 @@ public class CustomerStaffView {
 
         while (running) {
             System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_CYAN + "║" + BLUE_BG + BOLD_WHITE + "      RECEPTION STAFF - MENU CHÍNH     " + RESET + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║" + BOLD_YELLOW + "      RECEPTION STAFF - MENU CHÍNH     " + RESET + BOLD_CYAN + "║" + RESET);
             System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
             System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ KHÁCH HÀNG]                 " + BOLD_CYAN + "║" + RESET);
             System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Thêm khách hàng mới       (B1)    " + BOLD_CYAN + "║" + RESET);

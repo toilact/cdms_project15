@@ -41,7 +41,7 @@ public class ShipperView {
 
         while (running) {
             System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_CYAN + "║" + BLUE_BG + BOLD_WHITE + "    DELIVERY STAFF (SHIPPER) - MENU    " + RESET + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║" + BOLD_YELLOW + "    DELIVERY STAFF (SHIPPER) - MENU    " + RESET + BOLD_CYAN + "║" + RESET);
             System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
             System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Xem danh sách đơn được giao       " + BOLD_CYAN + "║" + RESET);
             System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "2. " + WHITE + "Cập nhật ngày nhận hàng           " + BOLD_CYAN + "║" + RESET);

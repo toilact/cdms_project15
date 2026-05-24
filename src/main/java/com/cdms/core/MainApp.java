@@ -54,7 +54,7 @@ public class MainApp {
 
         while (running) {
             System.out.println(BOLD_CYAN + "=========================================" + RESET);
-            System.out.println(BLUE_BG + BOLD_WHITE + " COURIER DELIVERY MANAGEMENT SYSTEM (CDMS) " + RESET);
+            System.out.println(BOLD_YELLOW + " COURIER DELIVERY MANAGEMENT SYSTEM (CDMS) " + RESET);
             System.out.println(BOLD_CYAN + "=========================================" + RESET);
             System.out.println(BOLD_YELLOW + " 1. " + WHITE + "Reception Staff      (Nhân viên lễ tân)" + RESET);
             System.out.println(BOLD_YELLOW + " 2. " + WHITE + "Dispatcher           (Điều phối viên)" + RESET);
