@@ -7,6 +7,9 @@
 // ============================================================
 package com.cdms.core;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 import com.cdms.view.BillingReportView;
 import com.cdms.view.CustomerStaffView;
 import com.cdms.view.DispatcherView;
@@ -14,7 +17,20 @@ import com.cdms.view.ShipperView;
 
 public class MainApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+        // ============================
+        // Fix encoding UTF-8 cho terminal Windows
+        // ============================
+        if (System.getProperty("os.name", "").toLowerCase().contains("win")) {
+            try {
+                // Đổi code page của console hiện tại sang UTF-8 (shared với parent process)
+                new ProcessBuilder("cmd", "/c", "chcp", "65001")
+                        .inheritIO().start().waitFor();
+            } catch (Exception ignored) {}
+        }
+        System.setOut(new PrintStream(new java.io.FileOutputStream(java.io.FileDescriptor.out), true, StandardCharsets.UTF_8));
+        System.setErr(new PrintStream(new java.io.FileOutputStream(java.io.FileDescriptor.err), true, StandardCharsets.UTF_8));
 
         // ============================
         // BƯỚC 1: Nạp dữ liệu từ JSON

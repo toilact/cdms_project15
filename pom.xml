@@ -51,6 +51,11 @@
                 <version>3.4.1</version>
                 <configuration>
                     <mainClass>${exec.mainClass}</mainClass>
+                    <jvmArgs>
+                        <jvmArg>-Dfile.encoding=UTF-8</jvmArg>
+                        <jvmArg>-Dstdout.encoding=UTF-8</jvmArg>
+                        <jvmArg>-Dstderr.encoding=UTF-8</jvmArg>
+                    </jvmArgs>
                 </configuration>
             </plugin>
 
