@@ -137,19 +137,11 @@ public class BillingReportService {
     }
 
     public static Map<YearMonth, Double> calculateMonthlyRevenue() {
-        List<DeliveryOrder> deliveredOrders = getDeliveredOrders();
         Map<YearMonth, Double> monthlyRevenue = new TreeMap<>();
-
-        for (DeliveryOrder order : deliveredOrders) {
-            Parcel parcel = ParcelRepository.findById(order.getParcelId());
-            if (parcel == null) {
-                continue;
-            }
-            double baseFee = parcel.calculateFee();
-            double urgentCharge = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
-            double totalAmount = baseFee + urgentCharge;
-            YearMonth month = YearMonth.from(order.getOrderDate());
-            monthlyRevenue.put(month, monthlyRevenue.getOrDefault(month, 0.0) + totalAmount);
+        Map<LocalDate, Double> dailyRevenue = calculateDailyRevenue();
+        
+        for (Map.Entry<LocalDate, Double> entry : dailyRevenue.entrySet()) {
+            monthlyRevenue.merge(YearMonth.from(entry.getKey()), entry.getValue(), Double::sum);
         }
 
         return monthlyRevenue;
@@ -160,6 +152,10 @@ public class BillingReportService {
         Map<LocalDate, Double> dailyRevenue = new TreeMap<>();
 
         for (DeliveryOrder order : deliveredOrders) {
+            LocalDate deliveryDate = order.getDeliveryDate();
+            if (deliveryDate == null) {
+                continue;
+            }
             Parcel parcel = ParcelRepository.findById(order.getParcelId());
             if (parcel == null) {
                 continue;
@@ -167,8 +163,7 @@ public class BillingReportService {
             double baseFee = parcel.calculateFee();
             double urgentCharge = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
             double totalAmount = baseFee + urgentCharge;
-            LocalDate day = order.getOrderDate();
-            dailyRevenue.put(day, dailyRevenue.getOrDefault(day, 0.0) + totalAmount);
+            dailyRevenue.merge(deliveryDate, totalAmount, Double::sum);
         }
 
         return dailyRevenue;
