@@ -12,6 +12,16 @@ import com.cdms.core.InputHelper;
 
 public class DispatcherView {
 
+    // ANSI Colors for beautiful UI
+    private static final String RESET = "\u001B[0m";
+    private static final String BLUE_BG = "\u001B[44m";
+    private static final String BOLD_CYAN = "\u001B[1;36m";
+    private static final String BOLD_YELLOW = "\u001B[1;33m";
+    private static final String BOLD_GREEN = "\u001B[1;32m";
+    private static final String WHITE = "\u001B[37m";
+    private static final String BOLD_WHITE = "\u001B[1;37m";
+    private static final String PURPLE = "\u001B[35m";
+
     // Ngăn khởi tạo đối tượng
     private DispatcherView() {
     }
@@ -30,48 +40,48 @@ public class DispatcherView {
         boolean running = true;
 
         while (running) {
-            System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║       DISPATCHER - MENU CHÍNH         ║");
-            System.out.println("╠═══════════════════════════════════════╣");
-            System.out.println("║  [QUẢN LÝ SHIPPER]                    ║");
-            System.out.println("║  1. Thêm nhân viên giao hàng   (B9)   ║");
-            System.out.println("║  2. Phân công đơn cho shipper  (B10)  ║");
-            System.out.println("║  3. Xem đơn đã giao của shipper(B11)  ║");
-            System.out.println("║                                       ║");
-            System.out.println("║  [THEO DÕI GIAO HÀNG]                 ║");
-            System.out.println("║  4. Cập nhật trạng thái đơn    (B12)  ║");
-            System.out.println("║  5. Hiển thị đơn đang giao     (B13)  ║");
-            System.out.println("║  6. Hiển thị đơn giao thất bại (B14)  ║");
-            System.out.println("║                                       ║");
-            System.out.println("║  0. Quay lại Menu chính               ║");
-            System.out.println("╚═══════════════════════════════════════╝");
+            System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
+            System.out.println(BOLD_CYAN + "║" + BLUE_BG + BOLD_WHITE + "       DISPATCHER - MENU CHÍNH         " + RESET + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ SHIPPER]                    " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Thêm nhân viên giao hàng   (B9)   " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "2. " + WHITE + "Phân công đơn cho shipper  (B10)  " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "3. " + WHITE + "Xem đơn đã giao của shipper(B11)  " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[THEO DÕI GIAO HÀNG]                 " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "4. " + WHITE + "Cập nhật trạng thái đơn    (B12)  " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "5. " + WHITE + "Hiển thị đơn đang giao     (B13)  " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "6. " + WHITE + "Hiển thị đơn giao thất bại (B14)  " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
+            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "0. " + BOLD_WHITE + "Quay lại Menu chính               " + BOLD_CYAN + "║" + RESET);
+            System.out.println(BOLD_CYAN + "╚═══════════════════════════════════════╝" + RESET);
 
             int choice = InputHelper.getIntInput("Chọn chức năng (0-6): ", 0, 6);
 
             switch (choice) {
                 case 1:
                     // TODO: Nguyên Quốc Cường (Thành viên 2) - Gọi StaffService.addStaff()
-                    System.out.println("  🔧 [B9] Chức năng 'Thêm shipper' đang được phát triển bởi Nguyên Quốc Cường (Thành viên 2).\n");
+                    System.out.println(PURPLE + "  🔧 [B9] Chức năng 'Thêm shipper' đang được phát triển bởi Nguyên Quốc Cường (Thành viên 2).\n" + RESET);
                     break;
                 case 2:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.assignStaff()
-                    System.out.println("  🔧 [B10] Chức năng 'Phân công đơn' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
+                    System.out.println(PURPLE + "  🔧 [B10] Chức năng 'Phân công đơn' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
                     break;
                 case 3:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.viewDeliveredByStaff()
-                    System.out.println("  🔧 [B11] Chức năng 'Xem đơn đã giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
+                    System.out.println(PURPLE + "  🔧 [B11] Chức năng 'Xem đơn đã giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
                     break;
                 case 4:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updateStatus()
-                    System.out.println("  🔧 [B12] Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
+                    System.out.println(PURPLE + "  🔧 [B12] Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
                     break;
                 case 5:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.showInTransit()
-                    System.out.println("  🔧 [B13] Chức năng 'Đơn đang giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
+                    System.out.println(PURPLE + "  🔧 [B13] Chức năng 'Đơn đang giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
                     break;
                 case 6:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.showFailed()
-                    System.out.println("  🔧 [B14] Chức năng 'Đơn giao thất bại' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n");
+                    System.out.println(PURPLE + "  🔧 [B14] Chức năng 'Đơn giao thất bại' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
                     break;
                 case 0:
                     running = false;

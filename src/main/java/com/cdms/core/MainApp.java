@@ -17,6 +17,15 @@ import com.cdms.view.ShipperView;
 
 public class MainApp {
 
+    // ANSI Colors for beautiful UI
+    private static final String RESET = "\u001B[0m";
+    private static final String BLUE_BG = "\u001B[44m";
+    private static final String BOLD_CYAN = "\u001B[1;36m";
+    private static final String BOLD_YELLOW = "\u001B[1;33m";
+    private static final String BOLD_GREEN = "\u001B[1;32m";
+    private static final String WHITE = "\u001B[37m";
+    private static final String BOLD_WHITE = "\u001B[1;37m";
+
     public static void main(String[] args) throws Exception {
 
         // ============================
@@ -44,36 +53,36 @@ public class MainApp {
         boolean running = true;
 
         while (running) {
-            System.out.println("=========================================");
-            System.out.println(" COURIER DELIVERY MANAGEMENT SYSTEM (CDMS)");
-            System.out.println("=========================================");
-            System.out.println(" 1. Reception Staff      (Nhân viên lễ tân)");
-            System.out.println(" 2. Dispatcher           (Điều phối viên)");
-            System.out.println(" 3. Delivery Staff       (Shipper)");
-            System.out.println(" 4. Manager              (Quản lý)");
-            System.out.println(" 5. Thoát & Lưu dữ liệu");
-            System.out.println("-----------------------------------------");
+            System.out.println(BOLD_CYAN + "=========================================" + RESET);
+            System.out.println(BLUE_BG + BOLD_WHITE + " COURIER DELIVERY MANAGEMENT SYSTEM (CDMS) " + RESET);
+            System.out.println(BOLD_CYAN + "=========================================" + RESET);
+            System.out.println(BOLD_YELLOW + " 1. " + WHITE + "Reception Staff      (Nhân viên lễ tân)" + RESET);
+            System.out.println(BOLD_YELLOW + " 2. " + WHITE + "Dispatcher           (Điều phối viên)" + RESET);
+            System.out.println(BOLD_YELLOW + " 3. " + WHITE + "Delivery Staff       (Shipper)" + RESET);
+            System.out.println(BOLD_YELLOW + " 4. " + WHITE + "Manager              (Quản lý)" + RESET);
+            System.out.println(BOLD_YELLOW + " 5. " + BOLD_WHITE + "Thoát & Lưu dữ liệu" + RESET);
+            System.out.println(BOLD_CYAN + "-----------------------------------------" + RESET);
 
             int choice = InputHelper.getIntInput("Chọn vai trò (1-5): ", 1, 5);
 
             switch (choice) {
                 case 1:
-                    System.out.println("\n>>> Đăng nhập với vai trò: RECEPTION STAFF <<<\n");
+                    System.out.println("\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: RECEPTION STAFF <<<" + RESET + "\n");
                     CustomerStaffView.showReceptionMenu();
                     break;
 
                 case 2:
-                    System.out.println("\n>>> Đăng nhập với vai trò: DISPATCHER <<<\n");
+                    System.out.println("\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: DISPATCHER <<<" + RESET + "\n");
                     DispatcherView.showDispatcherMenu();
                     break;
 
                 case 3:
-                    System.out.println("\n>>> Đăng nhập với vai trò: DELIVERY STAFF (SHIPPER) <<<\n");
+                    System.out.println("\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: DELIVERY STAFF (SHIPPER) <<<" + RESET + "\n");
                     ShipperView.showShipperMenu();
                     break;
 
                 case 4:
-                    System.out.println("\n>>> Đăng nhập với vai trò: MANAGER <<<\n");
+                    System.out.println("\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: MANAGER <<<" + RESET + "\n");
                     BillingReportView.showMenu();
                     break;
 
