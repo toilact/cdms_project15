@@ -26,173 +26,93 @@
     "id": "ORD003",
     "parcelId": "PAR003",
     "staffId": "SHIP002",
-    "orderDate": "2026-05-10",
-    "expectedDeliveryDate": "2026-05-13",
-    "pickupDate": "2026-05-11",
-    "deliveryDate": "2026-05-12",
+    "orderDate": "2026-05-18",
+    "expectedDeliveryDate": "2026-05-21",
+    "pickupDate": "2026-05-19",
+    "deliveryDate": "2026-05-20",
     "deliveryType": "Standard",
     "status": "Delivered",
     "notes": [
-      "Giao hàng nhanh, khách hài lòng."
+      "Đã lấy hàng thành công.",
+      "Người nhận đã nhận hàng và ký tên xác nhận."
     ]
   },
   {
     "id": "ORD004",
     "parcelId": "PAR004",
-    "staffId": "SHIP003",
-    "orderDate": "2026-05-09",
-    "expectedDeliveryDate": "2026-05-10",
-    "pickupDate": "2026-05-09",
-    "deliveryDate": "2026-05-10",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-19",
+    "expectedDeliveryDate": "2026-05-21",
+    "pickupDate": "2026-05-20",
+    "deliveryDate": "2026-05-21",
     "deliveryType": "Urgent",
     "status": "Delivered",
     "notes": [
-      "Hỏa tốc, giao đúng giờ."
+      "Hàng cồng kềnh, cần đi xe tải.",
+      "Đã giao cho người nhận lúc 15:30 ngày 21/05."
     ]
   },
   {
     "id": "ORD005",
     "parcelId": "PAR005",
-    "staffId": "SHIP001",
-    "orderDate": "2026-05-08",
-    "expectedDeliveryDate": "2026-05-12",
-    "pickupDate": "2026-05-09",
-    "deliveryDate": "2026-05-11",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-26",
+    "pickupDate": "2026-05-23",
     "deliveryType": "Standard",
-    "status": "Delivered",
+    "status": "In Transit",
     "notes": [
-      "Khách hàng kiểm tra hàng kỹ trước khi nhận."
+      "Đã lấy hàng từ bưu cục Hải Phòng."
     ]
   },
   {
     "id": "ORD006",
     "parcelId": "PAR006",
-    "staffId": "SHIP004",
-    "orderDate": "2026-05-05",
-    "expectedDeliveryDate": "2026-05-08",
-    "pickupDate": "2026-05-06",
-    "deliveryType": "Goods",
-    "status": "Failed",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-23",
+    "expectedDeliveryDate": "2026-05-27",
+    "deliveryType": "Standard",
+    "status": "Assigned",
     "notes": [
-      "Khách yêu cầu chuyển lại, gửi trả lại kho."
+      "Đã phân công cho shipper Lê Văn Chung."
     ]
   },
   {
     "id": "ORD007",
     "parcelId": "PAR007",
-    "staffId": "SHIP002",
-    "orderDate": "2026-05-07",
-    "expectedDeliveryDate": "2026-05-09",
-    "pickupDate": "2026-05-08",
-    "deliveryDate": "2026-05-09",
-    "deliveryType": "Document",
-    "status": "Delivered",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-15",
+    "expectedDeliveryDate": "2026-05-18",
+    "pickupDate": "2026-05-16",
+    "deliveryDate": "2026-05-18",
+    "deliveryType": "Standard",
+    "status": "Failed",
     "notes": [
-      "Giao trong ngày, văn bản quan trọng."
+      "Giao hàng thất bại: Người nhận không nghe máy sau 3 lần gọi."
     ]
   },
   {
     "id": "ORD008",
     "parcelId": "PAR008",
-    "staffId": "SHIP005",
-    "orderDate": "2026-05-11",
-    "expectedDeliveryDate": "2026-05-12",
-    "pickupDate": "2026-05-11",
-    "deliveryDate": "2026-05-12",
+    "orderDate": "2026-05-24",
+    "expectedDeliveryDate": "2026-05-25",
     "deliveryType": "Urgent",
-    "status": "Delivered",
-    "notes": [
-      "Giao hàng hỏa tốc, khách gọi trước khi giao."
-    ]
-  },
-  {
-    "id": "ORD009",
-    "parcelId": "PAR009",
-    "staffId": "SHIP006",
-    "orderDate": "2026-05-15",
-    "expectedDeliveryDate": "2026-05-18",
-    "pickupDate": "2026-05-16",
-    "deliveryType": "Standard",
-    "status": "In Transit",
-    "notes": [
-      "Đang vận chuyển từ Hà Nội vào Đà Nẵng."
-    ]
-  },
-  {
-    "id": "ORD010",
-    "parcelId": "PAR010",
-    "orderDate": "2026-05-23",
-    "expectedDeliveryDate": "2026-05-27",
-    "deliveryType": "Standard",
     "status": "Pending",
     "notes": []
   },
   {
-    "id": "ORD011",
-    "parcelId": "PAR011",
-    "staffId": "SHIP003",
-    "orderDate": "2026-05-03",
-    "expectedDeliveryDate": "2026-05-06",
-    "pickupDate": "2026-05-04",
-    "deliveryDate": "2026-05-05",
-    "deliveryType": "Goods",
-    "status": "Delivered",
-    "notes": [
-      "Hàng dễ vỡ, ghi rõ mãi hàng kính."
-    ]
-  },
-  {
-    "id": "ORD012",
-    "parcelId": "PAR012",
-    "staffId": "SHIP001",
-    "orderDate": "2026-05-04",
-    "expectedDeliveryDate": "2026-05-05",
-    "pickupDate": "2026-05-04",
-    "deliveryDate": "2026-05-05",
-    "deliveryType": "Document",
-    "status": "Delivered",
-    "notes": [
-      "Giao gấp, giấy tờ hồ sơ."
-    ]
-  },
-  {
-    "id": "ORD013",
-    "parcelId": "PAR013",
-    "staffId": "SHIP004",
-    "orderDate": "2026-05-12",
-    "expectedDeliveryDate": "2026-05-15",
-    "pickupDate": "2026-05-13",
-    "deliveryType": "Goods",
-    "status": "Failed",
-    "notes": [
-      "Khách hủy đơn trong quá trình giao."
-    ]
-  },
-  {
-    "id": "ORD014",
-    "parcelId": "PAR014",
+    "id": "ORD009",
+    "parcelId": "PAR009",
     "staffId": "SHIP005",
-    "orderDate": "2026-05-02",
-    "expectedDeliveryDate": "2026-05-04",
-    "pickupDate": "2026-05-03",
-    "deliveryDate": "2026-05-04",
-    "deliveryType": "Document",
+    "orderDate": "2026-05-20",
+    "expectedDeliveryDate": "2026-05-23",
+    "pickupDate": "2026-05-21",
+    "deliveryDate": "2026-05-22",
+    "deliveryType": "Standard",
     "status": "Delivered",
     "notes": [
-      "Hóa đơn công ty, giao đủ chứng từ."
-    ]
-  },
-  {
-    "id": "ORD015",
-    "parcelId": "PAR015",
-    "staffId": "SHIP006",
-    "orderDate": "2026-05-16",
-    "expectedDeliveryDate": "2026-05-20",
-    "pickupDate": "2026-05-17",
-    "deliveryType": "Goods",
-    "status": "In Transit",
-    "notes": [
-      "Đang chờ chuyển tiếp tại điểm trung chuyển."
+      "Hàng dễ vỡ, đã bọc chống sốc kỹ càng.",
+      "Đã bàn giao cho người nhận nguyên vẹn."
     ]
   }
 ]

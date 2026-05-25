@@ -434,3 +434,4 @@ Sau khi đẩy nhánh của bạn lên GitHub thành công, hãy thực hiện c
 > 2. Chọn **Generate new token (classic)**, tích chọn quyền `repo` và nhấn Generate.
 > 3. Sao chép đoạn mã Token nhận được (dạng `ghp_...`).
 > 4. Khi Terminal hỏi Password, hãy **dán đoạn Token này vào** thay cho mật khẩu thông thường của bạn.
+DO CHI THANH

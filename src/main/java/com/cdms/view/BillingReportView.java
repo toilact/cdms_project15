@@ -1,20 +1,13 @@
 // ============================================================
 // File: BillingReportView.java
 // Package: com.cdms.view
-// Description: Giao diện console cho phân hệ Báo cáo & Quản lý hóa đơn.
+// Description: Giao diện Console cho phân hệ Thanh toán &
+//              Báo cáo thống kê. Phục vụ vai trò Manager.
+//              🔧 BÀN GIAO CHO: Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
 // ============================================================
-// HUỲNH LÊ QUỐC CƯỜNG
 package com.cdms.view;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
 import com.cdms.core.InputHelper;
-import com.cdms.model.DeliveryOrder;
-import com.cdms.model.DeliveryStaff;
-import com.cdms.model.Invoice;
-import com.cdms.service.BillingReportService;
 
 public class BillingReportView {
 
@@ -32,6 +25,16 @@ public class BillingReportView {
     private BillingReportView() {
     }
 
+    // ==========================================================
+    //  SUBMENU: MANAGER (Quản lý)
+    //  Các tính năng: B16 - B22 (Thanh toán + Báo cáo)
+    // ==========================================================
+
+    /**
+     * Menu chính cho vai trò Manager.
+     * Manager có quyền: tính hóa đơn, ghi nhận thanh toán,
+     * xem báo cáo doanh thu, đánh giá hiệu suất shipper.
+     */
     public static void showMenu() {
         boolean running = true;
 
@@ -77,27 +80,32 @@ public class BillingReportView {
 
             switch (choice) {
                 case 1:
-                    handleCreateInvoice();
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi BillingService.generateInvoice()
+                    System.out.println("  🔧 [B16] Chức năng 'Tính hóa đơn' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 2:
-                    handleViewInvoiceDetails();
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi BillingService.viewInvoiceDetail()
+                    System.out.println("  🔧 [B17] Chức năng 'Xem chi tiết HĐ' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 3:
-                    handleRecordPayment();
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi BillingService.recordPayment()
+                    System.out.println("  🔧 [B18] Chức năng 'Ghi nhận thanh toán' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 4:
-                    BillingReportService.printDailyRevenueReport();
-                    InputHelper.pressEnterToContinue();
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.dailyRevenue()
+                    System.out.println("  🔧 [B19] Chức năng 'Doanh thu ngày' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 5:
-                    BillingReportService.printMonthlyRevenueReport();
-                    InputHelper.pressEnterToContinue();
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.monthlyRevenue()
+                    System.out.println("  🔧 [B20] Chức năng 'Doanh thu tháng' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 6:
-                    handleTopShippers();
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.topShipper()
+                    System.out.println("  🔧 [B21] Chức năng 'Shipper tích cực nhất' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 7:
-                    handleDeliveryStatistics();
+                    // TODO: Huỳnh Lê Quốc Cường (Thành viên 5) - Gọi ReportService.successfulDeliveries()
+                    System.out.println("  🔧 [B22] Chức năng 'Đơn giao thành công' đang được phát triển bởi Huỳnh Lê Quốc Cường (Thành viên 5).\n");
                     break;
                 case 8:
                     handleAddInvoice();

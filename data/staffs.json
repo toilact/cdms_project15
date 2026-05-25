@@ -5,7 +5,7 @@
     "phone": "0909112233",
     "vehicleType": "Motorbike",
     "status": "Active",
-    "deliveredOrdersCount": 8
+    "deliveredOrdersCount": 12
   },
   {
     "id": "SHIP002",
@@ -13,38 +13,30 @@
     "phone": "0933445566",
     "vehicleType": "Truck",
     "status": "Active",
-    "deliveredOrdersCount": 6
-  },
-  {
-    "id": "SHIP003",
-    "name": "Trần Thị Linh",
-    "phone": "0911555666",
-    "vehicleType": "Motorbike",
-    "status": "Active",
     "deliveredOrdersCount": 5
   },
   {
-    "id": "SHIP004",
-    "name": "Nguyễn Văn Quý",
-    "phone": "0944777555",
-    "vehicleType": "Truck",
+    "id": "SHIP003",
+    "name": "Nguyễn Quốc Bảo",
+    "phone": "0911223344",
+    "vehicleType": "Motorbike",
     "status": "Active",
-    "deliveredOrdersCount": 3
+    "deliveredOrdersCount": 8
+  },
+  {
+    "id": "SHIP004",
+    "name": "Trần Anh Tuấn",
+    "phone": "0988776655",
+    "vehicleType": "Motorbike",
+    "status": "Inactive",
+    "deliveredOrdersCount": 2
   },
   {
     "id": "SHIP005",
-    "name": "Hoàng Minh Sơn",
-    "phone": "0977888111",
-    "vehicleType": "Motorbike",
-    "status": "Active",
-    "deliveredOrdersCount": 4
-  },
-  {
-    "id": "SHIP006",
-    "name": "Đỗ Thị Hồng",
-    "phone": "0966777888",
+    "name": "Vũ Huy Hoàng",
+    "phone": "0977665544",
     "vehicleType": "Truck",
     "status": "Active",
-    "deliveredOrdersCount": 2
+    "deliveredOrdersCount": 15
   }
 ]
