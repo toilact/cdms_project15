@@ -8,12 +8,12 @@
 package com.cdms.service;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
@@ -30,6 +30,10 @@ public class BillingReportService {
 
     private BillingReportService() {
     }
+
+    // ============================================================
+    //  TÌM KIẾM / LOOKUP
+    // ============================================================
 
     public static DeliveryOrder findOrderById(String orderId) {
         return DeliveryOrderRepository.findById(orderId);
@@ -59,16 +63,18 @@ public class BillingReportService {
         return InvoiceRepository.existsByOrderId(orderId);
     }
 
+    // ============================================================
+    //  TẠO / GHI NHẬN HÓA ĐƠN
+    // ============================================================
+
     public static Invoice createInvoice(DeliveryOrder order) {
         if (order == null) {
             return null;
         }
-
         Parcel parcel = ParcelRepository.findById(order.getParcelId());
         if (parcel == null) {
             return null;
         }
-
         double baseFee = parcel.calculateFee();
         double urgentCharge = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
         double totalAmount = baseFee + urgentCharge;
@@ -114,6 +120,10 @@ public class BillingReportService {
         return InvoiceRepository.update(invoice);
     }
 
+    // ============================================================
+    //  CRUD HÓA ĐƠN
+    // ============================================================
+
     public static String addInvoice(Invoice invoice) {
         if (InvoiceRepository.findById(invoice.getId()) != null) {
             return "❌ Lỗi: Mã hóa đơn '" + invoice.getId() + "' đã tồn tại!";
@@ -138,103 +148,98 @@ public class BillingReportService {
         return "❌ Lỗi: Không tìm thấy hóa đơn với mã '" + invoiceId + "'!";
     }
 
+    // ============================================================
+    //  THỐNG KÊ ĐƠN HÀNG
+    // ============================================================
+
     public static Map<String, Object> getDeliveryStatistics() {
         long totalOrders = DeliveryOrderRepository.findAll().size();
-        long delivered = DeliveryOrderRepository.countByStatus("Delivered");
-        long failed = DeliveryOrderRepository.countByStatus("Failed");
-        long inTransit = DeliveryOrderRepository.countByStatus("In Transit");
-        long pending = DeliveryOrderRepository.countByStatus("Pending");
+        long delivered   = DeliveryOrderRepository.countByStatus("Delivered");
+        long failed      = DeliveryOrderRepository.countByStatus("Failed");
+        long inTransit   = DeliveryOrderRepository.countByStatus("In Transit");
+        long pending     = DeliveryOrderRepository.countByStatus("Pending");
 
         double successRate = totalOrders > 0 ? (delivered * 100.0 / totalOrders) : 0.0;
 
         Map<String, Object> stats = new LinkedHashMap<>();
         stats.put("totalOrders", totalOrders);
-        stats.put("delivered", delivered);
-        stats.put("inTransit", inTransit);
-        stats.put("pending", pending);
-        stats.put("failed", failed);
+        stats.put("delivered",   delivered);
+        stats.put("inTransit",   inTransit);
+        stats.put("pending",     pending);
+        stats.put("failed",      failed);
         stats.put("successRate", successRate);
         return stats;
     }
 
+    // ============================================================
+    //  DOANH THU — tính từ Invoice đã Paid (paymentDate)
+    // ============================================================
+
+    /**
+     * Tổng doanh thu từ danh sách hóa đơn truyền vào.
+     */
     public static double calculateTotalRevenue(List<Invoice> invoices) {
         return invoices.stream().mapToDouble(Invoice::getTotalAmount).sum();
     }
 
-    public static Map<YearMonth, Double> calculateMonthlyRevenue() {
-        Map<YearMonth, Double> monthlyRevenue = new TreeMap<>();
-        Map<LocalDate, Double> dailyRevenue = calculateDailyRevenue();
-        
-        for (Map.Entry<LocalDate, Double> entry : dailyRevenue.entrySet()) {
-            monthlyRevenue.merge(YearMonth.from(entry.getKey()), entry.getValue(), Double::sum);
-        }
-
-        return monthlyRevenue;
-    }
-
+    /**
+     * Doanh thu theo từng ngày.
+     * Chỉ tính các hóa đơn có paymentStatus = "Paid" và paymentDate != null.
+     * Group by paymentDate, cộng dồn totalAmount.
+     */
     public static Map<LocalDate, Double> calculateDailyRevenue() {
-        List<DeliveryOrder> deliveredOrders = getDeliveredOrders();
+        List<Invoice> paidInvoices = InvoiceRepository.findPaidInvoices();
         Map<LocalDate, Double> dailyRevenue = new TreeMap<>();
 
-        for (DeliveryOrder order : deliveredOrders) {
-            LocalDate deliveryDate = order.getDeliveryDate();
-            if (deliveryDate == null) {
-                continue;
-            }
-            Parcel parcel = ParcelRepository.findById(order.getParcelId());
-            if (parcel == null) {
-                continue;
-            }
-            double baseFee = parcel.calculateFee();
-            double urgentCharge = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
-            double totalAmount = baseFee + urgentCharge;
-            dailyRevenue.merge(deliveryDate, totalAmount, Double::sum);
+        for (Invoice inv : paidInvoices) {
+            dailyRevenue.merge(inv.getPaymentDate(), inv.getTotalAmount(), Double::sum);
         }
-
         return dailyRevenue;
     }
 
-    public static void printDailyRevenueReport() {
-        Map<LocalDate, Double> dailyRevenue = calculateDailyRevenue();
+    /**
+     * Doanh thu theo từng tháng.
+     * Chỉ tính các hóa đơn có paymentStatus = "Paid" và paymentDate != null.
+     * Group by YearMonth, cộng dồn totalAmount.
+     */
+    public static Map<YearMonth, Double> calculateMonthlyRevenue() {
+        List<Invoice> paidInvoices = InvoiceRepository.findPaidInvoices();
+        Map<YearMonth, Double> monthlyRevenue = new TreeMap<>();
 
-        System.out.println("\n========== BÁO CÁO DOANH THU THEO NGÀY ==========");
-        System.out.println(String.format("%-15s | %20s", "Ngày", "Doanh thu (VND)"));
-        System.out.println("-".repeat(40));
-
-        if (dailyRevenue.isEmpty()) {
-            System.out.println("Không có đơn hàng đã giao để báo cáo.");
-        } else {
-            double totalRevenue = 0.0;
-            for (Map.Entry<LocalDate, Double> entry : dailyRevenue.entrySet()) {
-                System.out.printf("%-15s | %20,.0f%n", entry.getKey(), entry.getValue());
-                totalRevenue += entry.getValue();
-            }
-            System.out.println("-".repeat(40));
-            System.out.printf("%-15s | %20,.0f VND%n", "TỔNG CỘNG", totalRevenue);
+        for (Invoice inv : paidInvoices) {
+            YearMonth ym = YearMonth.from(inv.getPaymentDate());
+            monthlyRevenue.merge(ym, inv.getTotalAmount(), Double::sum);
         }
-
-        System.out.println("=".repeat(40) + "\n");
+        return monthlyRevenue;
     }
 
-    public static void printMonthlyRevenueReport() {
-        Map<YearMonth, Double> monthlyRevenue = calculateMonthlyRevenue();
+    /**
+     * Doanh thu theo từng năm.
+     * Chỉ tính các hóa đơn có paymentStatus = "Paid" và paymentDate != null.
+     * Group by Year, cộng dồn totalAmount.
+     */
+    public static Map<Integer, Double> calculateAnnualRevenue() {
+        List<Invoice> paidInvoices = InvoiceRepository.findPaidInvoices();
+        Map<Integer, Double> annualRevenue = new TreeMap<>();
 
-        System.out.println("\n========== BÁO CÁO DOANH THU THEO THÁNG ==========");
-        System.out.println(String.format("%-15s | %20s", "Tháng", "Doanh thu (VND)"));
-        System.out.println("-".repeat(40));
-
-        if (monthlyRevenue.isEmpty()) {
-            System.out.println("Không có đơn hàng đã giao để báo cáo.");
-        } else {
-            double totalRevenue = 0.0;
-            for (Map.Entry<YearMonth, Double> entry : monthlyRevenue.entrySet()) {
-                System.out.printf("%-15s | %20,.0f%n", entry.getKey(), entry.getValue());
-                totalRevenue += entry.getValue();
-            }
-            System.out.println("-".repeat(40));
-            System.out.printf("%-15s | %20,.0f VND%n", "TỔNG CỘNG", totalRevenue);
+        for (Invoice inv : paidInvoices) {
+            int year = inv.getPaymentDate().getYear();
+            annualRevenue.merge(year, inv.getTotalAmount(), Double::sum);
         }
+        return annualRevenue;
+    }
 
-        System.out.println("=".repeat(40) + "\n");
+    /**
+     * Doanh thu theo tháng trong một năm cụ thể.
+     */
+    public static Map<YearMonth, Double> calculateMonthlyRevenueByYear(int year) {
+        List<Invoice> paidInYear = InvoiceRepository.findByPaymentYear(year);
+        Map<YearMonth, Double> result = new TreeMap<>();
+
+        for (Invoice inv : paidInYear) {
+            YearMonth ym = YearMonth.from(inv.getPaymentDate());
+            result.merge(ym, inv.getTotalAmount(), Double::sum);
+        }
+        return result;
     }
 }

@@ -5,7 +5,9 @@
 // ============================================================
 package com.cdms.repository;
 
+import java.time.YearMonth;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.cdms.core.JSONDataManager;
 import com.cdms.model.Invoice;
@@ -45,6 +47,37 @@ public class InvoiceRepository {
 
     public static boolean existsByOrderId(String orderId) {
         return findByOrderId(orderId) != null;
+    }
+
+    /**
+     * Trả về danh sách hóa đơn đã thanh toán (paymentStatus = "Paid").
+     */
+    public static List<Invoice> findPaidInvoices() {
+        return JSONDataManager.invoices.stream()
+                .filter(inv -> "Paid".equalsIgnoreCase(inv.getPaymentStatus())
+                        && inv.getPaymentDate() != null)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Trả về danh sách hóa đơn đã thanh toán trong một tháng/năm cụ thể.
+     */
+    public static List<Invoice> findByPaymentYearMonth(YearMonth yearMonth) {
+        if (yearMonth == null) {
+            return List.of();
+        }
+        return findPaidInvoices().stream()
+                .filter(inv -> YearMonth.from(inv.getPaymentDate()).equals(yearMonth))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Trả về danh sách hóa đơn đã thanh toán trong một năm cụ thể.
+     */
+    public static List<Invoice> findByPaymentYear(int year) {
+        return findPaidInvoices().stream()
+                .filter(inv -> inv.getPaymentDate().getYear() == year)
+                .collect(Collectors.toList());
     }
 
     public static void add(Invoice invoice) {
