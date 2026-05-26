@@ -56,6 +56,12 @@
                         <jvmArg>-Dstdout.encoding=UTF-8</jvmArg>
                         <jvmArg>-Dstderr.encoding=UTF-8</jvmArg>
                     </jvmArgs>
+                    <systemProperties>
+                        <systemProperty>
+                            <key>file.encoding</key>
+                            <value>UTF-8</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
 
