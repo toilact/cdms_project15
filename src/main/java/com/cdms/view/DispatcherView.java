@@ -9,6 +9,8 @@
 package com.cdms.view;
 
 import com.cdms.core.InputHelper;
+import com.cdms.core.JSONDataManager;
+import com.cdms.service.TrackingService;
 
 public class DispatcherView {
 
@@ -37,6 +39,8 @@ public class DispatcherView {
      * cập nhật trạng thái, xem đơn đang giao/thất bại.
      */
     public static void showDispatcherMenu() {
+        TrackingService tracking = new TrackingService(JSONDataManager.orders, JSONDataManager.staffs);
+
         boolean running = true;
 
         while (running) {
@@ -64,24 +68,30 @@ public class DispatcherView {
                     System.out.println(PURPLE + "  🔧 [B9] Chức năng 'Thêm shipper' đang được phát triển bởi Nguyên Quốc Cường (Thành viên 2).\n" + RESET);
                     break;
                 case 2:
+                    
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.assignStaff()
-                    System.out.println(PURPLE + "  🔧 [B10] Chức năng 'Phân công đơn' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.assignStaff(); 
+                    //System.out.println(PURPLE + "  🔧 [B10] Chức năng 'Phân công đơn' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
                     break;
                 case 3:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.viewDeliveredByStaff()
-                    System.out.println(PURPLE + "  🔧 [B11] Chức năng 'Xem đơn đã giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 [B11] Chức năng 'Xem đơn đã giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.viewDeliveredByStaff();
                     break;
                 case 4:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updateStatus()
-                    System.out.println(PURPLE + "  🔧 [B12] Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 [B12] Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.updateStatus();
                     break;
                 case 5:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.showInTransit()
-                    System.out.println(PURPLE + "  🔧 [B13] Chức năng 'Đơn đang giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 [B13] Chức năng 'Đơn đang giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.showInTransit();
                     break;
                 case 6:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.showFailed()
-                    System.out.println(PURPLE + "  🔧 [B14] Chức năng 'Đơn giao thất bại' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 [B14] Chức năng 'Đơn giao thất bại' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.showFailed();
                     break;
                 case 0:
                     running = false;

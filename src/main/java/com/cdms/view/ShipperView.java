@@ -9,6 +9,8 @@
 package com.cdms.view;
 
 import com.cdms.core.InputHelper;
+import com.cdms.core.JSONDataManager;
+import com.cdms.service.TrackingService;
 
 public class ShipperView {
 
@@ -37,6 +39,8 @@ public class ShipperView {
      * thực tế (pickupDate, deliveryDate), thêm ghi chú.
      */
     public static void showShipperMenu() {
+        TrackingService tracking = new TrackingService(JSONDataManager.orders, JSONDataManager.staffs);
+
         boolean running = true;
 
         while (running) {
@@ -57,23 +61,28 @@ public class ShipperView {
             switch (choice) {
                 case 1:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.viewAssignedOrders()
-                    System.out.println(PURPLE + "  🔧 Chức năng 'Xem đơn được giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 Chức năng 'Xem đơn được giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.viewAssignedOrders();
                     break;
                 case 2:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updatePickupDate()
-                    System.out.println(PURPLE + "  🔧 Chức năng 'Cập nhật ngày nhận' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 Chức năng 'Cập nhật ngày nhận' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.updatePickupDate();
                     break;
                 case 3:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updateDeliveryDate()
-                    System.out.println(PURPLE + "  🔧 Chức năng 'Cập nhật ngày giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 Chức năng 'Cập nhật ngày giao' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.updateDeliveryDate();
                     break;
                 case 4:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.addDeliveryNote()
-                    System.out.println(PURPLE + "  🔧 [B15] Chức năng 'Thêm ghi chú' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 [B15] Chức năng 'Thêm ghi chú' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.addTrackingNote();
                     break;
                 case 5:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.updateOrderStatus()
-                    System.out.println(PURPLE + "  🔧 Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    //System.out.println(PURPLE + "  🔧 Chức năng 'Cập nhật trạng thái' đang được phát triển bởi Nguyễn Thanh Tùng (Thành viên 4).\n" + RESET);
+                    tracking.updateStatus();
                     break;
                 case 0:
                     running = false;
