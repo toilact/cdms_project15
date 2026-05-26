@@ -67,6 +67,25 @@ public class BillingReportService {
     //  TẠO / GHI NHẬN HÓA ĐƠN
     // ============================================================
 
+    public static String generateNextInvoiceId() {
+        List<Invoice> invoices = InvoiceRepository.findAll();
+        int maxNum = 0;
+        for (Invoice inv : invoices) {
+            String id = inv.getId();
+            if (id != null && id.startsWith("INV") && id.length() > 3) {
+                try {
+                    int num = Integer.parseInt(id.substring(3));
+                    if (num > maxNum) {
+                        maxNum = num;
+                    }
+                } catch (NumberFormatException e) {
+                    // Bỏ qua mã không chuẩn
+                }
+            }
+        }
+        return "INV" + String.format("%03d", maxNum + 1);
+    }
+
     public static Invoice createInvoice(DeliveryOrder order) {
         if (order == null) {
             return null;
@@ -80,7 +99,7 @@ public class BillingReportService {
         double totalAmount = baseFee + urgentCharge;
 
         return new Invoice(
-                "INV-" + order.getId(),
+                generateNextInvoiceId(),
                 order.getId(),
                 baseFee,
                 urgentCharge,

@@ -376,16 +376,61 @@ public class BillingReportView {
 
     private static void handleAddInvoice() {
         System.out.println("\n" + PURPLE + "--- Thêm dữ liệu (Hóa đơn) ---" + RESET);
-        String id = InputHelper.getStringInput("Nhập mã hóa đơn (VD: INV-001): ");
-        if (BillingReportService.findInvoiceById(id) != null) {
+        String id = InputHelper.getStringInput("Nhập mã hóa đơn (VD: INV-001 hoặc Enter để sinh tự động): ");
+        if (id.isEmpty()) {
+            id = BillingReportService.generateNextInvoiceId();
+            System.out.println("  ➜ Mã hóa đơn tự sinh: " + id);
+        } else if (BillingReportService.findInvoiceById(id) != null) {
             System.out.println(BOLD_YELLOW + "⚠️  Mã hóa đơn này đã tồn tại.\n" + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        String orderId     = InputHelper.getStringInput("Nhập mã đơn hàng tương ứng: ");
-        double baseFee     = InputHelper.getDoubleInput("Nhập phí cơ bản (VND): ", 0, Double.MAX_VALUE);
+        String orderId = InputHelper.getStringInput("Nhập mã đơn hàng tương ứng: ");
+        DeliveryOrder order = BillingReportService.findOrderById(orderId);
+        if (order == null) {
+            System.out.println(BOLD_YELLOW + "⚠️  Lỗi: Không tìm thấy đơn hàng với mã '" + orderId + "' trong hệ thống!\n" + RESET);
+            InputHelper.pressEnterToContinue();
+            return;
+        }
+
+        if (!"Delivered".equalsIgnoreCase(order.getStatus())) {
+            System.out.println(BOLD_YELLOW + "⚠️  Lỗi: Chỉ có thể lập hóa đơn cho đơn hàng đã giao (Delivered). Trạng thái hiện tại: " + order.getStatus() + "\n" + RESET);
+            InputHelper.pressEnterToContinue();
+            return;
+        }
+
+        if (BillingReportService.invoiceExistsForOrder(orderId)) {
+            Invoice existing = BillingReportService.findInvoiceByOrderId(orderId);
+            System.out.println(BOLD_YELLOW + "⚠️  Lỗi: Đơn hàng '" + orderId + "' đã có hóa đơn: " + existing.getId() + RESET);
+            System.out.println(existing);
+            System.out.println();
+            InputHelper.pressEnterToContinue();
+            return;
+        }
+
+        // Gợi ý phí tự động
+        Invoice suggested = BillingReportService.createInvoice(order);
+        double suggestedBase = 0.0;
+        double suggestedUrgent = 0.0;
+        if (suggested != null) {
+            suggestedBase = suggested.getBaseFee();
+            suggestedUrgent = suggested.getUrgentCharge();
+        }
+
+        System.out.printf("💡 Gợi ý hệ thống: Phí cơ bản = %,.0f VND | Phụ phí hỏa tốc = %,.0f VND%n", suggestedBase, suggestedUrgent);
+        System.out.println("   (Nhập '0' để sử dụng mức phí gợi ý trên)");
+
+        double baseFee = InputHelper.getDoubleInput("Nhập phí cơ bản (VND): ", 0, Double.MAX_VALUE);
+        if (baseFee == 0) {
+            baseFee = suggestedBase;
+        }
+
         double urgentCharge = InputHelper.getDoubleInput("Nhập phụ phí hỏa tốc (VND): ", 0, Double.MAX_VALUE);
+        if (urgentCharge == 0) {
+            urgentCharge = suggestedUrgent;
+        }
+
         double totalAmount = baseFee + urgentCharge;
 
         System.out.println("Nhập trạng thái thanh toán:");
