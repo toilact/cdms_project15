@@ -27,10 +27,11 @@ public class BillingReportService {
 
     private static final double URGENT_CHARGE = 20_000.0;
 
-    private BillingReportService() {}
+    private BillingReportService() {
+    }
 
     // ============================================================
-    //  TÌM KIẾM / LOOKUP
+    // TÌM KIẾM / LOOKUP
     // ============================================================
 
     public static DeliveryOrder findOrderById(String orderId) {
@@ -65,10 +66,9 @@ public class BillingReportService {
     }
 
     // ============================================================
-    //  TẠO / GHI NHẬN HÓA ĐƠN
+    // TẠO / GHI NHẬN HÓA ĐƠN
     // ============================================================
 
-<<<<<<< HEAD
     public static String generateNextInvoiceId() {
         List<Invoice> invoices = InvoiceRepository.findAll();
         int maxNum = 0;
@@ -88,27 +88,26 @@ public class BillingReportService {
         return "INV" + String.format("%03d", maxNum + 1);
     }
 
-=======
     /**
      * Tạo Invoice từ DeliveryOrder (chưa lưu vào repository).
      * Tính phí từ Parcel.calculateFee() + phụ phí hỏa tốc nếu Urgent.
      */
->>>>>>> 5518f1d (tiep tuc la fix lai code)
     public static Invoice createInvoice(DeliveryOrder order) {
-        if (order == null) return null;
+        if (order == null)
+            return null;
         Parcel parcel = ParcelRepository.findById(order.getParcelId());
-        if (parcel == null) return null;
+        if (parcel == null)
+            return null;
 
-        double baseFee     = parcel.calculateFee();
-        double urgent      = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
+        double baseFee = parcel.calculateFee();
+        double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
         double totalAmount = baseFee + urgent;
 
         return new Invoice(
                 generateNextInvoiceId(),
                 order.getId(),
                 baseFee, urgent, totalAmount,
-                "Unpaid", null, null
-        );
+                "Unpaid", null, null);
     }
 
     /**
@@ -118,7 +117,8 @@ public class BillingReportService {
      */
     public static Invoice createInvoiceForDeliveredOrder(String orderId) {
         DeliveryOrder order = findOrderById(orderId);
-        if (order == null || !"Delivered".equalsIgnoreCase(order.getStatus())) return null;
+        if (order == null || !"Delivered".equalsIgnoreCase(order.getStatus()))
+            return null;
 
         // Nếu đã có hóa đơn, trả về hóa đơn cũ
         if (invoiceExistsForOrder(orderId)) {
@@ -138,8 +138,10 @@ public class BillingReportService {
      */
     public static boolean recordPayment(String invoiceId, String paymentMethod, LocalDate paymentDate) {
         Invoice invoice = findInvoiceById(invoiceId);
-        if (invoice == null) return false;
-        if ("Paid".equalsIgnoreCase(invoice.getPaymentStatus())) return false;
+        if (invoice == null)
+            return false;
+        if ("Paid".equalsIgnoreCase(invoice.getPaymentStatus()))
+            return false;
 
         invoice.setPaymentStatus("Paid");
         invoice.setPaymentMethod(paymentMethod);
@@ -148,7 +150,7 @@ public class BillingReportService {
     }
 
     // ============================================================
-    //  CRUD HÓA ĐƠN
+    // CRUD HÓA ĐƠN
     // ============================================================
 
     public static String addInvoice(Invoice invoice) {
@@ -174,7 +176,7 @@ public class BillingReportService {
     }
 
     // ============================================================
-    //  THỐNG KÊ ĐƠN HÀNG  (B22)
+    // THỐNG KÊ ĐƠN HÀNG (B22)
     // ============================================================
 
     /**
@@ -183,27 +185,27 @@ public class BillingReportService {
      */
     public static Map<String, Object> getDeliveryStatistics() {
         long totalOrders = DeliveryOrderRepository.findAll().size();
-        long delivered   = DeliveryOrderRepository.countByStatus("Delivered");
-        long inTransit   = DeliveryOrderRepository.countByStatus("In Transit");
-        long assigned    = DeliveryOrderRepository.countByStatus("Assigned");
-        long pending     = DeliveryOrderRepository.countByStatus("Pending");
-        long failed      = DeliveryOrderRepository.countByStatus("Failed");
+        long delivered = DeliveryOrderRepository.countByStatus("Delivered");
+        long inTransit = DeliveryOrderRepository.countByStatus("In Transit");
+        long assigned = DeliveryOrderRepository.countByStatus("Assigned");
+        long pending = DeliveryOrderRepository.countByStatus("Pending");
+        long failed = DeliveryOrderRepository.countByStatus("Failed");
 
         double successRate = (totalOrders > 0) ? (delivered * 100.0 / totalOrders) : 0.0;
 
         Map<String, Object> stats = new LinkedHashMap<>();
         stats.put("totalOrders", totalOrders);
-        stats.put("delivered",   delivered);
-        stats.put("inTransit",   inTransit);
-        stats.put("assigned",    assigned);
-        stats.put("pending",     pending);
-        stats.put("failed",      failed);
+        stats.put("delivered", delivered);
+        stats.put("inTransit", inTransit);
+        stats.put("assigned", assigned);
+        stats.put("pending", pending);
+        stats.put("failed", failed);
         stats.put("successRate", successRate);
         return stats;
     }
 
     // ============================================================
-    //  DOANH THU — tính từ Invoice đã Paid (B19, B20)
+    // DOANH THU — tính từ Invoice đã Paid (B19, B20)
     // ============================================================
 
     /**
