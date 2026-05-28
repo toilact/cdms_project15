@@ -21,6 +21,7 @@ public class DispatcherView {
     private static final String BOLD_CYAN   = "\u001B[1;36m";
     private static final String BOLD_YELLOW = "\u001B[1;33m";
     private static final String BOLD_GREEN  = "\u001B[1;32m";
+    private static final String BOLD_RED    = "\u001B[1;31m";
     private static final String WHITE       = "\u001B[37m";
     private static final String BOLD_WHITE  = "\u001B[1;37m";
     private static final String PURPLE      = "\u001B[35m";
@@ -43,26 +44,25 @@ public class DispatcherView {
         boolean running = true;
 
         while (running) {
-            System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_CYAN + "║" + BOLD_YELLOW + "       DISPATCHER - MENU CHÍNH         " + RESET + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ SHIPPER]                    " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Thêm nhân viên giao hàng   (B9)   " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "2. " + WHITE + "Phân công đơn cho shipper  (B10)  " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "3. " + WHITE + "Xem đơn đã giao của shipper(B11)  " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "4. " + WHITE + "Xem danh sách shipper      (DS)   " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "5. " + WHITE + "Cập nhật thông tin shipper (CP)   " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "6. " + WHITE + "Xóa nhân viên giao hàng    (X)    " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[THEO DÕI GIAO HÀNG]                 " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "7. " + WHITE + "Cập nhật trạng thái đơn    (B12)  " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "8. " + WHITE + "Hiển thị đơn đang giao     (B13)  " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "9. " + WHITE + "Hiển thị đơn giao thất bại (B14)  " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "0. " + BOLD_WHITE + "Quay lại Menu chính               " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "╚═══════════════════════════════════════╝" + RESET);
+            System.out.println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "DISPATCHER - MENU CHÍNH     " + RESET);
+            System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ SHIPPER]                                    " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Thêm nhân viên giao hàng     (B9)                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Phân công đơn cho shipper    (B10)                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Xem đơn đã giao của shipper  (B11)                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Xem danh sách shipper        (DS)                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE + "Cập nhật thông tin shipper   (CP)                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE + "Xóa nhân viên giao hàng      (X)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [THEO DÕI GIAO HÀNG]                                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE + "Cập nhật trạng thái đơn      (B12)                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE + "Hiển thị đơn đang giao       (B13)                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE + "Hiển thị đơn giao thất bại   (B14)                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
-            int choice = InputHelper.getIntInput("Chọn chức năng (0-9): ", 0, 9);
+            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-9): " + RESET, 0, 9);
 
             switch (choice) {
                 case 1:

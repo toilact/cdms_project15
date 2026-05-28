@@ -15,6 +15,15 @@ import java.util.List;
 
 public class CustomerStaffView {
 
+    // ANSI Colors for premium visual presentation
+    private static final String RESET        = "\u001B[0m";
+    private static final String BOLD_CYAN    = "\u001B[1;36m";
+    private static final String BOLD_YELLOW  = "\u001B[1;33m";
+    private static final String BOLD_GREEN   = "\u001B[1;32m";
+    private static final String BOLD_RED     = "\u001B[1;31m";
+    private static final String BOLD_WHITE   = "\u001B[1;37m";
+    private static final String WHITE        = "\u001B[37m";
+
     // Ngăn khởi tạo đối tượng
     private CustomerStaffView() {
     }
@@ -33,27 +42,26 @@ public class CustomerStaffView {
         boolean running = true;
 
         while (running) {
-            System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║      RECEPTION STAFF - MENU CHÍNH     ║");
-            System.out.println("╠═══════════════════════════════════════╣");
-            System.out.println("║  [QUẢN LÝ KHÁCH HÀNG]                 ║");
-            System.out.println("║  1. Thêm khách hàng mới       (B1)    ║");
-            System.out.println("║  2. Cập nhật thông tin KH      (B2)   ║");
-            System.out.println("║  3. Hiển thị danh sách KH      (B3)   ║");
-            System.out.println("║                                       ║");
-            System.out.println("║  [QUẢN LÝ KIỆN HÀNG]                  ║");
-            System.out.println("║  4. Thêm kiện hàng mới         (B4)   ║");
-            System.out.println("║  5. Xem danh sách kiện hàng    (B5)   ║");
-            System.out.println("║                                       ║");
-            System.out.println("║  [QUẢN LÝ ĐƠN GIAO HÀNG]              ║");
-            System.out.println("║  6. Tạo đơn giao hàng mới      (B6)   ║");
-            System.out.println("║  7. Cập nhật đơn giao hàng     (B7)   ║");
-            System.out.println("║  8. Xem chi tiết đơn giao hàng (B8)   ║");
-            System.out.println("║                                       ║");
-            System.out.println("║  0. Quay lại Menu chính               ║");
-            System.out.println("╚═══════════════════════════════════════╝");
+            System.out.println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "RECEPTION STAFF - MENU CHÍNH" + RESET);
+            System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ KHÁCH HÀNG]                                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Thêm khách hàng mới          (B1)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Cập nhật thông tin KH        (B2)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Hiển thị danh sách KH        (B3)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ KIỆN HÀNG]                                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Thêm kiện hàng mới           (B4)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE + "Xem danh sách kiện hàng      (B5)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ ĐƠN GIAO HÀNG]                              " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE + "Tạo đơn giao hàng mới        (B6)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE + "Cập nhật đơn giao hàng        (B7)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE + "Xem chi tiết đơn giao hàng    (B8)                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
-            int choice = InputHelper.getIntInput("Chọn chức năng (0-8): ", 0, 8);
+            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-8): " + RESET, 0, 8);
 
             switch (choice) {
                 case 1:

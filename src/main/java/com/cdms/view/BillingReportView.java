@@ -61,27 +61,26 @@ public class BillingReportView {
     }
 
     private static void printMenu() {
-        System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
-        System.out.println(BOLD_CYAN + "║" + BOLD_YELLOW + "        MANAGER - MENU CHÍNH           " + RESET + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ THANH TOÁN]                 " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Tính hóa đơn cho đơn hàng (B16)   " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "2. " + WHITE + "Xem chi tiết hóa đơn      (B17)   " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "3. " + WHITE + "Ghi nhận thanh toán        (B18)   " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[BÁO CÁO & THỐNG KÊ]                 " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "4. " + WHITE + "Báo cáo doanh thu theo ngày(B19)   " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "5. " + WHITE + "Báo cáo doanh thu theo tháng(B20)  " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "6. " + WHITE + "Shipper tích cực nhất      (B21)   " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "7. " + WHITE + "Thống kê đơn giao thành công(B22)  " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ DỮ LIỆU - CRUD]             " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "8. " + WHITE + "Thêm hóa đơn thủ công              " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "9. " + WHITE + "Sửa trạng thái hóa đơn             " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "10." + WHITE + " Xóa hóa đơn                       " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "0. " + BOLD_WHITE + "Quay lại Menu chính               " + BOLD_CYAN + "║" + RESET);
-        System.out.println(BOLD_CYAN + "╚═══════════════════════════════════════╝" + RESET);
+        System.out.println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "MANAGER - MENU CHÍNH          " + RESET);
+        System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ THANH TOÁN]                                 " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Tính hóa đơn cho đơn hàng    (B16)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Xem chi tiết hóa đơn          (B17)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Ghi nhận thanh toán           (B18)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [BÁO CÁO & THỐNG KÊ]                                 " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Báo cáo doanh thu theo ngày   (B19)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE + "Báo cáo doanh thu theo tháng  (B20)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE + "Shipper tích cực nhất         (B21)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE + "Thống kê đơn giao thành công  (B22)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ DỮ LIỆU - CRUD]                              " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE + "Thêm hóa đơn thủ công                              " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE + "Sửa trạng thái hóa đơn                             " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE + " Xóa hóa đơn                                       " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
     }
 
     // ==========================================================
