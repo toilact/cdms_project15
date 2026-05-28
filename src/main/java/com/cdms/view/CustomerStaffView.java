@@ -8,6 +8,10 @@
 package com.cdms.view;
 
 import com.cdms.core.InputHelper;
+import com.cdms.model.Customer;
+import com.cdms.service.CustomerStaffService;
+
+import java.util.List;
 
 public class CustomerStaffView {
 
@@ -52,18 +56,18 @@ public class CustomerStaffView {
             int choice = InputHelper.getIntInput("Chọn chức năng (0-8): ", 0, 8);
 
             switch (choice) {
+
+
+                
                 case 1:
-                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.addCustomer()
-                    System.out
-                            .println("  🔧 [B1] Chức năng 'Thêm khách hàng' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n");
+                    handleAddCustomer();
                     break;
                 case 2:
-                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.updateCustomer()
-                    System.out.println("  🔧 [B2] Chức năng 'Cập nhật KH' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n");
+                    handleUpdateCustomer();
                     break;
+
                 case 3:
-                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.displayAll()
-                    System.out.println("  🔧 [B3] Chức năng 'Hiển thị DS KH' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n");
+                    handleShowCustomerList();
                     break;
                 case 4:
                     // TODO: Thành viên 3 (Trương Đan Huy) - Gọi ParcelService.addParcel()
@@ -96,5 +100,53 @@ public class CustomerStaffView {
                     break;
             }
         }
+    }
+
+    private static void handleAddCustomer() {
+        System.out.println("\n===== THÊM KHÁCH HÀNG MỚI =====");
+        String id = InputHelper.getStringInput("Mã khách hàng: ");
+        String name = InputHelper.getStringInput("Họ tên: ");
+        String phone = InputHelper.getStringInput("Số điện thoại: ");
+        String address = InputHelper.getStringInput("Địa chỉ: ");
+
+        Customer customer = new Customer(id, name, phone, address);
+        System.out.println(CustomerStaffService.addCustomer(customer));
+        System.out.println();
+    }
+
+    private static void handleUpdateCustomer() {
+        System.out.println("\n===== CẬP NHẬT KHÁCH HÀNG =====");
+        String id = InputHelper.getStringInput("Mã khách hàng cần cập nhật: ");
+        Customer existing = CustomerStaffService.findCustomer(id);
+        if (existing == null) {
+            System.out.println("❌ Không tìm thấy khách hàng với mã '" + id + "'.\n");
+            return;
+        }
+
+        System.out.println("Thông tin hiện tại: " + existing);
+        String name = InputHelper.getStringInput("Tên mới: ");
+        String phone = InputHelper.getStringInput("Số điện thoại mới: ");
+        String address = InputHelper.getStringInput("Địa chỉ mới: ");
+
+        Customer updated = new Customer(id, name, phone, address);
+        System.out.println(CustomerStaffService.updateCustomer(updated));
+        System.out.println();
+    }
+
+    private static void handleShowCustomerList() {
+        System.out.println("\n===== DANH SÁCH KHÁCH HÀNG =====");
+        List<Customer> customers = CustomerStaffService.getAllCustomers();
+        if (customers.isEmpty()) {
+            System.out.println("  (Chưa có khách hàng nào.)\n");
+            return;
+        }
+
+        System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+        System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
+        System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+        System.out.println("+------------+----------------------+-----------------+--------------------------------+\n");
     }
 }

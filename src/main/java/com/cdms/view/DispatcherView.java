@@ -9,6 +9,8 @@
 package com.cdms.view;
 
 import com.cdms.core.InputHelper;
+import com.cdms.model.DeliveryStaff;
+import com.cdms.service.CustomerStaffService;
 
 public class DispatcherView {
 
@@ -50,8 +52,7 @@ public class DispatcherView {
 
             switch (choice) {
                 case 1:
-                    // TODO: Nguyên Quốc Cường (Thành viên 2) - Gọi StaffService.addStaff()
-                    System.out.println("  🔧 [B9] Chức năng 'Thêm shipper' đang được phát triển bởi Nguyên Quốc Cường (Thành viên 2).\n");
+                    handleAddDeliveryStaff();
                     break;
                 case 2:
                     // TODO: Nguyễn Thanh Tùng (Thành viên 4) - Gọi TrackingService.assignStaff()
@@ -81,5 +82,18 @@ public class DispatcherView {
                     break;
             }
         }
+    }
+
+    private static void handleAddDeliveryStaff() {
+        System.out.println("\n===== THÊM NHÂN VIÊN GIAO HÀNG MỚI =====");
+        String id = InputHelper.getStringInput("Mã shipper: ");
+        String name = InputHelper.getStringInput("Họ tên: ");
+        String phone = InputHelper.getStringInput("Số điện thoại: ");
+        String vehicleType = InputHelper.getStringInput("Loại phương tiện: ");
+        String status = InputHelper.getStringInput("Trạng thái (Active/Inactive): ");
+
+        DeliveryStaff staff = new DeliveryStaff(id, name, phone, vehicleType, status, 0);
+        System.out.println(CustomerStaffService.addStaff(staff));
+        System.out.println();
     }
 }

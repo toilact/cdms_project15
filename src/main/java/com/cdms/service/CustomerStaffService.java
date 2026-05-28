@@ -19,7 +19,9 @@
 package com.cdms.service;
 
 import com.cdms.model.Customer;
+import com.cdms.model.DeliveryStaff;
 import com.cdms.repository.CustomerRepository;
+import com.cdms.repository.DeliveryStaffRepository;
 
 import java.util.List;
 
@@ -98,19 +100,42 @@ public class CustomerStaffService {
 
     // ==========================================================
     //       QUẢN LÝ NHÂN VIÊN GIAO HÀNG (DELIVERY STAFF)
-    // ==========================================================
 
-    // TODO [Nguyên Quốc Cường - Developer A]: Tạo file DeliveryStaffRepository.java
-    //   trong package repository trước, sau đó viết các phương thức
-    //   quản lý DeliveryStaff tương tự như Customer ở trên:
-    //
-    //   - getAllStaffs()              → Lấy toàn bộ danh sách shipper
-    //   - findStaff(String staffId)  → Tìm shipper theo mã
-    //   - addStaff(DeliveryStaff s)  → Thêm shipper mới (kiểm tra trùng mã)
-    //   - updateStaff(...)           → Cập nhật thông tin shipper
-    //   - deleteStaff(String id)     → Xóa shipper theo mã
-    //
-    // LƯU Ý: Phương thức ở đây trả về String (thông báo) hoặc
-    //         List/Object để View nhận và in ra cho người dùng.
-    //         KHÔNG dùng System.out.println() trong Service!
+    public static List<DeliveryStaff> getAllStaffs() {
+        return DeliveryStaffRepository.findAll();
+    }
+
+    public static DeliveryStaff findStaff(String staffId) {
+        return DeliveryStaffRepository.findById(staffId);
+    }
+
+    public static String addStaff(DeliveryStaff staff) {
+        if (staff == null || staff.getId() == null || staff.getId().trim().isEmpty()) {
+            return "❌ Lỗi: Mã shipper không được để trống.";
+        }
+        if (DeliveryStaffRepository.findById(staff.getId()) != null) {
+            return "❌ Lỗi: Mã shipper '" + staff.getId() + "' đã tồn tại!";
+        }
+        if (DeliveryStaffRepository.findByPhone(staff.getPhone()) != null) {
+            return "❌ Lỗi: Số điện thoại này đã được sử dụng bởi shipper khác.";
+        }
+        DeliveryStaffRepository.add(staff);
+        return "✅ Đã thêm shipper: " + staff.getId() + " - " + staff.getName();
+    }
+
+    public static String updateStaff(DeliveryStaff updated) {
+        boolean success = DeliveryStaffRepository.update(updated);
+        if (success) {
+            return "✅ Đã cập nhật shipper: " + updated.getId();
+        }
+        return "❌ Lỗi: Không tìm thấy shipper với mã '" + updated.getId() + "'!";
+    }
+
+    public static String deleteStaff(String staffId) {
+        boolean success = DeliveryStaffRepository.delete(staffId);
+        if (success) {
+            return "✅ Đã xóa shipper: " + staffId;
+        }
+        return "❌ Lỗi: Không tìm thấy shipper với mã '" + staffId + "'!";
+    }
 }
