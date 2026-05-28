@@ -4,16 +4,15 @@
 // Description: Phân hệ Thanh toán và Báo cáo cho vai trò Manager.
 //              Cung cấp tất cả chức năng B16-B22.
 // ============================================================
-//HUỲNH LÊ QUỐC CƯỜNG
 package com.cdms.service;
 
 import java.time.LocalDate;
-import java.time.Year;
 import java.time.YearMonth;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
@@ -26,10 +25,9 @@ import com.cdms.repository.ParcelRepository;
 
 public class BillingReportService {
 
-    private static final double URGENT_CHARGE = 20000.0;
+    private static final double URGENT_CHARGE = 20_000.0;
 
-    private BillingReportService() {
-    }
+    private BillingReportService() {}
 
     // ============================================================
     //  TÌM KIẾM / LOOKUP
@@ -51,8 +49,11 @@ public class BillingReportService {
         return InvoiceRepository.findAll();
     }
 
-    public static List<DeliveryOrder> getDeliveredOrders() {
-        return DeliveryOrderRepository.findDeliveredOrders();
+    /** Trả về danh sách hóa đơn chưa thanh toán (paymentStatus = "Unpaid"). */
+    public static List<Invoice> getUnpaidInvoices() {
+        return InvoiceRepository.findAll().stream()
+                .filter(inv -> !"Paid".equalsIgnoreCase(inv.getPaymentStatus()))
+                .collect(Collectors.toList());
     }
 
     public static List<DeliveryStaff> getTopShippers(int limit) {
@@ -67,6 +68,7 @@ public class BillingReportService {
     //  TẠO / GHI NHẬN HÓA ĐƠN
     // ============================================================
 
+<<<<<<< HEAD
     public static String generateNextInvoiceId() {
         List<Invoice> invoices = InvoiceRepository.findAll();
         int maxNum = 0;
@@ -86,38 +88,43 @@ public class BillingReportService {
         return "INV" + String.format("%03d", maxNum + 1);
     }
 
+=======
+    /**
+     * Tạo Invoice từ DeliveryOrder (chưa lưu vào repository).
+     * Tính phí từ Parcel.calculateFee() + phụ phí hỏa tốc nếu Urgent.
+     */
+>>>>>>> 5518f1d (tiep tuc la fix lai code)
     public static Invoice createInvoice(DeliveryOrder order) {
-        if (order == null) {
-            return null;
-        }
+        if (order == null) return null;
         Parcel parcel = ParcelRepository.findById(order.getParcelId());
-        if (parcel == null) {
-            return null;
-        }
-        double baseFee = parcel.calculateFee();
-        double urgentCharge = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
-        double totalAmount = baseFee + urgentCharge;
+        if (parcel == null) return null;
+
+        double baseFee     = parcel.calculateFee();
+        double urgent      = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? URGENT_CHARGE : 0.0;
+        double totalAmount = baseFee + urgent;
 
         return new Invoice(
                 generateNextInvoiceId(),
                 order.getId(),
-                baseFee,
-                urgentCharge,
-                totalAmount,
-                "Unpaid",
-                null,
-                null
+                baseFee, urgent, totalAmount,
+                "Unpaid", null, null
         );
     }
 
+    /**
+     * B16 — Tạo và lưu hóa đơn cho đơn hàng đã giao.
+     * Trả về null nếu đơn không tồn tại hoặc kiện hàng không hợp lệ.
+     * Nếu hóa đơn đã tồn tại, trả về hóa đơn cũ (không tạo lại).
+     */
     public static Invoice createInvoiceForDeliveredOrder(String orderId) {
         DeliveryOrder order = findOrderById(orderId);
-        if (order == null || !"Delivered".equalsIgnoreCase(order.getStatus())) {
-            return null;
-        }
+        if (order == null || !"Delivered".equalsIgnoreCase(order.getStatus())) return null;
+
+        // Nếu đã có hóa đơn, trả về hóa đơn cũ
         if (invoiceExistsForOrder(orderId)) {
             return findInvoiceByOrderId(orderId);
         }
+
         Invoice invoice = createInvoice(order);
         if (invoice != null) {
             InvoiceRepository.add(invoice);
@@ -125,14 +132,15 @@ public class BillingReportService {
         return invoice;
     }
 
+    /**
+     * B18 — Ghi nhận thanh toán cho hóa đơn.
+     * Trả về false nếu hóa đơn không tồn tại hoặc đã được thanh toán.
+     */
     public static boolean recordPayment(String invoiceId, String paymentMethod, LocalDate paymentDate) {
         Invoice invoice = findInvoiceById(invoiceId);
-        if (invoice == null) {
-            return false;
-        }
-        if (invoice.getPaymentStatus() != null && invoice.getPaymentStatus().equalsIgnoreCase("Paid")) {
-            return false;
-        }
+        if (invoice == null) return false;
+        if ("Paid".equalsIgnoreCase(invoice.getPaymentStatus())) return false;
+
         invoice.setPaymentStatus("Paid");
         invoice.setPaymentMethod(paymentMethod);
         invoice.setPaymentDate(paymentDate);
@@ -145,45 +153,49 @@ public class BillingReportService {
 
     public static String addInvoice(Invoice invoice) {
         if (InvoiceRepository.findById(invoice.getId()) != null) {
-            return "❌ Lỗi: Mã hóa đơn '" + invoice.getId() + "' đã tồn tại!";
+            return "❌ Mã hóa đơn '" + invoice.getId() + "' đã tồn tại!";
         }
         InvoiceRepository.add(invoice);
-        return "✅ Đã thêm hóa đơn thành công: " + invoice.getId();
+        return "✅ Đã thêm hóa đơn: " + invoice.getId();
     }
 
     public static String updateInvoice(Invoice updated) {
         boolean success = InvoiceRepository.update(updated);
-        if (success) {
-            return "✅ Đã cập nhật hóa đơn: " + updated.getId();
-        }
-        return "❌ Lỗi: Không tìm thấy hóa đơn với mã '" + updated.getId() + "'!";
+        return success
+                ? "✅ Đã cập nhật hóa đơn: " + updated.getId()
+                : "❌ Không tìm thấy hóa đơn '" + updated.getId() + "'!";
     }
 
     public static String deleteInvoice(String invoiceId) {
         boolean success = InvoiceRepository.delete(invoiceId);
-        if (success) {
-            return "✅ Đã xóa hóa đơn: " + invoiceId;
-        }
-        return "❌ Lỗi: Không tìm thấy hóa đơn với mã '" + invoiceId + "'!";
+        return success
+                ? "✅ Đã xóa hóa đơn: " + invoiceId
+                : "❌ Không tìm thấy hóa đơn '" + invoiceId + "'!";
     }
 
     // ============================================================
-    //  THỐNG KÊ ĐƠN HÀNG
+    //  THỐNG KÊ ĐƠN HÀNG  (B22)
     // ============================================================
 
+    /**
+     * B22 — Thống kê đơn hàng theo trạng thái.
+     * Bao gồm: Pending, Assigned, In Transit, Delivered, Failed.
+     */
     public static Map<String, Object> getDeliveryStatistics() {
         long totalOrders = DeliveryOrderRepository.findAll().size();
         long delivered   = DeliveryOrderRepository.countByStatus("Delivered");
-        long failed      = DeliveryOrderRepository.countByStatus("Failed");
         long inTransit   = DeliveryOrderRepository.countByStatus("In Transit");
+        long assigned    = DeliveryOrderRepository.countByStatus("Assigned");
         long pending     = DeliveryOrderRepository.countByStatus("Pending");
+        long failed      = DeliveryOrderRepository.countByStatus("Failed");
 
-        double successRate = totalOrders > 0 ? (delivered * 100.0 / totalOrders) : 0.0;
+        double successRate = (totalOrders > 0) ? (delivered * 100.0 / totalOrders) : 0.0;
 
         Map<String, Object> stats = new LinkedHashMap<>();
         stats.put("totalOrders", totalOrders);
         stats.put("delivered",   delivered);
         stats.put("inTransit",   inTransit);
+        stats.put("assigned",    assigned);
         stats.put("pending",     pending);
         stats.put("failed",      failed);
         stats.put("successRate", successRate);
@@ -191,73 +203,52 @@ public class BillingReportService {
     }
 
     // ============================================================
-    //  DOANH THU — tính từ Invoice đã Paid (paymentDate)
+    //  DOANH THU — tính từ Invoice đã Paid (B19, B20)
     // ============================================================
 
     /**
-     * Tổng doanh thu từ danh sách hóa đơn truyền vào.
-     */
-    public static double calculateTotalRevenue(List<Invoice> invoices) {
-        return invoices.stream().mapToDouble(Invoice::getTotalAmount).sum();
-    }
-
-    /**
-     * Doanh thu theo từng ngày.
-     * Chỉ tính các hóa đơn có paymentStatus = "Paid" và paymentDate != null.
-     * Group by paymentDate, cộng dồn totalAmount.
+     * B19 — Doanh thu theo từng ngày thanh toán.
+     * Chỉ tính hóa đơn Paid có paymentDate != null, group by paymentDate.
      */
     public static Map<LocalDate, Double> calculateDailyRevenue() {
-        List<Invoice> paidInvoices = InvoiceRepository.findPaidInvoices();
-        Map<LocalDate, Double> dailyRevenue = new TreeMap<>();
-
-        for (Invoice inv : paidInvoices) {
-            dailyRevenue.merge(inv.getPaymentDate(), inv.getTotalAmount(), Double::sum);
+        Map<LocalDate, Double> result = new TreeMap<>();
+        for (Invoice inv : InvoiceRepository.findPaidInvoices()) {
+            result.merge(inv.getPaymentDate(), inv.getTotalAmount(), Double::sum);
         }
-        return dailyRevenue;
+        return result;
     }
 
     /**
-     * Doanh thu theo từng tháng.
-     * Chỉ tính các hóa đơn có paymentStatus = "Paid" và paymentDate != null.
-     * Group by YearMonth, cộng dồn totalAmount.
+     * B20 — Doanh thu theo từng tháng (tất cả năm).
+     * Chỉ tính hóa đơn Paid có paymentDate != null, group by YearMonth.
      */
     public static Map<YearMonth, Double> calculateMonthlyRevenue() {
-        List<Invoice> paidInvoices = InvoiceRepository.findPaidInvoices();
-        Map<YearMonth, Double> monthlyRevenue = new TreeMap<>();
-
-        for (Invoice inv : paidInvoices) {
-            YearMonth ym = YearMonth.from(inv.getPaymentDate());
-            monthlyRevenue.merge(ym, inv.getTotalAmount(), Double::sum);
+        Map<YearMonth, Double> result = new TreeMap<>();
+        for (Invoice inv : InvoiceRepository.findPaidInvoices()) {
+            result.merge(YearMonth.from(inv.getPaymentDate()), inv.getTotalAmount(), Double::sum);
         }
-        return monthlyRevenue;
+        return result;
+    }
+
+    /**
+     * B20 — Doanh thu theo từng tháng trong một năm cụ thể.
+     */
+    public static Map<YearMonth, Double> calculateMonthlyRevenueByYear(int year) {
+        Map<YearMonth, Double> result = new TreeMap<>();
+        for (Invoice inv : InvoiceRepository.findByPaymentYear(year)) {
+            result.merge(YearMonth.from(inv.getPaymentDate()), inv.getTotalAmount(), Double::sum);
+        }
+        return result;
     }
 
     /**
      * Doanh thu theo từng năm.
-     * Chỉ tính các hóa đơn có paymentStatus = "Paid" và paymentDate != null.
-     * Group by Year, cộng dồn totalAmount.
+     * Chỉ tính hóa đơn Paid có paymentDate != null, group by year.
      */
     public static Map<Integer, Double> calculateAnnualRevenue() {
-        List<Invoice> paidInvoices = InvoiceRepository.findPaidInvoices();
-        Map<Integer, Double> annualRevenue = new TreeMap<>();
-
-        for (Invoice inv : paidInvoices) {
-            int year = inv.getPaymentDate().getYear();
-            annualRevenue.merge(year, inv.getTotalAmount(), Double::sum);
-        }
-        return annualRevenue;
-    }
-
-    /**
-     * Doanh thu theo tháng trong một năm cụ thể.
-     */
-    public static Map<YearMonth, Double> calculateMonthlyRevenueByYear(int year) {
-        List<Invoice> paidInYear = InvoiceRepository.findByPaymentYear(year);
-        Map<YearMonth, Double> result = new TreeMap<>();
-
-        for (Invoice inv : paidInYear) {
-            YearMonth ym = YearMonth.from(inv.getPaymentDate());
-            result.merge(ym, inv.getTotalAmount(), Double::sum);
+        Map<Integer, Double> result = new TreeMap<>();
+        for (Invoice inv : InvoiceRepository.findPaidInvoices()) {
+            result.merge(inv.getPaymentDate().getYear(), inv.getTotalAmount(), Double::sum);
         }
         return result;
     }

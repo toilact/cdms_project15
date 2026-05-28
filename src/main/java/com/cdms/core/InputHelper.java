@@ -130,6 +130,18 @@ public class InputHelper {
         }
     }
 
+    /**
+     * Nhập chuỗi tùy chọn — cho phép để trống (nhấn Enter để bỏ qua).
+     * Trả về chuỗi đã trim, có thể là rỗng "".
+     *
+     * @param prompt Thông báo hiển thị
+     * @return Chuỗi đã trim (có thể rỗng)
+     */
+    public static String getOptionalStringInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+
     // ---------------------------------------------------------
     // 4. NHẬP NGÀY THÁNG (định dạng DD/MM/YYYY)
     // ---------------------------------------------------------
