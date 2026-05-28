@@ -131,7 +131,24 @@ public class InputHelper {
     }
 
     // ---------------------------------------------------------
-    // 4. NHẬP NGÀY THÁNG (định dạng DD/MM/YYYY)
+    // 4. NHẬP CHUỖI TÙY CHỌN (cho phép để trống)
+    // ---------------------------------------------------------
+
+    /**
+     * Nhập chuỗi tùy chọn — cho phép người dùng nhấn Enter để bỏ qua.
+     * Trả về chuỗi đã trim, có thể là rỗng "".
+     * Dùng trong chức năng cập nhật thông tin để giữ nguyên giá trị cũ nếu không nhập.
+     *
+     * @param prompt Thông báo hiển thị
+     * @return Chuỗi đã trim (có thể rỗng nếu người dùng chỉ nhấn Enter)
+     */
+    public static String getOptionalStringInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+
+    // ---------------------------------------------------------
+    // 5. NHẬP NGÀY THÁNG (định dạng DD/MM/YYYY)
     // ---------------------------------------------------------
 
     /**

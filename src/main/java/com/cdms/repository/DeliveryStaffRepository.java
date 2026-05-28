@@ -33,6 +33,27 @@ public class DeliveryStaffRepository {
         return null;
     }
 
+    public static DeliveryStaff findByPhone(String phone) {
+        if (phone == null) {
+            return null;
+        }
+        for (DeliveryStaff staff : JSONDataManager.staffs) {
+            if (phone.equalsIgnoreCase(staff.getPhone())) {
+                return staff;
+            }
+        }
+        return null;
+    }
+
+    public static boolean add(DeliveryStaff staff) {
+        if (staff == null || findById(staff.getId()) != null) {
+            return false;
+        }
+        JSONDataManager.staffs.add(staff);
+        JSONDataManager.saveAllData();
+        return true;
+    }
+
     public static boolean update(DeliveryStaff updated) {
         if (updated == null || updated.getId() == null) {
             return false;
@@ -45,6 +66,17 @@ public class DeliveryStaffRepository {
             }
         }
         return false;
+    }
+
+    public static boolean delete(String staffId) {
+        if (staffId == null) {
+            return false;
+        }
+        boolean removed = JSONDataManager.staffs.removeIf(staff -> staffId.equalsIgnoreCase(staff.getId()));
+        if (removed) {
+            JSONDataManager.saveAllData();
+        }
+        return removed;
     }
 
     public static List<DeliveryStaff> findTopShippers(int limit) {

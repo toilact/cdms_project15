@@ -3,7 +3,7 @@
 // Package: com.cdms.view
 // Description: Giao diện Console cho phân hệ Thanh toán &
 //              Báo cáo thống kê. Phục vụ vai trò Manager.
-//              🔧 BÀN GIAO CHO: Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
+//              Phân công: Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
 // ============================================================
 package com.cdms.view;
 
@@ -13,287 +13,227 @@ import java.util.List;
 import java.util.Map;
 
 import com.cdms.core.InputHelper;
-import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
 import com.cdms.model.Invoice;
 import com.cdms.service.BillingReportService;
 
 public class BillingReportView {
 
-    // ANSI Colors for beautiful UI
+    // ANSI Colors
     private static final String RESET       = "\u001B[0m";
-    private static final String BLUE_BG     = "\u001B[44m";
     private static final String BOLD_CYAN   = "\u001B[1;36m";
     private static final String BOLD_YELLOW = "\u001B[1;33m";
     private static final String BOLD_GREEN  = "\u001B[1;32m";
+    private static final String BOLD_RED    = "\u001B[1;31m";
     private static final String WHITE       = "\u001B[37m";
     private static final String BOLD_WHITE  = "\u001B[1;37m";
     private static final String PURPLE      = "\u001B[35m";
-    private static final String BOLD_RED    = "\u001B[1;31m";
 
-    private BillingReportView() {
-    }
+    private BillingReportView() {}
 
     // ==========================================================
-    //  SUBMENU: MANAGER (Quản lý)
-    //  Các tính năng: B16 - B22 (Thanh toán + Báo cáo)
+    //  MENU CHÍNH — MANAGER
     // ==========================================================
 
-    /**
-     * Menu chính cho vai trò Manager.
-     * Manager có quyền: tính hóa đơn, ghi nhận thanh toán,
-     * xem báo cáo doanh thu, đánh giá hiệu suất shipper.
-     */
     public static void showMenu() {
         boolean running = true;
-
         while (running) {
-            System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_CYAN + "║" + BOLD_YELLOW + "        MANAGER - MENU CHÍNH           " + RESET
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
-            System.out.println(
-                    BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ THANH TOÁN]                 " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Tính hóa đơn cho đơn hàng (B16)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "2. " + WHITE + "Xem chi tiết hóa đơn      (B17)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "3. " + WHITE + "Ghi nhận thanh toán        (B18)  "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(
-                    BOLD_CYAN + "║  " + BOLD_GREEN + "[BÁO CÁO & THỐNG KÊ]                 " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "4. " + WHITE + "Báo cáo doanh thu theo ngày(B19)  "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "5. " + WHITE + "Báo cáo doanh thu theo tháng(B20) "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "6. " + WHITE + "Shipper tích cực nhất      (B21)  "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "7. " + WHITE + "Thống kê đơn giao thành công(B22) "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(
-                    BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ DỮ LIỆU]                    " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "8. " + WHITE + "Thêm dữ liệu (CRUD)               "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "9. " + WHITE + "Sửa dữ liệu  (CRUD)               "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "10." + WHITE + " Xóa dữ liệu (CRUD)               "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "0. " + BOLD_WHITE
-                    + "Quay lại Menu chính               " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "╚═══════════════════════════════════════╝" + RESET);
-
+            printMenu();
             int choice = InputHelper.getIntInput("Chọn chức năng (0-10): ", 0, 10);
-
             switch (choice) {
-                case 1:
-                    handleCreateInvoice();       // B16 - Tính hóa đơn
-                    break;
-                case 2:
-                    handleViewInvoiceDetails();  // B17 - Xem chi tiết hóa đơn
-                    break;
-                case 3:
-                    handleRecordPayment();       // B18 - Ghi nhận thanh toán
-                    break;
-                case 4:
-                    handleDailyRevenueReport();  // B19 - Báo cáo doanh thu theo ngày
-                    break;
-                case 5:
-                    handleMonthlyRevenueReport();// B20 - Báo cáo doanh thu theo tháng
-                    break;
-                case 6:
-                    handleTopShippers();         // B21 - Shipper tích cực nhất
-                    break;
-                case 7:
-                    handleDeliveryStatistics();  // B22 - Thống kê đơn giao thành công
-                    break;
-                case 8:
-                    handleAddInvoice();
-                    break;
-                case 9:
-                    handleUpdateInvoice();
-                    break;
-                case 10:
-                    handleDeleteInvoice();
-                    break;
+                case 1:  handleCreateInvoice();        break; // B16
+                case 2:  handleViewInvoiceDetails();   break; // B17
+                case 3:  handleRecordPayment();        break; // B18
+                case 4:  handleDailyRevenueReport();   break; // B19
+                case 5:  handleMonthlyRevenueReport(); break; // B20
+                case 6:  handleTopShippers();          break; // B21
+                case 7:  handleDeliveryStatistics();   break; // B22
+                case 8:  handleAddInvoice();           break; // CRUD Add
+                case 9:  handleUpdateInvoice();        break; // CRUD Update
+                case 10: handleDeleteInvoice();        break; // CRUD Delete
                 case 0:
                     running = false;
                     System.out.println("  ↩ Quay lại Menu chính...\n");
                     break;
-                default:
-                    break;
+                default: break;
             }
         }
     }
 
+    private static void printMenu() {
+        System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
+        System.out.println(BOLD_CYAN + "║" + BOLD_YELLOW + "        MANAGER - MENU CHÍNH           " + RESET + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ THANH TOÁN]                 " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Tính hóa đơn cho đơn hàng (B16)   " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "2. " + WHITE + "Xem chi tiết hóa đơn      (B17)   " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "3. " + WHITE + "Ghi nhận thanh toán        (B18)   " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[BÁO CÁO & THỐNG KÊ]                 " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "4. " + WHITE + "Báo cáo doanh thu theo ngày(B19)   " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "5. " + WHITE + "Báo cáo doanh thu theo tháng(B20)  " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "6. " + WHITE + "Shipper tích cực nhất      (B21)   " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "7. " + WHITE + "Thống kê đơn giao thành công(B22)  " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ DỮ LIỆU - CRUD]             " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "8. " + WHITE + "Thêm hóa đơn thủ công              " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "9. " + WHITE + "Sửa trạng thái hóa đơn             " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "10." + WHITE + " Xóa hóa đơn                       " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
+        System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "0. " + BOLD_WHITE + "Quay lại Menu chính               " + BOLD_CYAN + "║" + RESET);
+        System.out.println(BOLD_CYAN + "╚═══════════════════════════════════════╝" + RESET);
+    }
+
     // ==========================================================
-    //  B16 - Tính hóa đơn cho đơn hàng đã giao
+    //  B16 — Tính hóa đơn cho đơn hàng đã giao
     // ==========================================================
 
     private static void handleCreateInvoice() {
-        System.out.println("\n" + PURPLE + "--- [B16] Tính hóa đơn cho đơn hàng đã giao ---" + RESET);
+        System.out.println("\n" + PURPLE + "─── [B16] Tính hóa đơn cho đơn hàng đã giao ───" + RESET);
         String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
-        DeliveryOrder order = BillingReportService.findOrderById(orderId);
 
+        // Kiểm tra đơn hàng tồn tại
+        var order = BillingReportService.findOrderById(orderId);
         if (order == null) {
-            System.out.println(BOLD_YELLOW + "⚠️  Không tìm thấy đơn hàng với mã: " + orderId + "\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Không tìm thấy đơn hàng: " + orderId + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
+        // Chỉ tạo hóa đơn cho đơn đã Delivered
         if (!"Delivered".equalsIgnoreCase(order.getStatus())) {
-            System.out.println(
-                    BOLD_YELLOW + "⚠️  Chỉ có thể tạo hóa đơn cho đơn hàng đã giao (Delivered). Trạng thái hiện tại: "
-                            + order.getStatus() + "\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Chỉ tạo hóa đơn được khi đơn hàng ở trạng thái \"Delivered\"."
+                    + "\n   Trạng thái hiện tại: " + order.getStatus() + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
+        // Kiểm tra hóa đơn đã tồn tại chưa
         if (BillingReportService.invoiceExistsForOrder(orderId)) {
             Invoice existing = BillingReportService.findInvoiceByOrderId(orderId);
-            System.out.println(BOLD_YELLOW + "⚠️  Hóa đơn cho đơn hàng này đã tồn tại: " + existing.getId() + RESET);
-            System.out.println(existing);
-            System.out.println();
+            System.out.println(BOLD_YELLOW + "⚠  Hóa đơn đã tồn tại: " + existing.getId() + RESET);
+            printInvoiceDetail(existing);
             InputHelper.pressEnterToContinue();
             return;
         }
 
         Invoice invoice = BillingReportService.createInvoiceForDeliveredOrder(orderId);
         if (invoice == null) {
-            System.out.println(BOLD_RED + "❌ Không thể tạo hóa đơn cho đơn hàng này.\n" + RESET);
+            System.out.println(BOLD_RED + "❌ Không thể tạo hóa đơn (kiện hàng không tồn tại?)." + RESET);
         } else {
             System.out.println(BOLD_GREEN + "✅ Hóa đơn đã được tạo thành công:" + RESET);
-            System.out.println(invoice);
-            System.out.println();
+            printInvoiceDetail(invoice);
         }
         InputHelper.pressEnterToContinue();
     }
 
     // ==========================================================
-    //  B17 - Xem chi tiết hóa đơn
+    //  B17 — Xem chi tiết hóa đơn
     // ==========================================================
 
     private static void handleViewInvoiceDetails() {
-        System.out.println("\n" + PURPLE + "--- [B17] Xem chi tiết hóa đơn ---" + RESET);
+        System.out.println("\n" + PURPLE + "─── [B17] Xem chi tiết hóa đơn ───" + RESET);
+
         List<Invoice> invoices = BillingReportService.getAllInvoices();
         if (invoices.isEmpty()) {
-            System.out.println("Không có hóa đơn nào trong hệ thống.\n");
+            System.out.println("Không có hóa đơn nào trong hệ thống.");
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        System.out.println("Danh sách hóa đơn hiện có:");
-        for (Invoice invoice : invoices) {
-            System.out.printf("  - %s (Đơn: %s, Trạng thái: %s, Tổng: %,.0f VND)%n",
-                    invoice.getId(), invoice.getOrderId(), invoice.getPaymentStatus(), invoice.getTotalAmount());
-        }
-        System.out.println();
+        printInvoiceList(invoices);
 
         String invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn muốn xem: ");
         Invoice invoice = BillingReportService.findInvoiceById(invoiceId);
         if (invoice == null) {
-            System.out.println(BOLD_YELLOW + "⚠️  Không tìm thấy hóa đơn với mã: " + invoiceId + "\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Không tìm thấy hóa đơn: " + invoiceId + RESET);
         } else {
-            System.out.println("\nChi tiết hóa đơn:");
-            System.out.println("Mã hóa đơn    : " + invoice.getId());
-            System.out.println("Mã đơn hàng   : " + invoice.getOrderId());
-            System.out.println("Phí cơ bản    : " + String.format("%,.0f VND", invoice.getBaseFee()));
-            System.out.println("Phụ phí hỏa tốc: " + String.format("%,.0f VND", invoice.getUrgentCharge()));
-            System.out.println("Tổng phí      : " + String.format("%,.0f VND", invoice.getTotalAmount()));
-            System.out.println("Trạng thái TT : " + invoice.getPaymentStatus());
-            System.out.println("Phương thức TT: " + (invoice.getPaymentMethod() != null ? invoice.getPaymentMethod() : "Chưa TT"));
-            System.out.println("Ngày TT       : " + (invoice.getPaymentDate() != null ? invoice.getPaymentDate() : "Chưa TT"));
-            System.out.println();
+            printInvoiceDetail(invoice);
         }
         InputHelper.pressEnterToContinue();
     }
 
     // ==========================================================
-    //  B18 - Ghi nhận thanh toán
+    //  B18 — Ghi nhận thanh toán
     // ==========================================================
 
     private static void handleRecordPayment() {
-        System.out.println("\n" + PURPLE + "--- [B18] Ghi nhận thanh toán ---" + RESET);
-        List<Invoice> invoices = BillingReportService.getAllInvoices();
-        if (invoices.isEmpty()) {
-            System.out.println("Không có hóa đơn nào để thanh toán.\n");
+        System.out.println("\n" + PURPLE + "─── [B18] Ghi nhận thanh toán ───" + RESET);
+
+        // Chỉ hiển thị hóa đơn chưa thanh toán
+        List<Invoice> unpaidInvoices = BillingReportService.getUnpaidInvoices();
+        if (unpaidInvoices.isEmpty()) {
+            System.out.println("Không có hóa đơn nào chưa thanh toán.");
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        for (Invoice invoice : invoices) {
-            System.out.printf("  - %s (Đơn %s, Trạng thái: %s, Tổng: %,.0f VND)%n",
-                    invoice.getId(), invoice.getOrderId(), invoice.getPaymentStatus(), invoice.getTotalAmount());
-        }
-        System.out.println();
+        System.out.println("Danh sách hóa đơn chưa thanh toán:");
+        printInvoiceList(unpaidInvoices);
 
         String invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn cần ghi nhận thanh toán: ");
         Invoice invoice = BillingReportService.findInvoiceById(invoiceId);
         if (invoice == null) {
-            System.out.println(BOLD_YELLOW + "⚠️  Không tìm thấy hóa đơn với mã: " + invoiceId + "\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Không tìm thấy hóa đơn: " + invoiceId + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        if (invoice.getPaymentStatus() != null && invoice.getPaymentStatus().equalsIgnoreCase("Paid")) {
-            System.out.println(BOLD_YELLOW + "⚠️  Hóa đơn này đã được thanh toán trước đó.\n" + RESET);
+        // Guard: đã thanh toán rồi
+        if ("Paid".equalsIgnoreCase(invoice.getPaymentStatus())) {
+            System.out.println(BOLD_YELLOW + "⚠  Hóa đơn này đã được thanh toán trước đó." + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        String paymentMethod = InputHelper.getStringInput("Nhập phương thức thanh toán (Cash/Banking/...): ");
-        LocalDate paymentDate = InputHelper.getDateInput("Nhập ngày thanh toán (DD/MM/YYYY): ", false);
+        String paymentMethod = InputHelper.getStringInput("Phương thức thanh toán (Cash/Banking/...): ");
+        LocalDate paymentDate = InputHelper.getDateInput("Ngày thanh toán (DD/MM/YYYY)", false);
+
         boolean success = BillingReportService.recordPayment(invoiceId, paymentMethod, paymentDate);
-
         if (success) {
-            System.out.println(BOLD_GREEN + "✅ Ghi nhận thanh toán thành công cho hóa đơn " + invoiceId + ".\n" + RESET);
+            System.out.println(BOLD_GREEN + "✅ Ghi nhận thanh toán thành công cho hóa đơn " + invoiceId + "." + RESET);
         } else {
-            System.out.println(BOLD_RED + "❌ Ghi nhận thanh toán thất bại. Vui lòng thử lại.\n" + RESET);
+            System.out.println(BOLD_RED + "❌ Ghi nhận thanh toán thất bại. Vui lòng thử lại." + RESET);
         }
         InputHelper.pressEnterToContinue();
     }
 
     // ==========================================================
-    //  B19 - Báo cáo doanh thu theo ngày
-    //  Nguồn dữ liệu: Invoice đã Paid, group theo paymentDate
+    //  B19 — Báo cáo doanh thu theo ngày
     // ==========================================================
 
     private static void handleDailyRevenueReport() {
-        System.out.println("\n" + PURPLE + "--- [B19] Báo cáo doanh thu theo ngày ---" + RESET);
+        System.out.println("\n" + PURPLE + "─── [B19] Báo cáo doanh thu theo ngày ───" + RESET);
+
         Map<LocalDate, Double> dailyRevenue = BillingReportService.calculateDailyRevenue();
 
-        System.out.println(BOLD_CYAN + "\n========== BÁO CÁO DOANH THU THEO NGÀY ==========" + RESET);
-        System.out.println(String.format("%-15s | %20s", "Ngày thanh toán", "Doanh thu (VND)"));
-        System.out.println("-".repeat(40));
+        System.out.println(BOLD_CYAN + "\n══════════ BÁO CÁO DOANH THU THEO NGÀY ══════════" + RESET);
+        System.out.printf("%-15s │ %20s%n", "Ngày thanh toán", "Doanh thu (VND)");
+        System.out.println("─".repeat(40));
 
         if (dailyRevenue.isEmpty()) {
-            System.out.println("Không có hóa đơn đã thanh toán để báo cáo.");
+            System.out.println("  Không có hóa đơn đã thanh toán để báo cáo.");
         } else {
-            double totalRevenue = 0.0;
-            for (Map.Entry<LocalDate, Double> entry : dailyRevenue.entrySet()) {
-                System.out.printf("%-15s | %,20.0f%n", entry.getKey(), entry.getValue());
-                totalRevenue += entry.getValue();
+            double total = 0.0;
+            for (Map.Entry<LocalDate, Double> e : dailyRevenue.entrySet()) {
+                System.out.printf("%-15s │ %,20.0f%n", e.getKey(), e.getValue());
+                total += e.getValue();
             }
-            System.out.println("-".repeat(40));
-            System.out.printf("%-15s | %,20.0f VND%n", "TỔNG CỘNG", totalRevenue);
+            System.out.println("─".repeat(40));
+            System.out.printf("%-15s │ %,20.0f VND%n", "TỔNG CỘNG", total);
         }
-
-        System.out.println("=".repeat(40) + "\n");
+        System.out.println("═".repeat(40) + "\n");
         InputHelper.pressEnterToContinue();
     }
 
     // ==========================================================
-    //  B20 - Báo cáo doanh thu theo tháng
-    //  Nguồn dữ liệu: Invoice đã Paid, group theo paymentDate
+    //  B20 — Báo cáo doanh thu theo tháng
     // ==========================================================
 
     private static void handleMonthlyRevenueReport() {
-        System.out.println("\n" + PURPLE + "--- [B20] Báo cáo doanh thu theo tháng ---" + RESET);
-
+        System.out.println("\n" + PURPLE + "─── [B20] Báo cáo doanh thu theo tháng ───" + RESET);
         System.out.println("Chọn hình thức xem:");
-        System.out.println("  1. Tất cả tháng");
+        System.out.println("  1. Tất cả các tháng");
         System.out.println("  2. Theo năm cụ thể");
         int opt = InputHelper.getIntInput("Chọn (1-2): ", 1, 2);
 
@@ -309,224 +249,272 @@ public class BillingReportView {
             title = "BÁO CÁO DOANH THU THEO THÁNG";
         }
 
-        System.out.println(BOLD_CYAN + "\n========== " + title + " ==========" + RESET);
-        System.out.println(String.format("%-10s | %20s", "Tháng", "Doanh thu (VND)"));
-        System.out.println("-".repeat(35));
+        System.out.println(BOLD_CYAN + "\n══════════ " + title + " ══════════" + RESET);
+        System.out.printf("%-10s │ %20s%n", "Tháng", "Doanh thu (VND)");
+        System.out.println("─".repeat(35));
 
         if (monthlyRevenue.isEmpty()) {
-            System.out.println("Không có hóa đơn đã thanh toán để báo cáo.");
+            System.out.println("  Không có hóa đơn đã thanh toán để báo cáo.");
         } else {
-            double totalRevenue = 0.0;
-            for (Map.Entry<YearMonth, Double> entry : monthlyRevenue.entrySet()) {
-                System.out.printf("%-10s | %,20.0f%n", entry.getKey(), entry.getValue());
-                totalRevenue += entry.getValue();
+            double total = 0.0;
+            for (Map.Entry<YearMonth, Double> e : monthlyRevenue.entrySet()) {
+                System.out.printf("%-10s │ %,20.0f%n", e.getKey(), e.getValue());
+                total += e.getValue();
             }
-            System.out.println("-".repeat(35));
-            System.out.printf("%-10s | %,20.0f VND%n", "TỔNG CỘNG", totalRevenue);
+            System.out.println("─".repeat(35));
+            System.out.printf("%-10s │ %,20.0f VND%n", "TỔNG CỘNG", total);
         }
-
-        System.out.println("=".repeat(35) + "\n");
+        System.out.println("═".repeat(35) + "\n");
         InputHelper.pressEnterToContinue();
     }
 
     // ==========================================================
-    //  B21 - Shipper tích cực nhất
+    //  B21 — Top Shipper tích cực nhất
     // ==========================================================
 
     private static void handleTopShippers() {
-        System.out.println("\n" + PURPLE + "--- [B21] Shipper tích cực nhất ---" + RESET);
+        System.out.println("\n" + PURPLE + "─── [B21] Shipper tích cực nhất ───" + RESET);
+
         List<DeliveryStaff> shippers = BillingReportService.getTopShippers(5);
         if (shippers.isEmpty()) {
-            System.out.println("Không có dữ liệu shipper.\n");
+            System.out.println("Không có dữ liệu shipper.");
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        System.out.println("Danh sách shipper theo số đơn giao thành công:");
+        System.out.println(BOLD_CYAN + "\nBảng xếp hạng Shipper (theo số đơn giao thành công):" + RESET);
+        System.out.println("─".repeat(50));
         int rank = 1;
-        for (DeliveryStaff shipper : shippers) {
-            System.out.printf("%d. %s (%s) - Đã giao: %d đơn%n",
-                    rank++, shipper.getName(), shipper.getId(), shipper.getDeliveredOrdersCount());
+        for (DeliveryStaff s : shippers) {
+            System.out.printf("  %d. %-20s (%s) — Đã giao: %d đơn%n",
+                    rank++, s.getName(), s.getId(), s.getDeliveredOrdersCount());
         }
-        System.out.println();
+        System.out.println("─".repeat(50) + "\n");
         InputHelper.pressEnterToContinue();
     }
 
     // ==========================================================
-    //  B22 - Thống kê đơn giao thành công
+    //  B22 — Thống kê đơn giao thành công
     // ==========================================================
 
     private static void handleDeliveryStatistics() {
-        System.out.println("\n" + PURPLE + "--- [B22] Thống kê đơn giao thành công ---" + RESET);
+        System.out.println("\n" + PURPLE + "─── [B22] Thống kê đơn giao hàng ───" + RESET);
+
         Map<String, Object> stats = BillingReportService.getDeliveryStatistics();
 
-        System.out.println("Tổng số đơn hàng      : " + stats.get("totalOrders"));
-        System.out.println("Số đơn đã giao        : " + stats.get("delivered"));
-        System.out.println("Số đơn đang giao      : " + stats.get("inTransit"));
-        System.out.println("Số đơn chờ xử lý      : " + stats.get("pending"));
-        System.out.println("Số đơn giao thất bại  : " + stats.get("failed"));
-        System.out.printf("Tỷ lệ giao thành công : %.1f%% %n", stats.get("successRate"));
-        System.out.println();
+        System.out.println(BOLD_CYAN + "\n══════════ THỐNG KÊ ĐƠN HÀNG ══════════" + RESET);
+        System.out.printf("  %-28s: %s%n", "Tổng số đơn hàng",       stats.get("totalOrders"));
+        System.out.printf("  %-28s: %s%n", "Đã giao thành công",      stats.get("delivered"));
+        System.out.printf("  %-28s: %s%n", "Đang giao (In Transit)",  stats.get("inTransit"));
+        System.out.printf("  %-28s: %s%n", "Đã phân công (Assigned)", stats.get("assigned"));
+        System.out.printf("  %-28s: %s%n", "Chờ xử lý (Pending)",     stats.get("pending"));
+        System.out.printf("  %-28s: %s%n", "Giao thất bại (Failed)",  stats.get("failed"));
+        System.out.printf("  %-28s: %.1f%%%n", "Tỷ lệ giao thành công", stats.get("successRate"));
+        System.out.println("═".repeat(42) + "\n");
         InputHelper.pressEnterToContinue();
     }
 
     // ==========================================================
-    //  CRUD - Thêm / Sửa / Xóa hóa đơn
+    //  CRUD — Thêm hóa đơn thủ công
+    //  FIX: Dùng getOptionalStringInput để cho phép tự sinh mã ID.
+    //  FIX: Phí được tính TỰ ĐỘNG từ Parcel.calculateFee() — không nhập tay tùy ý.
     // ==========================================================
 
     private static void handleAddInvoice() {
-        System.out.println("\n" + PURPLE + "--- Thêm dữ liệu (Hóa đơn) ---" + RESET);
-        String id = InputHelper.getStringInput("Nhập mã hóa đơn (VD: INV-001 hoặc Enter để sinh tự động): ");
+        System.out.println("\n" + PURPLE + "─── Thêm hóa đơn thủ công ───" + RESET);
+
+        // FIX: Dùng getOptionalStringInput để người dùng CÓ THỂ nhấn Enter để sinh mã tự động
+        String id = InputHelper.getOptionalStringInput("Nhập mã hóa đơn (Enter để tự sinh, VD: INV001): ");
         if (id.isEmpty()) {
             id = BillingReportService.generateNextInvoiceId();
             System.out.println("  ➜ Mã hóa đơn tự sinh: " + id);
         } else if (BillingReportService.findInvoiceById(id) != null) {
-            System.out.println(BOLD_YELLOW + "⚠️  Mã hóa đơn này đã tồn tại.\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Mã hóa đơn \"" + id + "\" đã tồn tại." + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
+        // FIX: Bắt buộc lấy mã đơn hàng đã giao để tính phí tự động từ Parcel.calculateFee()
         String orderId = InputHelper.getStringInput("Nhập mã đơn hàng tương ứng: ");
-        DeliveryOrder order = BillingReportService.findOrderById(orderId);
+        var order = BillingReportService.findOrderById(orderId);
         if (order == null) {
-            System.out.println(BOLD_YELLOW + "⚠️  Lỗi: Không tìm thấy đơn hàng với mã '" + orderId + "' trong hệ thống!\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Không tìm thấy đơn hàng: " + orderId + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
         if (!"Delivered".equalsIgnoreCase(order.getStatus())) {
-            System.out.println(BOLD_YELLOW + "⚠️  Lỗi: Chỉ có thể lập hóa đơn cho đơn hàng đã giao (Delivered). Trạng thái hiện tại: " + order.getStatus() + "\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Chỉ lập hóa đơn cho đơn hàng đã giao (Delivered)."
+                    + "\n   Trạng thái hiện tại: " + order.getStatus() + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
         if (BillingReportService.invoiceExistsForOrder(orderId)) {
             Invoice existing = BillingReportService.findInvoiceByOrderId(orderId);
-            System.out.println(BOLD_YELLOW + "⚠️  Lỗi: Đơn hàng '" + orderId + "' đã có hóa đơn: " + existing.getId() + RESET);
-            System.out.println(existing);
-            System.out.println();
+            System.out.println(BOLD_YELLOW + "⚠  Đơn hàng '" + orderId + "' đã có hóa đơn: " + existing.getId() + RESET);
+            printInvoiceDetail(existing);
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        // Gợi ý phí tự động
+        // FIX: Phí được tính TỰ ĐỘNG từ hệ thống (Parcel.calculateFee() + urgentCharge nếu Urgent)
+        // Không cho nhập tay để đảm bảo tính nhất quán tài chính
         Invoice suggested = BillingReportService.createInvoice(order);
-        double suggestedBase = 0.0;
-        double suggestedUrgent = 0.0;
-        if (suggested != null) {
-            suggestedBase = suggested.getBaseFee();
-            suggestedUrgent = suggested.getUrgentCharge();
+        if (suggested == null) {
+            System.out.println(BOLD_RED + "❌ Không thể tính phí (kiện hàng không tồn tại?)." + RESET);
+            InputHelper.pressEnterToContinue();
+            return;
         }
 
-        System.out.printf("💡 Gợi ý hệ thống: Phí cơ bản = %,.0f VND | Phụ phí hỏa tốc = %,.0f VND%n", suggestedBase, suggestedUrgent);
-        System.out.println("   (Nhập '0' để sử dụng mức phí gợi ý trên)");
+        double baseFee     = suggested.getBaseFee();
+        double urgentCharge = suggested.getUrgentCharge();
+        double totalAmount  = baseFee + urgentCharge;
 
-        double baseFee = InputHelper.getDoubleInput("Nhập phí cơ bản (VND): ", 0, Double.MAX_VALUE);
-        if (baseFee == 0) {
-            baseFee = suggestedBase;
-        }
+        System.out.printf("💡 Phí tự động: Phí cơ bản = %,.0f VND | Phụ phí hỏa tốc = %,.0f VND | Tổng = %,.0f VND%n",
+                baseFee, urgentCharge, totalAmount);
 
-        double urgentCharge = InputHelper.getDoubleInput("Nhập phụ phí hỏa tốc (VND): ", 0, Double.MAX_VALUE);
-        if (urgentCharge == 0) {
-            urgentCharge = suggestedUrgent;
-        }
-
-        double totalAmount = baseFee + urgentCharge;
-
-        System.out.println("Nhập trạng thái thanh toán:");
-        System.out.println("1. Unpaid");
-        System.out.println("2. Paid");
-        int statusChoice = InputHelper.getIntInput("Chọn trạng thái (1-2): ", 1, 2);
-        String status = (statusChoice == 1) ? "Unpaid" : "Paid";
+        System.out.println("Trạng thái thanh toán:  1. Unpaid   2. Paid");
+        int statusChoice     = InputHelper.getIntInput("Chọn (1-2): ", 1, 2);
+        String status        = (statusChoice == 1) ? "Unpaid" : "Paid";
 
         String paymentMethod = null;
         LocalDate paymentDate = null;
         if ("Paid".equals(status)) {
-            paymentMethod = InputHelper.getStringInput("Nhập phương thức thanh toán (Cash/Banking): ");
-            paymentDate   = InputHelper.getDateInput("Nhập ngày thanh toán (DD/MM/YYYY): ", false);
+            paymentMethod = InputHelper.getStringInput("Phương thức thanh toán (Cash/Banking/...): ");
+            paymentDate   = InputHelper.getDateInput("Ngày thanh toán (DD/MM/YYYY)", false);
         }
 
-        Invoice newInvoice = new Invoice(id, orderId, baseFee, urgentCharge, totalAmount, status, paymentMethod,
-                paymentDate);
-        String result = BillingReportService.addInvoice(newInvoice);
-        System.out.println(result + "\n");
+        Invoice newInvoice = new Invoice(id, orderId, baseFee, urgentCharge, totalAmount,
+                status, paymentMethod, paymentDate);
+        System.out.println(BOLD_GREEN + BillingReportService.addInvoice(newInvoice) + RESET);
         InputHelper.pressEnterToContinue();
     }
 
+    // ==========================================================
+    //  CRUD — Sửa trạng thái hóa đơn
+    // ==========================================================
+
     private static void handleUpdateInvoice() {
-        System.out.println("\n" + PURPLE + "--- Sửa dữ liệu (Hóa đơn) ---" + RESET);
+        System.out.println("\n" + PURPLE + "─── Sửa trạng thái hóa đơn ───" + RESET);
+
         String id = InputHelper.getStringInput("Nhập mã hóa đơn cần sửa: ");
         Invoice existing = BillingReportService.findInvoiceById(id);
-
         if (existing == null) {
-            System.out.println(BOLD_YELLOW + "⚠️  Không tìm thấy hóa đơn.\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Không tìm thấy hóa đơn: " + id + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
         System.out.println("\nThông tin hiện tại:");
-        System.out.println(existing);
-        System.out.println("\nNhập thông tin mới (nhấn Enter để giữ nguyên giá trị cũ nếu không phải là số):");
+        printInvoiceDetail(existing);
+        System.out.println("(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-        System.out.println("Trạng thái thanh toán hiện tại: " + existing.getPaymentStatus());
-        String newStatus = InputHelper.getStringInput("Nhập trạng thái mới (Unpaid/Paid) [Enter để bỏ qua]: ");
-        if (newStatus.isEmpty()) {
-            newStatus = existing.getPaymentStatus();
+        // Cập nhật trạng thái — chỉ chấp nhận Unpaid hoặc Paid
+        String newStatus;
+        while (true) {
+            newStatus = InputHelper.getOptionalStringInput(
+                    "Trạng thái thanh toán [" + existing.getPaymentStatus() + "] (Unpaid/Paid): ");
+            if (newStatus.isEmpty()) {
+                newStatus = existing.getPaymentStatus();
+                break;
+            }
+            if ("Unpaid".equalsIgnoreCase(newStatus) || "Paid".equalsIgnoreCase(newStatus)) {
+                break;
+            }
+            System.out.println("  ⚠  Giá trị không hợp lệ. Vui lòng nhập 'Unpaid' hoặc 'Paid'.");
         }
 
-        String newMethod = existing.getPaymentMethod();
-        LocalDate newDate = existing.getPaymentDate();
+        String paymentMethod = existing.getPaymentMethod();
+        LocalDate paymentDate = existing.getPaymentDate();
 
         if ("Paid".equalsIgnoreCase(newStatus)) {
-            newMethod = InputHelper.getStringInput("Nhập phương thức thanh toán (Cash/Banking) [Enter để giữ cũ]: ");
-            if (newMethod.isEmpty())
-                newMethod = existing.getPaymentMethod();
-
-            System.out.println("Nhập ngày thanh toán (DD/MM/YYYY) [Nhập 'skip' để giữ ngày cũ]: ");
-            String dateStr = InputHelper.getStringInput("");
-            if (!dateStr.equalsIgnoreCase("skip") && !dateStr.isEmpty()) {
-                try {
-                    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter
-                            .ofPattern("dd/MM/yyyy");
-                    newDate = LocalDate.parse(dateStr, formatter);
-                } catch (Exception e) {
-                    System.out.println("Sai định dạng ngày, giữ nguyên ngày cũ.");
-                }
+            // Cập nhật phương thức thanh toán
+            String inputMethod = InputHelper.getOptionalStringInput(
+                    "Phương thức thanh toán [" + (paymentMethod != null ? paymentMethod : "chưa có") + "]: ");
+            if (!inputMethod.isEmpty()) {
+                paymentMethod = inputMethod;
+            }
+            // Cập nhật ngày thanh toán qua InputHelper (an toàn, chuẩn format)
+            System.out.println("Ngày thanh toán ["
+                    + (paymentDate != null ? paymentDate : "chưa có")
+                    + "] — nhấn Enter để bỏ qua:");
+            paymentDate = InputHelper.getDateInput("Ngày mới (DD/MM/YYYY)", true);
+            if (paymentDate == null) {
+                paymentDate = existing.getPaymentDate(); // giữ nguyên nếu bỏ qua
             }
         } else {
-            newMethod = null;
-            newDate   = null;
+            // Khi chuyển sang Unpaid: xóa thông tin thanh toán
+            paymentMethod = null;
+            paymentDate   = null;
         }
 
         existing.setPaymentStatus(newStatus);
-        existing.setPaymentMethod(newMethod);
-        existing.setPaymentDate(newDate);
+        existing.setPaymentMethod(paymentMethod);
+        existing.setPaymentDate(paymentDate);
 
-        String result = BillingReportService.updateInvoice(existing);
-        System.out.println(BOLD_GREEN + result + "\n" + RESET);
+        System.out.println(BOLD_GREEN + BillingReportService.updateInvoice(existing) + RESET);
         InputHelper.pressEnterToContinue();
     }
 
+    // ==========================================================
+    //  CRUD — Xóa hóa đơn
+    // ==========================================================
+
     private static void handleDeleteInvoice() {
-        System.out.println("\n" + PURPLE + "--- Xóa dữ liệu (Hóa đơn) ---" + RESET);
+        System.out.println("\n" + PURPLE + "─── Xóa hóa đơn ───" + RESET);
+
         String id = InputHelper.getStringInput("Nhập mã hóa đơn cần xóa: ");
         Invoice existing = BillingReportService.findInvoiceById(id);
-
         if (existing == null) {
-            System.out.println(BOLD_YELLOW + "⚠️  Không tìm thấy hóa đơn.\n" + RESET);
+            System.out.println(BOLD_YELLOW + "⚠  Không tìm thấy hóa đơn: " + id + RESET);
             InputHelper.pressEnterToContinue();
             return;
         }
 
         System.out.println("\nThông tin hóa đơn:");
-        System.out.println(existing);
-        String confirm = InputHelper.getStringInput("Bạn có chắc chắn muốn xóa hóa đơn này? (Y/N): ");
+        printInvoiceDetail(existing);
+
+        String confirm = InputHelper.getStringInput("Xác nhận xóa hóa đơn \"" + id + "\"? (Y/N): ");
         if (confirm.equalsIgnoreCase("Y")) {
-            String result = BillingReportService.deleteInvoice(id);
-            System.out.println(BOLD_GREEN + result + "\n" + RESET);
+            System.out.println(BOLD_GREEN + BillingReportService.deleteInvoice(id) + RESET);
         } else {
-            System.out.println(BOLD_YELLOW + "Đã hủy thao tác xóa.\n" + RESET);
+            System.out.println(BOLD_YELLOW + "Đã hủy thao tác xóa." + RESET);
         }
         InputHelper.pressEnterToContinue();
+    }
+
+    // ==========================================================
+    //  PRIVATE HELPER — In danh sách & chi tiết hóa đơn
+    // ==========================================================
+
+    /** In danh sách hóa đơn dạng bảng tóm tắt */
+    private static void printInvoiceList(List<Invoice> invoices) {
+        System.out.println("─".repeat(75));
+        System.out.printf("  %-12s %-12s %-16s %15s%n",
+                "Mã HĐ", "Mã Đơn", "Trạng thái TT", "Tổng (VND)");
+        System.out.println("─".repeat(75));
+        for (Invoice inv : invoices) {
+            System.out.printf("  %-12s %-12s %-16s %,15.0f%n",
+                    inv.getId(), inv.getOrderId(),
+                    inv.getPaymentStatus(), inv.getTotalAmount());
+        }
+        System.out.println("─".repeat(75) + "\n");
+    }
+
+    /** In chi tiết một hóa đơn */
+    private static void printInvoiceDetail(Invoice inv) {
+        System.out.println("─".repeat(45));
+        System.out.printf("  %-22s: %s%n",  "Mã hóa đơn",        inv.getId());
+        System.out.printf("  %-22s: %s%n",  "Mã đơn hàng",       inv.getOrderId());
+        System.out.printf("  %-22s: %,.0f VND%n", "Phí cơ bản",  inv.getBaseFee());
+        System.out.printf("  %-22s: %,.0f VND%n", "Phụ phí hỏa tốc", inv.getUrgentCharge());
+        System.out.printf("  %-22s: %,.0f VND%n", "Tổng phí",    inv.getTotalAmount());
+        System.out.printf("  %-22s: %s%n",  "Trạng thái TT",     inv.getPaymentStatus());
+        System.out.printf("  %-22s: %s%n",  "Phương thức TT",
+                inv.getPaymentMethod() != null ? inv.getPaymentMethod() : "Chưa TT");
+        System.out.printf("  %-22s: %s%n",  "Ngày TT",
+                inv.getPaymentDate() != null ? inv.getPaymentDate() : "Chưa TT");
+        System.out.println("─".repeat(45));
     }
 }

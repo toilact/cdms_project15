@@ -8,18 +8,12 @@
 package com.cdms.view;
 
 import com.cdms.core.InputHelper;
+import com.cdms.model.Customer;
+import com.cdms.service.CustomerStaffService;
+
+import java.util.List;
 
 public class CustomerStaffView {
-
-    // ANSI Colors for beautiful UI
-    private static final String RESET = "\u001B[0m";
-    private static final String BLUE_BG = "\u001B[44m";
-    private static final String BOLD_CYAN = "\u001B[1;36m";
-    private static final String BOLD_YELLOW = "\u001B[1;33m";
-    private static final String BOLD_GREEN = "\u001B[1;32m";
-    private static final String WHITE = "\u001B[37m";
-    private static final String BOLD_WHITE = "\u001B[1;37m";
-    private static final String PURPLE = "\u001B[35m";
 
     // Ngăn khởi tạo đối tượng
     private CustomerStaffView() {
@@ -39,89 +33,57 @@ public class CustomerStaffView {
         boolean running = true;
 
         while (running) {
-            System.out.println(BOLD_CYAN + "╔═══════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_CYAN + "║" + BOLD_YELLOW + "      RECEPTION STAFF - MENU CHÍNH     " + RESET
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "╠═══════════════════════════════════════╣" + RESET);
-            System.out.println(
-                    BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ KHÁCH HÀNG]                 " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "1. " + WHITE + "Thêm khách hàng mới       (B1)    "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "2. " + WHITE + "Cập nhật thông tin KH      (B2)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "3. " + WHITE + "Hiển thị danh sách KH      (B3)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(
-                    BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ KIỆN HÀNG]                  " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "4. " + WHITE + "Thêm kiện hàng mới         (B4)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "5. " + WHITE + "Xem danh sách kiện hàng    (B5)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(
-                    BOLD_CYAN + "║  " + BOLD_GREEN + "[QUẢN LÝ ĐƠN GIAO HÀNG]              " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "6. " + WHITE + "Tạo đơn giao hàng mới      (B6)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "7. " + WHITE + "Cập nhật đơn giao hàng     (B7)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "8. " + WHITE + "Xem chi tiết đơn giao hàng (B8)   "
-                    + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "║                                       ║" + RESET);
-            System.out.println(BOLD_CYAN + "║  " + BOLD_YELLOW + "0. " + BOLD_WHITE
-                    + "Quay lại Menu chính               " + BOLD_CYAN + "║" + RESET);
-            System.out.println(BOLD_CYAN + "╚═══════════════════════════════════════╝" + RESET);
+            System.out.println("╔═══════════════════════════════════════╗");
+            System.out.println("║      RECEPTION STAFF - MENU CHÍNH     ║");
+            System.out.println("╠═══════════════════════════════════════╣");
+            System.out.println("║  [QUẢN LÝ KHÁCH HÀNG]                 ║");
+            System.out.println("║  1. Thêm khách hàng mới       (B1)    ║");
+            System.out.println("║  2. Cập nhật thông tin KH      (B2)   ║");
+            System.out.println("║  3. Hiển thị danh sách KH      (B3)   ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  [QUẢN LÝ KIỆN HÀNG]                  ║");
+            System.out.println("║  4. Thêm kiện hàng mới         (B4)   ║");
+            System.out.println("║  5. Xem danh sách kiện hàng    (B5)   ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  [QUẢN LÝ ĐƠN GIAO HÀNG]              ║");
+            System.out.println("║  6. Tạo đơn giao hàng mới      (B6)   ║");
+            System.out.println("║  7. Cập nhật đơn giao hàng     (B7)   ║");
+            System.out.println("║  8. Xem chi tiết đơn giao hàng (B8)   ║");
+            System.out.println("║                                       ║");
+            System.out.println("║  0. Quay lại Menu chính               ║");
+            System.out.println("╚═══════════════════════════════════════╝");
 
             int choice = InputHelper.getIntInput("Chọn chức năng (0-8): ", 0, 8);
 
             switch (choice) {
                 case 1:
-                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.addCustomer()
-                    System.out.println(PURPLE
-                            + "  🔧 [B1] Chức năng 'Thêm khách hàng' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n"
-                            + RESET);
+                    handleAddCustomer();
                     break;
                 case 2:
-                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.updateCustomer()
-                    System.out.println(PURPLE
-                            + "  🔧 [B2] Chức năng 'Cập nhật KH' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n"
-                            + RESET);
+                    handleUpdateCustomer();
                     break;
                 case 3:
-                    // TODO: Thành viên 2 (Nguyên Quốc Cường) - Gọi CustomerService.displayAll()
-                    System.out.println(PURPLE
-                            + "  🔧 [B3] Chức năng 'Hiển thị DS KH' đang được phát triển bởi Thành viên 2 (Nguyên Quốc Cường).\n"
-                            + RESET);
+                    handleShowCustomerList();
                     break;
                 case 4:
                     // TODO: Thành viên 3 (Trương Đan Huy) - Gọi ParcelService.addParcel()
-                    System.out.println(PURPLE
-                            + "  🔧 [B4] Chức năng 'Thêm kiện hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n"
-                            + RESET);
+                    System.out.println("  🔧 [B4] Chức năng 'Thêm kiện hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 5:
                     // TODO: Thành viên 3 (Trương Đan Huy) - Gọi ParcelService.displayAll()
-                    System.out.println(PURPLE
-                            + "  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n"
-                            + RESET);
+                    System.out.println("  🔧 [B5] Chức năng 'Xem DS kiện hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 6:
                     // TODO: Thành viên 3 (Trương Đan Huy) - Gọi OrderService.createOrder()
-                    System.out.println(PURPLE
-                            + "  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n"
-                            + RESET);
+                    System.out.println("  🔧 [B6] Chức năng 'Tạo đơn giao hàng' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 7:
                     // TODO: Thành viên 3 (Trương Đan Huy) - Gọi OrderService.updateOrder()
-                    System.out.println(PURPLE
-                            + "  🔧 [B7] Chức năng 'Cập nhật đơn' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n"
-                            + RESET);
+                    System.out.println("  🔧 [B7] Chức năng 'Cập nhật đơn' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 8:
                     // TODO: Thành viên 3 (Trương Đan Huy) - Gọi OrderService.viewOrderDetail()
-                    System.out.println(PURPLE
-                            + "  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n"
-                            + RESET);
+                    System.out.println("  🔧 [B8] Chức năng 'Xem chi tiết đơn' đang được phát triển bởi Thành viên 3 (Trương Đan Huy).\n");
                     break;
                 case 0:
                     running = false;
@@ -131,5 +93,71 @@ public class CustomerStaffView {
                     break;
             }
         }
+    }
+
+    // ----------------------------------------------------------
+    //  [B1] Thêm khách hàng mới
+    // ----------------------------------------------------------
+    private static void handleAddCustomer() {
+        System.out.println("\n===== THÊM KHÁCH HÀNG MỚI =====");
+        String id      = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ");
+        String name    = InputHelper.getStringInput("Họ tên: ");
+        String phone   = InputHelper.getStringInput("Số điện thoại: ");
+        String address = InputHelper.getStringInput("Địa chỉ: ");
+
+        Customer customer = new Customer(id, name, phone, address);
+        System.out.println(CustomerStaffService.addCustomer(customer));
+        System.out.println();
+    }
+
+    // ----------------------------------------------------------
+    //  [B2] Cập nhật thông tin khách hàng
+    //  FIX: Dùng getOptionalStringInput — nhấn Enter để giữ giá trị cũ
+    // ----------------------------------------------------------
+    private static void handleUpdateCustomer() {
+        System.out.println("\n===== CẬP NHẬT KHÁCH HÀNG =====");
+        String id = InputHelper.getStringInput("Mã khách hàng cần cập nhật: ");
+        Customer existing = CustomerStaffService.findCustomer(id);
+        if (existing == null) {
+            System.out.println("❌ Không tìm thấy khách hàng với mã '" + id + "'.\n");
+            return;
+        }
+
+        System.out.println("Thông tin hiện tại:");
+        System.out.println(existing);
+        System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
+
+        String newName = InputHelper.getOptionalStringInput("Tên mới [" + existing.getName() + "]: ");
+        if (newName.isEmpty()) newName = existing.getName();
+
+        String newPhone = InputHelper.getOptionalStringInput("Số điện thoại mới [" + existing.getPhone() + "]: ");
+        if (newPhone.isEmpty()) newPhone = existing.getPhone();
+
+        String newAddress = InputHelper.getOptionalStringInput("Địa chỉ mới [" + existing.getAddress() + "]: ");
+        if (newAddress.isEmpty()) newAddress = existing.getAddress();
+
+        Customer updated = new Customer(id, newName, newPhone, newAddress);
+        System.out.println(CustomerStaffService.updateCustomer(updated));
+        System.out.println();
+    }
+
+    // ----------------------------------------------------------
+    //  [B3] Hiển thị danh sách khách hàng
+    // ----------------------------------------------------------
+    private static void handleShowCustomerList() {
+        System.out.println("\n===== DANH SÁCH KHÁCH HÀNG =====");
+        List<Customer> customers = CustomerStaffService.getAllCustomers();
+        if (customers.isEmpty()) {
+            System.out.println("  (Chưa có khách hàng nào.)\n");
+            return;
+        }
+
+        System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+        System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
+        System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+        System.out.println("+------------+----------------------+-----------------+--------------------------------+\n");
     }
 }
