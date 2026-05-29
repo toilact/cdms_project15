@@ -1,11 +1,11 @@
-// ============================================================
+// =========================================================================
 // File: TrackingService.java
 // Package: com.cdms.service
 // Description: Quản lý việc gán shipper, cập nhật hành trình,
 //              và theo dõi trạng thái giao nhận.
 //  🔧 BÀN GIAO CHO: Nguyễn Thanh Tùng (Developer C - Thành viên 4)
 //     chuc nang: B10-B15. (nhiem vu phan ParcelOrderView va ShipperView)
-// ============================================================
+// =========================================================================
 
 package com.cdms.service;
 
@@ -15,10 +15,10 @@ import java.time.LocalDate;
 
 import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
+import com.cdms.core.InputHelper;
 
 public class TrackingService 
 {
-    private Scanner sc = new Scanner(System.in);
 
     private List<DeliveryOrder> orders;
 
@@ -40,9 +40,26 @@ public class TrackingService
         for (DeliveryOrder o : orders) 
         {
 
-            if (o.getId().equals(id)) 
+            if (o.getId().equalsIgnoreCase(id)) 
             {
                 return o;
+            }
+        }
+
+        return null;
+    }
+
+    // ============================================================
+    // Tim staff theo ID
+    // ============================================================
+
+    public DeliveryStaff findStaffById(String id)
+    {
+        for (DeliveryStaff s : staffs)
+        {
+            if (s.getId().equalsIgnoreCase(id))
+            {
+                return s;
             }
         }
 
@@ -56,9 +73,7 @@ public class TrackingService
     public void assignStaff()
     {
 
-        System.out.print("Enter order ID: ");
-
-        String orderId = sc.nextLine();
+        String orderId = InputHelper.getStringInput("Enter order ID: ");
 
         DeliveryOrder o = findOrderById(orderId);
 
@@ -70,21 +85,25 @@ public class TrackingService
             return;
         }
 
-        System.out.print("Enter staff ID: ");
+        // BR: Không cho phân công nếu đơn hoàn thành
+        if (o.getStatus().equalsIgnoreCase("Delivered") || o.getStatus().equalsIgnoreCase("Cancelled"))
+        {
+            System.out.println("Cannot assign completed/cancelled order.");
 
-        String staffId = sc.nextLine();
+            return;
+        }
 
-        DeliveryStaff staff = null;
-
-        for (DeliveryStaff s : staffs)
+        if (o.getStaffId() != null && !o.getStaffId().isEmpty())
         {
 
-            if (s.getId().equals(staffId))
-            {
+            System.out.println("Order already assigned.");
 
-                staff = s;
-            }
+            return;
         }
+
+        String staffId = InputHelper.getStringInput("Enter staff ID: ");
+
+        DeliveryStaff staff = findStaffById(staffId);
 
         if (staff == null)
         {
@@ -102,14 +121,6 @@ public class TrackingService
             return;
         }
 
-        if (o.getStaffId() != null && !o.getStaffId().isEmpty())
-        {
-
-            System.out.println("Order already assigned.");
-
-            return;
-        }
-
         o.setStaffId(staff.getId());
 
         o.setStatus("Assigned");
@@ -123,9 +134,7 @@ public class TrackingService
 
     public void viewDeliveredByStaff()
     {
-        System.out.print("Enter staff ID: ");
-
-        String staffId = sc.nextLine();
+        String staffId = InputHelper.getStringInput("Enter staff ID: ");
 
         boolean found = false;
 
@@ -134,7 +143,7 @@ public class TrackingService
         for (DeliveryOrder o : orders) 
         {
 
-            if (staffId.equals(o.getStaffId()) && "Delivered".equalsIgnoreCase(o.getStatus())) 
+            if (staffId.equalsIgnoreCase(o.getStaffId()) && "Delivered".equalsIgnoreCase(o.getStatus())) 
             {
 
                 System.out.println(o);
@@ -143,7 +152,7 @@ public class TrackingService
             }
         }
 
-        if (!found) //oh, van in ra neu dell co don nao duoc giao thanh cong
+        if (!found) //oh, van in ra neu o co don nao duoc giao thanh cong
         {
 
             System.out.println("No delivered orders.");
@@ -157,9 +166,7 @@ public class TrackingService
     public void updateStatus() 
     {
 
-        System.out.print("Enter order ID: ");
-
-        String orderId = sc.nextLine();
+        String orderId = InputHelper.getStringInput("Enter order ID: ");
 
         DeliveryOrder o = findOrderById(orderId);
 
@@ -171,9 +178,7 @@ public class TrackingService
             return;
         }
 
-        System.out.print("Enter new status: ");
-
-        String newStatus = sc.nextLine();
+        String newStatus = InputHelper.getStringInput("Enter new status: ");
 
         String current = o.getStatus();
 
@@ -239,7 +244,7 @@ public class TrackingService
             }
         }
 
-        if (!found) //o hop le, van in ra neu dell co don nao dang giao
+        if (!found) //o hop le, van in ra neu o co don nao dang giao
         {
 
             System.out.println("No orders in transit.");
@@ -282,9 +287,8 @@ public class TrackingService
 
     public void viewAssignedOrders() 
     {
-        System.out.print("Enter staff ID: ");
 
-        String staffId = sc.nextLine();
+        String staffId = InputHelper.getStringInput("Enter staff ID: ");
 
         boolean found = false;
 
@@ -317,9 +321,7 @@ public class TrackingService
     public void updatePickupDate() 
     {
 
-        System.out.print("Enter order ID: ");
-
-        String orderId = sc.nextLine();
+        String orderId = InputHelper.getStringInput("Enter order ID: ");
 
         DeliveryOrder o = findOrderById(orderId);
 
@@ -331,9 +333,15 @@ public class TrackingService
             return;
         }
 
-        System.out.print("Enter pickup date (YYYY-MM-DD): ");
-        
-        LocalDate pickupDate = LocalDate.parse(sc.nextLine());
+         // BR: Không cập nhật nếu hoàn thành/hủy
+        if (o.getStatus().equalsIgnoreCase("Delivered") || o.getStatus().equalsIgnoreCase("Cancelled"))
+        {
+            System.out.println("Cannot update pickup date.");
+
+            return;
+        }
+
+        LocalDate pickupDate = InputHelper.getDateInput("Enter pickup date (YYYY-MM-DD): ", false);
 
         o.setPickupDate(pickupDate);
 
@@ -347,9 +355,7 @@ public class TrackingService
     public void updateDeliveryDate() 
     {
 
-        System.out.print("Enter order ID: ");
-        
-        String orderId = sc.nextLine();
+        String orderId = InputHelper.getStringInput("Enter order ID: ");
 
         DeliveryOrder o = findOrderById(orderId);
 
@@ -361,9 +367,7 @@ public class TrackingService
             return;
         }
 
-        System.out.print("Enter delivery date (YYYY-MM-DD): ");
-
-        LocalDate deliveryDate = LocalDate.parse(sc.nextLine());
+        LocalDate deliveryDate = InputHelper.getDateInput("Enter delivery date (YYYY-MM-DD): ", false);
 
         o.setDeliveryDate(deliveryDate);
 
@@ -377,9 +381,7 @@ public class TrackingService
     public void addTrackingNote() 
     {
 
-        System.out.print("Enter order ID: ");
-
-        String orderId = sc.nextLine();
+        String orderId = InputHelper.getStringInput("Enter order ID: ");
 
         DeliveryOrder o = findOrderById(orderId);
 
@@ -391,9 +393,7 @@ public class TrackingService
             return;
         }
 
-        System.out.print("Enter tracking note: ");
-
-        String note = sc.nextLine();
+        String note = InputHelper.getStringInput("Enter tracking note: ");
 
         o.addNote(note);
 

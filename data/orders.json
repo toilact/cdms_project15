@@ -95,11 +95,14 @@
   {
     "id": "ORD008",
     "parcelId": "PAR008",
+    "staffId": "SHIP001",
     "orderDate": "2026-05-24",
     "expectedDeliveryDate": "2026-05-25",
     "deliveryType": "Urgent",
-    "status": "Pending",
-    "notes": []
+    "status": "Delivered",
+    "notes": [
+      "Đang đợi xác nhận!"
+    ]
   },
   {
     "id": "ORD009",
@@ -151,6 +154,7 @@
     "orderDate": "2026-05-22",
     "expectedDeliveryDate": "2026-05-25",
     "pickupDate": "2026-05-23",
+    "deliveryDate": "2026-05-26",
     "deliveryType": "Standard",
     "status": "In Transit",
     "notes": [
