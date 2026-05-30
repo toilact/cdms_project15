@@ -108,8 +108,8 @@ public class CustomerStaffView {
     private static void handleAddCustomer() {
         System.out.println(BOLD_CYAN + "\n===== THÊM KHÁCH HÀNG MỚI =====" + RESET);
         String id      = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ");
-        String name    = InputHelper.getStringInput("Họ tên: ");
-        String phone   = InputHelper.getStringInput("Số điện thoại: ");
+        String name    = InputHelper.getValidNameInput("Họ tên: ");
+        String phone   = InputHelper.getPhoneInput("Số điện thoại: ");
         String address = InputHelper.getStringInput("Địa chỉ: ");
 
         Customer customer = new Customer(id, name, phone, address);
@@ -133,11 +133,33 @@ public class CustomerStaffView {
         System.out.println(existing);
         System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-        String newName = InputHelper.getOptionalStringInput("Tên mới [" + existing.getName() + "]: ");
-        if (newName.isEmpty()) newName = existing.getName();
+        String newName;
+        while (true) {
+            newName = InputHelper.getOptionalStringInput("Tên mới [" + existing.getName() + "]: ");
+            if (newName.isEmpty()) {
+                newName = existing.getName();
+                break;
+            }
+            if (newName.matches("\\d+")) {
+                System.out.println("  ⚠ Lỗi: Tên khách hàng không được phép là số! Vui lòng nhập lại.");
+                continue;
+            }
+            break;
+        }
 
-        String newPhone = InputHelper.getOptionalStringInput("Số điện thoại mới [" + existing.getPhone() + "]: ");
-        if (newPhone.isEmpty()) newPhone = existing.getPhone();
+        String newPhone;
+        while (true) {
+            newPhone = InputHelper.getOptionalStringInput("Số điện thoại mới [" + existing.getPhone() + "]: ");
+            if (newPhone.isEmpty()) {
+                newPhone = existing.getPhone();
+                break;
+            }
+            if (!newPhone.matches("\\d{9,11}")) {
+                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)! Vui lòng nhập lại.");
+                continue;
+            }
+            break;
+        }
 
         String newAddress = InputHelper.getOptionalStringInput("Địa chỉ mới [" + existing.getAddress() + "]: ");
         if (newAddress.isEmpty()) newAddress = existing.getAddress();

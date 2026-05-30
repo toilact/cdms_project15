@@ -131,6 +131,40 @@ public class InputHelper {
         }
     }
 
+    /**
+     * Yêu cầu nhập họ tên hợp lệ (không được là số thuần túy).
+     *
+     * @param prompt Thông báo hiển thị
+     * @return Họ tên hợp lệ
+     */
+    public static String getValidNameInput(String prompt) {
+        while (true) {
+            String name = getStringInput(prompt);
+            if (name.matches("\\d+")) {
+                System.out.println("  ⚠ Lỗi: Họ tên không được phép là số! Vui lòng nhập lại.");
+                continue;
+            }
+            return name;
+        }
+    }
+
+    /**
+     * Yêu cầu nhập số điện thoại hợp lệ (phải gồm 9-11 chữ số).
+     *
+     * @param prompt Thông báo hiển thị
+     * @return Số điện thoại hợp lệ
+     */
+    public static String getPhoneInput(String prompt) {
+        while (true) {
+            String phone = getStringInput(prompt);
+            if (!phone.matches("\\d{9,11}")) {
+                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)! Vui lòng nhập lại.");
+                continue;
+            }
+            return phone;
+        }
+    }
+
     // ---------------------------------------------------------
     // 4. NHẬP CHUỖI TÙY CHỌN (cho phép để trống)
     // ---------------------------------------------------------

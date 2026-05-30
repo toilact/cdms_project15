@@ -126,13 +126,22 @@ public class DispatcherView {
     private static void handleAddDeliveryStaff() {
         System.out.println("\n===== THÊM NHÂN VIÊN GIAO HÀNG MỚI =====");
         String id = InputHelper.getStringInput("Mã shipper (VD: NV001): ");
-        String name = InputHelper.getStringInput("Họ tên: ");
-        String phone = InputHelper.getStringInput("Số điện thoại: ");
+        String name = InputHelper.getValidNameInput("Họ tên: ");
+        String phone = InputHelper.getPhoneInput("Số điện thoại: ");
         String vehicleType = InputHelper.getStringInput("Loại phương tiện (Motorbike/Truck/...): ");
 
-        // Mặc định thêm shipper với trạng thái Active và 0 đơn giao
-        DeliveryStaff staff = new DeliveryStaff(id, name, phone, vehicleType, "Active", 0);
-        System.out.println(CustomerStaffService.addStaff(staff));
+        System.out.println("\nXác nhận lưu thông tin shipper này?");
+        System.out.println("  1. Lưu");
+        System.out.println("  2. Hủy (Cancel)");
+        int confirm = InputHelper.getIntInput("Lựa chọn (1-2): ", 1, 2);
+
+        if (confirm == 1) {
+            // Mặc định thêm shipper với trạng thái Active và 0 đơn giao
+            DeliveryStaff staff = new DeliveryStaff(id, name, phone, vehicleType, "Active", 0);
+            System.out.println(CustomerStaffService.addStaff(staff));
+        } else {
+            System.out.println(BOLD_RED + "❌ Đã hủy thao tác thêm nhân viên." + RESET);
+        }
         System.out.println();
     }
 
@@ -173,13 +182,33 @@ public class DispatcherView {
         System.out.println(existing);
         System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-        String newName = InputHelper.getOptionalStringInput("Tên mới [" + existing.getName() + "]: ");
-        if (newName.isEmpty())
-            newName = existing.getName();
+        String newName;
+        while (true) {
+            newName = InputHelper.getOptionalStringInput("Tên mới [" + existing.getName() + "]: ");
+            if (newName.isEmpty()) {
+                newName = existing.getName();
+                break;
+            }
+            if (newName.matches("\\d+")) {
+                System.out.println("  ⚠ Lỗi: Tên shipper không được phép là số! Vui lòng nhập lại.");
+                continue;
+            }
+            break;
+        }
 
-        String newPhone = InputHelper.getOptionalStringInput("Số điện thoại mới [" + existing.getPhone() + "]: ");
-        if (newPhone.isEmpty())
-            newPhone = existing.getPhone();
+        String newPhone;
+        while (true) {
+            newPhone = InputHelper.getOptionalStringInput("Số điện thoại mới [" + existing.getPhone() + "]: ");
+            if (newPhone.isEmpty()) {
+                newPhone = existing.getPhone();
+                break;
+            }
+            if (!newPhone.matches("\\d{9,11}")) {
+                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)! Vui lòng nhập lại.");
+                continue;
+            }
+            break;
+        }
 
         String newVehicle = InputHelper
                 .getOptionalStringInput("Loại phương tiện mới [" + existing.getVehicleType() + "]: ");
