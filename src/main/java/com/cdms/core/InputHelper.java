@@ -178,6 +178,24 @@ public class InputHelper {
     }
 
     /**
+     * Yêu cầu nhập số điện thoại hợp lệ và duy nhất (kiểm tra qua Predicate).
+     *
+     * @param prompt            Thông báo hiển thị
+     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp lệ/duy nhất, false nếu trùng)
+     * @param errorMessage      Thông báo lỗi khi bị trùng
+     * @return Số điện thoại hợp lệ và duy nhất
+     */
+    public static String getPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator, String errorMessage) {
+        while (true) {
+            String phone = getPhoneInput(prompt);
+            if (uniquenessValidator.test(phone)) {
+                return phone;
+            }
+            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
+        }
+    }
+
+    /**
      * Nhập chuỗi và kiểm tra tính hợp lệ qua một Predicate tùy chọn ngay lập tức.
      *
      * @param prompt       Thông báo hiển thị
@@ -251,6 +269,31 @@ public class InputHelper {
             }
             if (validator.test(val)) {
                 return val;
+            }
+            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
+        }
+    }
+
+    /**
+     * Nhập số điện thoại tùy chọn (cho phép Enter bỏ qua), nếu nhập thì phải hợp lệ định dạng và duy nhất.
+     *
+     * @param prompt            Thông báo hiển thị
+     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp lệ/duy nhất, false nếu trùng)
+     * @param errorMessage      Thông báo lỗi khi bị trùng
+     * @return Số điện thoại hợp lệ hoặc rỗng
+     */
+    public static String getOptionalPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator, String errorMessage) {
+        while (true) {
+            String phone = getOptionalStringInput(prompt);
+            if (phone.isEmpty()) {
+                return phone;
+            }
+            if (!phone.matches("\\d{9,11}")) {
+                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)! Vui lòng nhập lại.");
+                continue;
+            }
+            if (uniquenessValidator.test(phone)) {
+                return phone;
             }
             System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
         }

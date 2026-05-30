@@ -134,7 +134,9 @@ public class DispatcherView {
                     val -> CustomerStaffService.findStaff(val) == null,
                     "Mã shipper đã tồn tại trong hệ thống!");
             String name = InputHelper.getValidNameInput("Họ tên: ");
-            String phone = InputHelper.getPhoneInput("Số điện thoại: ");
+            String phone = InputHelper.getPhoneInput("Số điện thoại: ",
+                    val -> DeliveryStaffRepository.findByPhone(val) == null,
+                    "Số điện thoại đã được sử dụng bởi shipper khác!");
             String vehicleType = InputHelper.getStringInput("Loại phương tiện (Motorbike/Truck/...): ");
 
             System.out.println("\nXác nhận lưu thông tin shipper này?");
@@ -197,9 +199,9 @@ public class DispatcherView {
                 newName = existing.getName();
             }
 
-            String newPhone = InputHelper.getOptionalValidatedStringInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
-                    val -> val.matches("\\d{9,11}"),
-                    "Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)!");
+            String newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
+                    val -> val.equalsIgnoreCase(existing.getPhone()) || DeliveryStaffRepository.findByPhone(val) == null,
+                    "Số điện thoại đã được sử dụng bởi shipper khác!");
             if (newPhone.isEmpty()) {
                 newPhone = existing.getPhone();
             }
@@ -385,7 +387,7 @@ public class DispatcherView {
     // [B14] Hiển thị đơn giao thất bại
     // ----------------------------------------------------------
     private static void handleShowFailed() {
-        System.out.println(BOLD_CYAN + "\n===== CÁC ĐƠN HÀNG GIAO THẤT BẠI =====" + RESET);
+        System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG =====" + RESET);
         List<DeliveryOrder> orders = com.cdms.service.TrackingService.getFailedOrders();
         if (orders.isEmpty()) {
             System.out.println("Không có đơn hàng nào giao thất bại (Failed).");

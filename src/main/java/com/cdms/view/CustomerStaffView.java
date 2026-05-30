@@ -114,7 +114,9 @@ public class CustomerStaffView {
                     val -> CustomerRepository.findById(val) == null, 
                     "Mã khách hàng đã tồn tại trong hệ thống!");
             String name    = InputHelper.getValidNameInput("Họ tên: ");
-            String phone   = InputHelper.getPhoneInput("Số điện thoại: ");
+            String phone   = InputHelper.getPhoneInput("Số điện thoại: ",
+                    val -> CustomerRepository.findByPhone(val) == null,
+                    "Số điện thoại đã được sử dụng bởi khách hàng khác!");
             String address = InputHelper.getStringInput("Địa chỉ: ");
 
             System.out.println("\nXác nhận lưu thông tin khách hàng này?");
@@ -157,9 +159,9 @@ public class CustomerStaffView {
                 newName = existing.getName();
             }
 
-            String newPhone = InputHelper.getOptionalValidatedStringInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
-                    val -> val.matches("\\d{9,11}"),
-                    "Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)!");
+            String newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
+                    val -> val.equalsIgnoreCase(existing.getPhone()) || CustomerRepository.findByPhone(val) == null,
+                    "Số điện thoại đã được sử dụng bởi khách hàng khác!");
             if (newPhone.isEmpty()) {
                 newPhone = existing.getPhone();
             }
