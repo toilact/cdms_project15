@@ -4,6 +4,7 @@
 // Description: Bộ tiện ích nhập liệu từ bàn phím an toàn.
 //              Tất cả phương thức đều là static và có cơ chế
 //              try-catch chống crash chương trình khi nhập sai.
+// Phân công: Đỗ Chí Thành (Leader - Thành viên 1)
 // ============================================================
 package com.cdms.core;
 
@@ -131,6 +132,7 @@ public class InputHelper {
     }
 
     /**
+<<<<<<< HEAD
      * Nhập chuỗi tùy chọn — cho phép để trống (nhấn Enter để bỏ qua).
      * Trả về chuỗi đã trim, có thể là rỗng "".
      *
@@ -140,10 +142,60 @@ public class InputHelper {
     public static String getOptionalStringInput(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
+=======
+     * Yêu cầu nhập họ tên hợp lệ (không được là số thuần túy).
+     *
+     * @param prompt Thông báo hiển thị
+     * @return Họ tên hợp lệ
+     */
+    public static String getValidNameInput(String prompt) {
+        while (true) {
+            String name = getStringInput(prompt);
+            if (name.matches("\\d+")) {
+                System.out.println("  ⚠ Lỗi: Họ tên không được phép là số! Vui lòng nhập lại.");
+                continue;
+            }
+            return name;
+        }
+    }
+
+    /**
+     * Yêu cầu nhập số điện thoại hợp lệ (phải gồm 9-11 chữ số).
+     *
+     * @param prompt Thông báo hiển thị
+     * @return Số điện thoại hợp lệ
+     */
+    public static String getPhoneInput(String prompt) {
+        while (true) {
+            String phone = getStringInput(prompt);
+            if (!phone.matches("\\d{9,11}")) {
+                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)! Vui lòng nhập lại.");
+                continue;
+            }
+            return phone;
+        }
+>>>>>>> 2e7296aa199894929ca8beb2f896d33934ddeecf
     }
 
     // ---------------------------------------------------------
-    // 4. NHẬP NGÀY THÁNG (định dạng DD/MM/YYYY)
+    // 4. NHẬP CHUỖI TÙY CHỌN (cho phép để trống)
+    // ---------------------------------------------------------
+
+    /**
+     * Nhập chuỗi tùy chọn — cho phép người dùng nhấn Enter để bỏ qua.
+     * Trả về chuỗi đã trim, có thể là rỗng "".
+     * Dùng trong chức năng cập nhật thông tin để giữ nguyên giá trị cũ nếu không nhập.
+     *
+     * @param prompt Thông báo hiển thị
+     * @return Chuỗi đã trim (có thể rỗng nếu người dùng chỉ nhấn Enter)
+     */
+    public static String getOptionalStringInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+
+    // ---------------------------------------------------------
+    // 5. NHẬP NGÀY THÁNG (định dạng DD/MM/YYYY)
     // ---------------------------------------------------------
 
     /**

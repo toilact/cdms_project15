@@ -3,6 +3,7 @@
 // Package: com.cdms.service
 // Description: Phân hệ Thanh toán và Báo cáo cho vai trò Manager.
 //              Cung cấp tất cả chức năng B16-B22.
+// Phân công: Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
 // ============================================================
 package com.cdms.service;
 

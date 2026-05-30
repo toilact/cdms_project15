@@ -4,6 +4,7 @@
 // Description: Quản lý toàn bộ dữ liệu in-memory (RAM) và
 //              đồng bộ xuống/lên file JSON trong thư mục data/.
 //              Đây là "trái tim" lưu trữ của hệ thống CDMS.
+// Phân công: Đỗ Chí Thành (Leader - Thành viên 1)
 // ============================================================
 package com.cdms.core;
 
