@@ -24,13 +24,13 @@ import java.util.List;
 public class CustomerStaffView {
 
     // ANSI Colors for premium visual presentation
-    private static final String RESET        = "\u001B[0m";
-    private static final String BOLD_CYAN    = "\u001B[1;36m";
-    private static final String BOLD_YELLOW  = "\u001B[1;33m";
-    private static final String BOLD_GREEN   = "\u001B[1;32m";
-    private static final String BOLD_RED     = "\u001B[1;31m";
-    private static final String BOLD_WHITE   = "\u001B[1;37m";
-    private static final String WHITE        = "\u001B[37m";
+    private static final String RESET = "\u001B[0m";
+    private static final String BOLD_CYAN = "\u001B[1;36m";
+    private static final String BOLD_YELLOW = "\u001B[1;33m";
+    private static final String BOLD_GREEN = "\u001B[1;32m";
+    private static final String BOLD_RED = "\u001B[1;31m";
+    private static final String BOLD_WHITE = "\u001B[1;37m";
+    private static final String WHITE = "\u001B[37m";
 
     // Ngăn khởi tạo đối tượng
     private CustomerStaffView() {
@@ -47,52 +47,105 @@ public class CustomerStaffView {
         boolean running = true;
 
         while (running) {
-            System.out.println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "RECEPTION STAFF - MENU CHÍNH" + RESET);
+            System.out.println(
+                    BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "RECEPTION STAFF - MENU CHÍNH" + RESET);
             System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ KHÁCH HÀNG]                                 " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Thêm khách hàng mới                                " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Cập nhật thông tin KH                              " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Hiển thị danh sách KH                              " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Xóa khách hàng                                     " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE + "Tìm kiếm khách hàng theo Tên/SĐT                   " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ KHÁCH HÀNG]                                 "
+                    + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE
+                    + "Thêm khách hàng mới                                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE
+                    + "Cập nhật thông tin KH                              " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE
+                    + "Hiển thị danh sách KH                              " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE
+                    + "Xóa khách hàng                                     " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE
+                    + "Tìm kiếm khách hàng theo Tên/SĐT                   " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ KIỆN HÀNG (PARCEL)]                          " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE + "Thêm kiện hàng mới                                 " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE + "Xem danh sách kiện hàng                            " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE + "Cập nhật thông tin bưu kiện                        " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE + "Xóa bưu kiện                                       " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE + " Tìm kiếm bưu kiện                                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN
+                    + "  [QUẢN LÝ KIỆN HÀNG (PARCEL)]                          " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE
+                    + "Thêm kiện hàng mới                                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE
+                    + "Xem danh sách kiện hàng                            " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE
+                    + "Cập nhật thông tin bưu kiện                        " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE
+                    + "Xóa bưu kiện                                       " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE
+                    + " Tìm kiếm bưu kiện                                 " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ ĐƠN GIAO HÀNG]                              " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE + " Tạo đơn giao hàng mới                             " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  12." + WHITE + " Cập nhật trạng thái đơn                           " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  13." + WHITE + " Xem chi tiết đơn giao hàng                        " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  14." + WHITE + " Tìm kiếm đơn theo KH                              " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  15." + WHITE + " Hủy đơn giao hàng                                 " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  16." + WHITE + " Xem lịch sử giao hàng của một KH                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ ĐƠN GIAO HÀNG]                              "
+                    + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE
+                    + " Tạo đơn giao hàng mới                             " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  12." + WHITE
+                    + " Cập nhật trạng thái đơn                           " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  13." + WHITE
+                    + " Xem chi tiết đơn giao hàng                        " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  14." + WHITE
+                    + " Tìm kiếm đơn theo KH                              " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  15." + WHITE
+                    + " Hủy đơn giao hàng                                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  16." + WHITE
+                    + " Xem lịch sử giao hàng của một KH                  " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
+                    + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
             int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-16): " + RESET, 0, 16);
 
             switch (choice) {
-                case 1:  handleAddCustomer(); break;
-                case 2:  handleUpdateCustomer(); break;
-                case 3:  handleShowCustomerList(); break;
-                case 4:  handleDeleteCustomer(); break;
-                case 5:  handleSearchCustomer(); break;
-                case 6:  ParcelOrderView.executeCreateParcel(); break;
-                case 7:  ParcelOrderView.executeViewParcels(); break;
-                case 8:  handleUpdateParcel(); break;
-                case 9:  handleDeleteParcel(); break;
-                case 10: handleSearchParcel(); break;
-                case 11: ParcelOrderView.executeCreateOrder(); break;
-                case 12: ParcelOrderView.executeUpdateOrderStatus(); break;
-                case 13: ParcelOrderView.executeViewOrderDetail(); break;
-                case 14: ParcelOrderView.executeSearchOrdersByCustomer(); break;
-                case 15: ParcelOrderView.executeCancelOrder(); break;
-                case 16: handleViewCustomerDeliveryHistory(); break;
+                case 1:
+                    handleAddCustomer();
+                    break;
+                case 2:
+                    handleUpdateCustomer();
+                    break;
+                case 3:
+                    handleShowCustomerList();
+                    break;
+                case 4:
+                    handleDeleteCustomer();
+                    break;
+                case 5:
+                    handleSearchCustomer();
+                    break;
+                case 6:
+                    ParcelOrderView.executeCreateParcel();
+                    break;
+                case 7:
+                    ParcelOrderView.executeViewParcels();
+                    break;
+                case 8:
+                    handleUpdateParcel();
+                    break;
+                case 9:
+                    handleDeleteParcel();
+                    break;
+                case 10:
+                    handleSearchParcel();
+                    break;
+                case 11:
+                    ParcelOrderView.executeCreateOrder();
+                    break;
+                case 12:
+                    ParcelOrderView.executeUpdateOrderStatus();
+                    break;
+                case 13:
+                    ParcelOrderView.executeViewOrderDetail();
+                    break;
+                case 14:
+                    ParcelOrderView.executeSearchOrdersByCustomer();
+                    break;
+                case 15:
+                    ParcelOrderView.executeCancelOrder();
+                    break;
+                case 16:
+                    handleViewCustomerDeliveryHistory();
+                    break;
                 case 0:
                     running = false;
                     System.out.println("  ↩ Quay lại Menu chính...\n");
@@ -104,17 +157,17 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  [B1] Thêm khách hàng mới
+    // [B1] Thêm khách hàng mới
     // ----------------------------------------------------------
     private static void handleAddCustomer() {
         System.out.println(BOLD_CYAN + "\n===== THÊM KHÁCH HÀNG MỚI =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy bỏ)");
         try {
-            String id      = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ", 
-                    val -> CustomerRepository.findById(val) == null, 
+            String id = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ",
+                    val -> CustomerRepository.findById(val) == null,
                     "Mã khách hàng đã tồn tại trong hệ thống!");
-            String name    = InputHelper.getValidNameInput("Họ tên: ");
-            String phone   = InputHelper.getPhoneInput("Số điện thoại: ",
+            String name = InputHelper.getValidNameInput("Họ tên: ");
+            String phone = InputHelper.getPhoneInput("Số điện thoại: ",
                     val -> CustomerRepository.findByPhone(val) == null,
                     "Số điện thoại đã được sử dụng bởi khách hàng khác!");
             String address = InputHelper.getStringInput("Địa chỉ: ");
@@ -137,7 +190,7 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  [B2] Cập nhật thông tin khách hàng
+    // [B2] Cập nhật thông tin khách hàng
     // ----------------------------------------------------------
     private static void handleUpdateCustomer() {
         System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT KHÁCH HÀNG =====" + RESET);
@@ -189,7 +242,7 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  [B3] Hiển thị danh sách khách hàng
+    // [B3] Hiển thị danh sách khách hàng
     // ----------------------------------------------------------
     private static void handleShowCustomerList() {
         System.out.println(BOLD_CYAN + "\n===== DANH SÁCH KHÁCH HÀNG =====" + RESET);
@@ -205,11 +258,12 @@ public class CustomerStaffView {
         for (Customer customer : customers) {
             System.out.println(customer);
         }
-        System.out.println("+------------+----------------------+-----------------+--------------------------------+\n");
+        System.out
+                .println("+------------+----------------------+-----------------+--------------------------------+\n");
     }
 
     // ----------------------------------------------------------
-    //  Xóa khách hàng (Remove customer)
+    // Xóa khách hàng (Remove customer)
     // ----------------------------------------------------------
     private static void handleDeleteCustomer() {
         System.out.println(BOLD_CYAN + "\n===== XÓA KHÁCH HÀNG =====" + RESET);
@@ -240,7 +294,7 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  Tìm kiếm khách hàng theo tên hoặc SĐT
+    // Tìm kiếm khách hàng theo tên hoặc SĐT
     // ----------------------------------------------------------
     private static void handleSearchCustomer() {
         System.out.println(BOLD_CYAN + "\n===== TÌM KIẾM KHÁCH HÀNG =====" + RESET);
@@ -278,7 +332,7 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  Cập nhật bưu kiện (Update parcel)
+    // Cập nhật bưu kiện (Update parcel)
     // ----------------------------------------------------------
     private static void handleUpdateParcel() {
         System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT THÔNG TIN BƯU KIỆN =====" + RESET);
@@ -293,22 +347,31 @@ public class CustomerStaffView {
             System.out.println(existing);
             System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-            String receiverName = InputHelper.getOptionalStringInput("Họ tên người nhận [" + existing.getReceiverName() + "]: ");
-            if (receiverName.isEmpty()) receiverName = existing.getReceiverName();
+            String receiverName = InputHelper
+                    .getOptionalStringInput("Họ tên người nhận [" + existing.getReceiverName() + "]: ");
+            if (receiverName.isEmpty())
+                receiverName = existing.getReceiverName();
 
-            String receiverPhone = InputHelper.getOptionalValidatedStringInput("SĐT người nhận [" + existing.getReceiverPhone() + "]: ",
+            String receiverPhone = InputHelper.getOptionalValidatedStringInput(
+                    "SĐT người nhận [" + existing.getReceiverPhone() + "]: ",
                     val -> val.matches("\\d{9,11}"),
                     "Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)!");
-            if (receiverPhone.isEmpty()) receiverPhone = existing.getReceiverPhone();
+            if (receiverPhone.isEmpty())
+                receiverPhone = existing.getReceiverPhone();
 
-            String pickupAddress = InputHelper.getOptionalStringInput("Địa chỉ lấy hàng [" + existing.getPickupAddress() + "]: ");
-            if (pickupAddress.isEmpty()) pickupAddress = existing.getPickupAddress();
+            String pickupAddress = InputHelper
+                    .getOptionalStringInput("Địa chỉ lấy hàng [" + existing.getPickupAddress() + "]: ");
+            if (pickupAddress.isEmpty())
+                pickupAddress = existing.getPickupAddress();
 
-            String deliveryAddress = InputHelper.getOptionalStringInput("Địa chỉ giao hàng [" + existing.getDeliveryAddress() + "]: ");
-            if (deliveryAddress.isEmpty()) deliveryAddress = existing.getDeliveryAddress();
+            String deliveryAddress = InputHelper
+                    .getOptionalStringInput("Địa chỉ giao hàng [" + existing.getDeliveryAddress() + "]: ");
+            if (deliveryAddress.isEmpty())
+                deliveryAddress = existing.getDeliveryAddress();
 
             double weight = existing.getWeight();
-            String weightInput = InputHelper.getOptionalStringInput("Trọng lượng mới [" + existing.getWeight() + " kg]: ");
+            String weightInput = InputHelper
+                    .getOptionalStringInput("Trọng lượng mới [" + existing.getWeight() + " kg]: ");
             if (!weightInput.isEmpty()) {
                 try {
                     weight = Double.parseDouble(weightInput);
@@ -350,7 +413,7 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  Xóa bưu kiện (Remove parcel)
+    // Xóa bưu kiện (Remove parcel)
     // ----------------------------------------------------------
     private static void handleDeleteParcel() {
         System.out.println(BOLD_CYAN + "\n===== XÓA BƯU KIỆN =====" + RESET);
@@ -386,7 +449,7 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  Tìm kiếm bưu kiện
+    // Tìm kiếm bưu kiện
     // ----------------------------------------------------------
     private static void handleSearchParcel() {
         System.out.println(BOLD_CYAN + "\n===== TÌM KIẾM BƯU KIỆN =====" + RESET);
@@ -420,14 +483,16 @@ public class CustomerStaffView {
                     }
                 }
             } else {
-                String status = InputHelper.getStringInput("Nhập trạng thái bưu kiện (Pending/Assigned/In Transit/Delivered/Failed/Cancelled): ");
+                String status = InputHelper.getStringInput(
+                        "Nhập trạng thái bưu kiện (Pending/Assigned/In Transit/Delivered/Failed/Cancelled): ");
                 List<Parcel> result = ParcelRepository.findAll().stream()
                         .filter(p -> status.equalsIgnoreCase(p.getStatus()))
                         .toList();
                 if (result.isEmpty()) {
                     System.out.println("Không tìm thấy bưu kiện nào có trạng thái: " + status);
                 } else {
-                    System.out.println(BOLD_GREEN + "Tìm thấy " + result.size() + " bưu kiện có trạng thái '" + status + "':" + RESET);
+                    System.out.println(BOLD_GREEN + "Tìm thấy " + result.size() + " bưu kiện có trạng thái '" + status
+                            + "':" + RESET);
                     for (Parcel p : result) {
                         System.out.println(p);
                     }
@@ -440,7 +505,7 @@ public class CustomerStaffView {
     }
 
     // ----------------------------------------------------------
-    //  Xem lịch sử giao hàng của một khách hàng cụ thể
+    // Xem lịch sử giao hàng của một khách hàng cụ thể
     // ----------------------------------------------------------
     private static void handleViewCustomerDeliveryHistory() {
         System.out.println(BOLD_CYAN + "\n===== XEM LỊCH SỬ GIAO HÀNG CỦA KHÁCH HÀNG =====" + RESET);

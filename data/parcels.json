@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "ABC123",
+    "senderId": "KH001",
+    "receiverName": "Do Chi Thanh",
+    "receiverPhone": "0123456799",
+    "pickupAddress": "ECO GREEN Q7",
+    "deliveryAddress": "Thu Duc",
+    "weight": 5.0,
+    "type": "Document",
+    "status": "Pending"
+  }
+]

@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "SHIP001",
+    "name": "Nguyen Quoc Cuong",
+    "phone": "0123456789",
+    "vehicleType": "xe m\u0000y",
+    "status": "Active",
+    "deliveredOrdersCount": 0
+  }
+]

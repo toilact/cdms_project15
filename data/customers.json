@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "KH001",
+    "name": "Huynh Le Quoc Cuong",
+    "phone": "0907090481",
+    "address": "ECO GREEN Q7"
+  },
+  {
+    "id": "KH002",
+    "name": "CH\u0000 TH\u0000NH",
+    "phone": "0123456789",
+    "address": "TH\u0000 \u0000\u0000C"
+  }
+]

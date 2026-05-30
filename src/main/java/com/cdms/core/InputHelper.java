@@ -19,8 +19,7 @@ public class InputHelper {
     private static final Scanner scanner = new Scanner(System.in);
 
     /** Định dạng ngày tháng chuẩn: DD/MM/YYYY */
-    private static final DateTimeFormatter DATE_FORMAT =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     // ===== Ngăn khởi tạo đối tượng (Utility class) =====
     private InputHelper() {
@@ -180,12 +179,14 @@ public class InputHelper {
     /**
      * Yêu cầu nhập số điện thoại hợp lệ và duy nhất (kiểm tra qua Predicate).
      *
-     * @param prompt            Thông báo hiển thị
-     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp lệ/duy nhất, false nếu trùng)
-     * @param errorMessage      Thông báo lỗi khi bị trùng
+     * @param prompt              Thông báo hiển thị
+     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp
+     *                            lệ/duy nhất, false nếu trùng)
+     * @param errorMessage        Thông báo lỗi khi bị trùng
      * @return Số điện thoại hợp lệ và duy nhất
      */
-    public static String getPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator, String errorMessage) {
+    public static String getPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator,
+            String errorMessage) {
         while (true) {
             String phone = getPhoneInput(prompt);
             if (uniquenessValidator.test(phone)) {
@@ -203,7 +204,8 @@ public class InputHelper {
      * @param errorMessage Thông báo lỗi khi không hợp lệ
      * @return Chuỗi hợp lệ
      */
-    public static String getStringInput(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {
+    public static String getStringInput(String prompt, java.util.function.Predicate<String> validator,
+            String errorMessage) {
         while (true) {
             String val = getStringInput(prompt);
             if (validator.test(val)) {
@@ -214,7 +216,8 @@ public class InputHelper {
     }
 
     /**
-     * Nhập số thực và kiểm tra tính hợp lệ qua DoublePredicate tùy chọn ngay lập tức.
+     * Nhập số thực và kiểm tra tính hợp lệ qua DoublePredicate tùy chọn ngay lập
+     * tức.
      *
      * @param prompt       Thông báo hiển thị
      * @param min          Giá trị tối thiểu
@@ -222,7 +225,8 @@ public class InputHelper {
      * @param errorMessage Thông báo lỗi khi không hợp lệ
      * @return Số thực hợp lệ
      */
-    public static double getDoubleInput(String prompt, double min, java.util.function.DoublePredicate validator, String errorMessage) {
+    public static double getDoubleInput(String prompt, double min, java.util.function.DoublePredicate validator,
+            String errorMessage) {
         while (true) {
             double val = getDoubleInput(prompt, min);
             if (validator.test(val)) {
@@ -239,7 +243,8 @@ public class InputHelper {
     /**
      * Nhập chuỗi tùy chọn — cho phép người dùng nhấn Enter để bỏ qua.
      * Trả về chuỗi đã trim, có thể là rỗng "".
-     * Dùng trong chức năng cập nhật thông tin để giữ nguyên giá trị cũ nếu không nhập.
+     * Dùng trong chức năng cập nhật thông tin để giữ nguyên giá trị cũ nếu không
+     * nhập.
      *
      * @param prompt Thông báo hiển thị
      * @return Chuỗi đã trim (có thể rỗng nếu người dùng chỉ nhấn Enter)
@@ -261,7 +266,8 @@ public class InputHelper {
      * @param errorMessage Thông báo lỗi khi không hợp lệ
      * @return Chuỗi hợp lệ hoặc rỗng
      */
-    public static String getOptionalValidatedStringInput(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {
+    public static String getOptionalValidatedStringInput(String prompt, java.util.function.Predicate<String> validator,
+            String errorMessage) {
         while (true) {
             String val = getOptionalStringInput(prompt);
             if (val.isEmpty()) {
@@ -275,14 +281,17 @@ public class InputHelper {
     }
 
     /**
-     * Nhập số điện thoại tùy chọn (cho phép Enter bỏ qua), nếu nhập thì phải hợp lệ định dạng và duy nhất.
+     * Nhập số điện thoại tùy chọn (cho phép Enter bỏ qua), nếu nhập thì phải hợp lệ
+     * định dạng và duy nhất.
      *
-     * @param prompt            Thông báo hiển thị
-     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp lệ/duy nhất, false nếu trùng)
-     * @param errorMessage      Thông báo lỗi khi bị trùng
+     * @param prompt              Thông báo hiển thị
+     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp
+     *                            lệ/duy nhất, false nếu trùng)
+     * @param errorMessage        Thông báo lỗi khi bị trùng
      * @return Số điện thoại hợp lệ hoặc rỗng
      */
-    public static String getOptionalPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator, String errorMessage) {
+    public static String getOptionalPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator,
+            String errorMessage) {
         while (true) {
             String phone = getOptionalStringInput(prompt);
             if (phone.isEmpty()) {

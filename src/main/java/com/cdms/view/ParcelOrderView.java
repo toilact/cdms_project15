@@ -197,7 +197,8 @@ public class ParcelOrderView {
                 try {
                     DeliveryOrder order = OrderService.convertParcelToOrder(orderId, parcelId, staffId, deliveryType);
 
-                    System.out.println(BOLD_GREEN + "✅ Chuyển đổi kiện hàng thành đơn hàng thành công: " + orderId + RESET);
+                    System.out.println(
+                            BOLD_GREEN + "✅ Chuyển đổi kiện hàng thành đơn hàng thành công: " + orderId + RESET);
                     System.out.println(order);
                 } catch (Exception e) {
                     System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
@@ -217,9 +218,10 @@ public class ParcelOrderView {
             String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
                     val -> DeliveryOrderRepository.existsById(val),
                     "Mã đơn hàng không tồn tại trong hệ thống!");
-            String status = InputHelper.getStringInput("Nhập trạng thái mới (Assigned/In Transit/Delivered/Cancelled/Failed): ",
-                    val -> val.equalsIgnoreCase("Assigned") || val.equalsIgnoreCase("In Transit") 
-                            || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Cancelled") 
+            String status = InputHelper.getStringInput(
+                    "Nhập trạng thái mới (Assigned/In Transit/Delivered/Cancelled/Failed): ",
+                    val -> val.equalsIgnoreCase("Assigned") || val.equalsIgnoreCase("In Transit")
+                            || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Cancelled")
                             || val.equalsIgnoreCase("Failed"),
                     "Trạng thái không hợp lệ!");
 
