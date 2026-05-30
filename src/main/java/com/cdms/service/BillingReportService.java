@@ -54,7 +54,7 @@ public class BillingReportService {
     /** Trả về danh sách hóa đơn chưa thanh toán (paymentStatus = "Unpaid"). */
     public static List<Invoice> getUnpaidInvoices() {
         return InvoiceRepository.findAll().stream()
-                .filter(inv -> !"Paid".equalsIgnoreCase(inv.getPaymentStatus()))
+                .filter(inv -> "Unpaid".equalsIgnoreCase(inv.getPaymentStatus()))
                 .collect(Collectors.toList());
     }
 
@@ -274,8 +274,10 @@ public class BillingReportService {
         long delivered = DeliveryOrderRepository.countByStatus("Delivered");
         long inTransit = DeliveryOrderRepository.countByStatus("In Transit");
         long assigned = DeliveryOrderRepository.countByStatus("Assigned");
+        long pickedUp = DeliveryOrderRepository.countByStatus("Picked Up");
         long pending = DeliveryOrderRepository.countByStatus("Pending");
         long failed = DeliveryOrderRepository.countByStatus("Failed");
+        long cancelled = DeliveryOrderRepository.countByStatus("Cancelled");
 
         double successRate = (totalOrders > 0) ? (delivered * 100.0 / totalOrders) : 0.0;
 
@@ -284,8 +286,10 @@ public class BillingReportService {
         stats.put("delivered", delivered);
         stats.put("inTransit", inTransit);
         stats.put("assigned", assigned);
+        stats.put("pickedUp", pickedUp);
         stats.put("pending", pending);
         stats.put("failed", failed);
+        stats.put("cancelled", cancelled);
         stats.put("successRate", successRate);
         return stats;
     }

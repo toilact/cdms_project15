@@ -7,15 +7,12 @@
 // ============================================================
 package com.cdms.service;
 
-import com.cdms.core.JSONDataManager;
 import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
 import com.cdms.model.Parcel;
-import com.cdms.model.Invoice;
 import com.cdms.repository.DeliveryOrderRepository;
 import com.cdms.repository.DeliveryStaffRepository;
 import com.cdms.repository.ParcelRepository;
-import com.cdms.repository.InvoiceRepository;
 
 import java.time.LocalDate;
 import java.util.List;
