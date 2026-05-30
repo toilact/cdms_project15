@@ -148,7 +148,11 @@ public class CustomerStaffView {
             Customer existing = CustomerStaffService.findCustomer(id);
 
             System.out.println("Thông tin hiện tại:");
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+            System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
             System.out.println(existing);
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
             System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
             String newName = InputHelper.getOptionalValidatedStringInput("Họ tên mới [" + existing.getName() + "]: ",
@@ -221,7 +225,11 @@ public class CustomerStaffView {
             Customer existing = CustomerStaffService.findCustomer(id);
 
             System.out.println("Thông tin khách hàng:");
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+            System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
             System.out.println(existing);
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
 
             // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
             long parcelCount = ParcelRepository.findAll().stream()
@@ -276,7 +284,11 @@ public class CustomerStaffView {
                     System.out.println("Không tìm thấy khách hàng có số điện thoại: " + phone);
                 } else {
                     System.out.println(BOLD_GREEN + "Đã tìm thấy khách hàng:" + RESET);
+                    System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+                    System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
+                    System.out.println("+------------+----------------------+-----------------+--------------------------------+");
                     System.out.println(c);
+                    System.out.println("+------------+----------------------+-----------------+--------------------------------+");
                 }
             }
         } catch (FormCancelledException e) {
@@ -298,7 +310,11 @@ public class CustomerStaffView {
             Parcel existing = ParcelRepository.findById(id);
 
             System.out.println("Thông tin bưu kiện hiện tại:");
+            System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+            System.out.println("| Mã Kiện    | Mã Khách   | Tên Người Nhận  | Loại Kiện  | Trọng Lượng | Trạng Thái | Phí Vận Chuyển       |");
+            System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
             System.out.println(existing);
+            System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
             System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
             String receiverName = InputHelper.getOptionalStringInput("Họ tên người nhận [" + existing.getReceiverName() + "]: ");
@@ -367,7 +383,11 @@ public class CustomerStaffView {
             Parcel existing = ParcelRepository.findById(id);
 
             System.out.println("Thông tin bưu kiện:");
+            System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+            System.out.println("| Mã Kiện    | Mã Khách   | Tên Người Nhận  | Loại Kiện  | Trọng Lượng | Trạng Thái | Phí Vận Chuyển       |");
+            System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
             System.out.println(existing);
+            System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
 
             // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
             boolean hasOrder = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
@@ -416,7 +436,11 @@ public class CustomerStaffView {
                     System.out.println("Không tìm thấy bưu kiện có mã: " + id);
                 } else {
                     System.out.println(BOLD_GREEN + "Đã tìm thấy bưu kiện:" + RESET);
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+                    System.out.println("| Mã Kiện    | Mã Khách   | Tên Người Nhận  | Loại Kiện  | Trọng Lượng | Trạng Thái | Phí Vận Chuyển       |");
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
                     System.out.println(p);
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
                 }
             } else if (type == 2) {
                 String name = InputHelper.getStringInput("Nhập tên người nhận: ");
@@ -466,8 +490,12 @@ public class CustomerStaffView {
                     "Không tìm thấy khách hàng với mã này!");
             Customer c = CustomerStaffService.findCustomer(customerId);
 
-            System.out.println("\nKhách hàng: " + c.getName() + " (" + customerId + ")");
-            System.out.println("SĐT: " + c.getPhone() + " | Địa chỉ: " + c.getAddress());
+            System.out.println(BOLD_GREEN + "\nThông tin khách hàng:" + RESET);
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+            System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+            System.out.println(c);
+            System.out.println("+------------+----------------------+-----------------+--------------------------------+");
 
             // Lấy tất cả đơn hàng liên quan đến khách hàng gửi
             List<DeliveryOrder> orders = OrderService.searchOrdersByCustomer(customerId);

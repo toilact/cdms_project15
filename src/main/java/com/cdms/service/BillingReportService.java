@@ -166,6 +166,15 @@ public class BillingReportService {
 
         Invoice invoice = createInvoice(order);
         if (invoice != null) {
+            if (order.getPaymentTerms() != null && "Sender Pay".equalsIgnoreCase(order.getPaymentTerms())) {
+                invoice.setPaymentStatus("Paid");
+                invoice.setPaymentMethod("Cash"); // Mặc định đã thanh toán tại quầy
+                invoice.setPaymentDate(order.getOrderDate() != null ? order.getOrderDate() : LocalDate.now());
+            } else {
+                // Đơn hàng COD (hoặc đơn hàng cũ chưa có paymentTerms): Shipper đã thu tiền mặt khi giao hàng thành công
+                invoice.setPaymentStatus("Collected");
+                invoice.setPaymentDate(order.getDeliveryDate() != null ? order.getDeliveryDate() : LocalDate.now());
+            }
             InvoiceRepository.add(invoice);
         }
         return invoice;
@@ -186,6 +195,38 @@ public class BillingReportService {
         DeliveryOrder order = DeliveryOrderRepository.findById(invoice.getOrderId());
         if (order != null && order.getDeliveryDate() != null && paymentDate.isBefore(order.getDeliveryDate())) {
             throw new IllegalArgumentException("Ngày thanh toán không được trước ngày giao đơn hàng thực tế (" + order.getDeliveryDate() + ")!");
+        }
+
+        invoice.setPaymentStatus("Paid");
+        invoice.setPaymentMethod(paymentMethod);
+        invoice.setPaymentDate(paymentDate);
+        return InvoiceRepository.update(invoice);
+    }
+
+    /**
+     * Lấy danh sách hóa đơn đã được Shipper thu hộ COD nhưng chưa đối soát (paymentStatus = "Collected").
+     */
+    public static List<Invoice> getCollectedInvoices() {
+        return InvoiceRepository.findAll().stream()
+                .filter(inv -> "Collected".equalsIgnoreCase(inv.getPaymentStatus()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Stage 3: Đối soát tiền COD (Chuyển trạng thái "Collected" sang "Paid").
+     * Trả về false nếu hóa đơn không tồn tại hoặc không ở trạng thái "Collected".
+     */
+    public static boolean reconcileInvoice(String invoiceId, String paymentMethod, LocalDate paymentDate) {
+        Invoice invoice = findInvoiceById(invoiceId);
+        if (invoice == null)
+            return false;
+        if (!"Collected".equalsIgnoreCase(invoice.getPaymentStatus()))
+            return false;
+
+        // Ràng buộc ngày đối soát không được trước ngày giao đơn hàng thực tế
+        DeliveryOrder order = DeliveryOrderRepository.findById(invoice.getOrderId());
+        if (order != null && order.getDeliveryDate() != null && paymentDate.isBefore(order.getDeliveryDate())) {
+            throw new IllegalArgumentException("Ngày đối soát không được trước ngày giao đơn hàng thực tế (" + order.getDeliveryDate() + ")!");
         }
 
         invoice.setPaymentStatus("Paid");

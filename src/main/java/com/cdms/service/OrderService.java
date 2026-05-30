@@ -11,9 +11,11 @@ import com.cdms.core.JSONDataManager;
 import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
 import com.cdms.model.Parcel;
+import com.cdms.model.Invoice;
 import com.cdms.repository.DeliveryOrderRepository;
 import com.cdms.repository.DeliveryStaffRepository;
 import com.cdms.repository.ParcelRepository;
+import com.cdms.repository.InvoiceRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,12 +45,11 @@ public class OrderService {
      * Chuyển kiện hàng thành đơn hàng
      */
     public static DeliveryOrder convertParcelToOrder(String orderId, String parcelId,
-                                                     String staffId, String deliveryType) {
+                                                     String deliveryType, String paymentTerms) {
 
         if (orderId == null || orderId.trim().isEmpty() ||
-            parcelId == null || parcelId.trim().isEmpty() ||
-            staffId == null || staffId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Order ID, Parcel ID và Staff ID không được để trống!");
+            parcelId == null || parcelId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Order ID và Parcel ID không được để trống!");
         }
 
         // 1. Kiểm tra trùng lặp Order ID (Sử dụng Repository Layer)
@@ -66,17 +67,7 @@ public class OrderService {
             throw new IllegalStateException("Kiện hàng này đã được xử lý hoặc đang trong đơn hàng khác!");
         }
 
-        // 3. Kiểm tra shipper tồn tại và hoạt động tích cực (Active) (Sử dụng Repository Layer)
-        DeliveryStaff staff = DeliveryStaffRepository.findById(staffId.trim());
-        if (staff == null) {
-            throw new IllegalArgumentException("Mã shipper không tồn tại trong hệ thống!");
-        }
-
-        if (!"Active".equalsIgnoreCase(staff.getStatus())) {
-            throw new IllegalStateException("Shipper này hiện không hoạt động (không phải trạng thái Active)!");
-        }
-
-        // 4. Kiểm tra deliveryType hợp lệ (Ném ngoại lệ thay vì tự gán mặc định)
+        // 3. Kiểm tra deliveryType hợp lệ (Ném ngoại lệ thay vì tự gán mặc định)
         if (deliveryType == null || deliveryType.trim().isEmpty()) {
             throw new IllegalArgumentException("Loại giao hàng không được để trống!");
         }
@@ -90,22 +81,38 @@ public class OrderService {
             throw new IllegalArgumentException("Loại giao hàng không hợp lệ! Chỉ chấp nhận 'Standard' hoặc 'Urgent'.");
         }
 
+        // 4. Kiểm tra paymentTerms hợp lệ
+        if (paymentTerms == null || paymentTerms.trim().isEmpty()) {
+            throw new IllegalArgumentException("Hình thức thanh toán không được để trống!");
+        }
+        String pt = paymentTerms.trim();
+        String paymentTermsFormatted;
+        if ("Sender Pay".equalsIgnoreCase(pt) || "Người gửi trả".equalsIgnoreCase(pt)) {
+            paymentTermsFormatted = "Sender Pay";
+        } else if ("Receiver Pay".equalsIgnoreCase(pt) || "Người nhận trả".equalsIgnoreCase(pt) || "COD".equalsIgnoreCase(pt)) {
+            paymentTermsFormatted = "Receiver Pay";
+        } else {
+            throw new IllegalArgumentException("Hình thức thanh toán không hợp lệ! Chỉ chấp nhận 'Sender Pay' hoặc 'Receiver Pay'.");
+        }
+
         // 5. Tạo đơn hàng
         DeliveryOrder newOrder = new DeliveryOrder();
         newOrder.setId(orderId.trim());
         newOrder.setParcelId(parcel.getId());
-        newOrder.setStaffId(staff.getId());
+        newOrder.setStaffId(null); // Chưa phân công shipper
         newOrder.setOrderDate(LocalDate.now());
         newOrder.setExpectedDeliveryDate(LocalDate.now().plusDays("Urgent".equals(typeFormatted) ? 1 : 3));
         newOrder.setDeliveryType(typeFormatted);
-        newOrder.setStatus("Assigned");
+        newOrder.setStatus("Pending"); // Trạng thái ban đầu là Pending
+        newOrder.setPaymentTerms(paymentTermsFormatted);
         newOrder.addNote("Đơn hàng được tạo từ kiện hàng: " + parcelId);
 
-        // Cập nhật trạng thái kiện sang Assigned
-        parcel.setStatus("Assigned");
+        // Kiện hàng vẫn giữ trạng thái Pending nhưng đã liên kết với đơn hàng
+        parcel.setStatus("Pending");
 
-        // Lưu dữ liệu qua Repository
+        // Lưu dữ liệu qua Repository (sẽ tự động gọi JSONDataManager.saveAllData())
         DeliveryOrderRepository.add(newOrder);
+
         return newOrder;
     }
 

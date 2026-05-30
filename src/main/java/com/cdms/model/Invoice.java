@@ -16,7 +16,7 @@ public class Invoice {
     private double baseFee;            // Phí cơ bản (từ Parcel.calculateFee())
     private double urgentCharge;       // Phụ phí hỏa tốc (nếu deliveryType = "Urgent")
     private double totalAmount;        // Tổng phí = baseFee + urgentCharge
-    private String paymentStatus;      // "Unpaid", "Partially Paid", "Paid"
+    private String paymentStatus;      // "Unpaid", "Partially Paid", "Collected" (Đã thu COD), "Paid" (Đã đối soát/thanh toán xong)
     private String paymentMethod;      // "Cash", "Banking", ...
     private LocalDate paymentDate;
 

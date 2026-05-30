@@ -11,9 +11,11 @@ import com.cdms.core.JSONDataManager;
 import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
 import com.cdms.model.Parcel;
+import com.cdms.model.Invoice;
 import com.cdms.repository.DeliveryOrderRepository;
 import com.cdms.repository.DeliveryStaffRepository;
 import com.cdms.repository.ParcelRepository;
+import com.cdms.repository.InvoiceRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -128,6 +130,11 @@ public class TrackingService {
         } else if ("In Transit".equalsIgnoreCase(currentStatus) && "Delivered".equalsIgnoreCase(formattedNewStatus)) {
             validTransition = true;
             
+            // Đảm bảo cập nhật ngày giao hàng thực tế nếu chưa có
+            if (order.getDeliveryDate() == null) {
+                order.setDeliveryDate(LocalDate.now());
+            }
+
             // Tăng số lượng đơn đã giao thành công của Shipper qua Repository
             if (order.getStaffId() != null) {
                 DeliveryStaff staff = DeliveryStaffRepository.findById(order.getStaffId());
@@ -181,10 +188,12 @@ public class TrackingService {
     }
 
     /**
-     * B14: Xem danh sách các đơn giao hàng thất bại (Failed)
+     * B14: Xem danh sách các đơn giao hàng thất bại (Failed) hoặc bị hủy (Cancelled)
      */
     public static List<DeliveryOrder> getFailedOrders() {
-        return DeliveryOrderRepository.findByStatus("Failed");
+        return DeliveryOrderRepository.findAll().stream()
+                .filter(o -> "Failed".equalsIgnoreCase(o.getStatus()) || "Cancelled".equalsIgnoreCase(o.getStatus()))
+                .toList();
     }
 
     /**

@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "nv001",
+    "name": "Phạm Đắc Anh",
+    "phone": "0366363636",
+    "vehicleType": "Xe máy",
+    "status": "active",
+    "deliveredOrdersCount": 4
+  }
+]

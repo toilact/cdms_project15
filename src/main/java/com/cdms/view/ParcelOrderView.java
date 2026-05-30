@@ -73,7 +73,11 @@ public class ParcelOrderView {
                             receiverPhone, pickupAddress, deliveryAddress, weight, type);
 
                     System.out.println(BOLD_GREEN + "✅ Tạo kiện hàng thành công: " + id + RESET);
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+                    System.out.println("| Mã Kiện    | Mã Khách   | Tên Người Nhận  | Loại Kiện  | Trọng Lượng | Trạng Thái | Phí Vận Chuyển       |");
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
                     System.out.println(parcel);
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
                 } catch (Exception e) {
                     System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
                 }
@@ -114,18 +118,22 @@ public class ParcelOrderView {
             String parcelId = InputHelper.getStringInput("Mã kiện hàng cần chuyển: ",
                     val -> {
                         Parcel p = ParcelRepository.findById(val);
-                        return p != null && "Pending".equalsIgnoreCase(p.getStatus());
+                        if (p == null) return false;
+                        if (!"Pending".equalsIgnoreCase(p.getStatus())) return false;
+                        boolean alreadyHasOrder = DeliveryOrderRepository.findAll().stream()
+                                .anyMatch(o -> val.equalsIgnoreCase(o.getParcelId()));
+                        return !alreadyHasOrder;
                     },
                     "Kiện hàng không tồn tại hoặc đã được tạo đơn hàng trước đó!");
-            String staffId = InputHelper.getStringInput("Mã shipper (Staff ID): ",
-                    val -> {
-                        var s = CustomerStaffService.findStaff(val);
-                        return s != null && "Active".equalsIgnoreCase(s.getStatus());
-                    },
-                    "Mã shipper không tồn tại hoặc không ở trạng thái Active!");
             String deliveryType = InputHelper.getStringInput("Loại đơn hàng (Standard/Urgent): ",
                     val -> val.equalsIgnoreCase("Standard") || val.equalsIgnoreCase("Urgent"),
                     "Loại đơn hàng không hợp lệ (Chỉ nhận Standard hoặc Urgent)!");
+
+            System.out.println("\nChọn hình thức thanh toán:");
+            System.out.println("  1. Sender Pay (Trả trước - Người gửi trả tại quầy)");
+            System.out.println("  2. Receiver Pay (Trả sau/COD - Người nhận trả khi nhận hàng)");
+            int paymentChoice = InputHelper.getIntInput("Lựa chọn (1-2): ", 1, 2);
+            String paymentTerms = (paymentChoice == 1) ? "Sender Pay" : "Receiver Pay";
 
             System.out.println("\nXác nhận tạo đơn giao hàng này?");
             System.out.println("  1. Tạo đơn");
@@ -134,10 +142,24 @@ public class ParcelOrderView {
 
             if (confirm == 1) {
                 try {
-                    DeliveryOrder order = OrderService.convertParcelToOrder(orderId, parcelId, staffId, deliveryType);
+                    DeliveryOrder order = OrderService.convertParcelToOrder(orderId, parcelId, deliveryType, paymentTerms);
 
                     System.out.println(BOLD_GREEN + "✅ Chuyển đổi kiện hàng thành đơn hàng thành công: " + orderId + RESET);
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
+                    System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
                     System.out.println(order);
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
+
+                    System.out.println("\n💡 HÌNH THỨC THANH TOÁN ĐÃ THIẾT LẬP:");
+                    if ("Sender Pay".equals(paymentTerms)) {
+                        System.out.println("  - Loại thanh toán   : " + BOLD_GREEN + "Sender Pay (Trả trước tại quầy)" + RESET);
+                        System.out.println("  - Vận hành          : Tiền mặt thu trực tiếp tại quầy lễ tân.");
+                    } else {
+                        System.out.println("  - Loại thanh toán   : " + BOLD_YELLOW + "Receiver Pay (Thu hộ COD)" + RESET);
+                        System.out.println("  - Vận hành          : Shipper thu hộ tiền mặt từ người nhận khi giao hàng thành công.");
+                    }
+                    System.out.println("  - Lưu ý             : " + BOLD_CYAN + "Hóa đơn sẽ được Quản lý (Manager) tính toán & khởi tạo sau khi đơn giao thành công." + RESET);
                 } catch (Exception e) {
                     System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
                 }
@@ -171,7 +193,11 @@ public class ParcelOrderView {
                 try {
                     DeliveryOrder order = OrderService.updateOrderStatus(orderId, status);
                     System.out.println(BOLD_GREEN + "✅ Cập nhật trạng thái thành công!" + RESET);
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
+                    System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
                     System.out.println(order);
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
                 } catch (Exception e) {
                     System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
                 }
@@ -190,11 +216,72 @@ public class ParcelOrderView {
             String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
                     val -> DeliveryOrderRepository.existsById(val),
                     "Mã đơn hàng không tồn tại trong hệ thống!");
-
             try {
                 DeliveryOrder order = OrderService.getOrderDetail(orderId);
-                System.out.println(BOLD_GREEN + "✅ Thông tin đơn hàng:" + RESET);
-                System.out.println(order);
+                com.cdms.model.Parcel parcel = ParcelRepository.findById(order.getParcelId());
+                com.cdms.model.DeliveryStaff staff = order.getStaffId() != null ? CustomerStaffService.findStaff(order.getStaffId()) : null;
+
+                System.out.println(BOLD_GREEN + "\n===========================================================" + RESET);
+                System.out.println(BOLD_YELLOW + "📋 CHI TIẾT ĐƠN HÀNG: " + order.getId() + " (Dịch vụ: " + order.getDeliveryType() + ")" + RESET);
+                System.out.println(BOLD_GREEN + "===========================================================" + RESET);
+                if (parcel != null) {
+                    System.out.printf("- Kiện hàng liên kết : %s (Loại: %s | Nặng: %.1f kg)%n",
+                            parcel.getId(), parcel.getType(), parcel.getWeight());
+                    System.out.printf("- Người nhận         : %s (SĐT: %s)%n",
+                            parcel.getReceiverName(), parcel.getReceiverPhone());
+                    System.out.printf("- Địa chỉ lấy hàng   : %s%n", parcel.getPickupAddress());
+                    System.out.printf("- Địa chỉ giao hàng  : %s%n", parcel.getDeliveryAddress());
+                    System.out.printf("- Phí vận chuyển     : %,.0f VND%n", parcel.calculateFee());
+                }
+                System.out.printf("- Trạng thái đơn     : %s%n", order.getStatus());
+
+                // Lấy thông tin Hóa đơn & Thanh toán
+                com.cdms.model.Invoice invoice = com.cdms.service.BillingReportService.findInvoiceByOrderId(order.getId());
+                if (order.getPaymentTerms() != null) {
+                    System.out.printf("- Hình thức thanh toán: %s%n", 
+                            "Sender Pay".equals(order.getPaymentTerms()) ? "Sender Pay (Trả trước tại quầy)" : "Receiver Pay (Thu hộ COD)");
+                } else {
+                    System.out.println("- Hình thức thanh toán: Receiver Pay (COD - Mặc định)");
+                }
+                if (invoice != null) {
+                    System.out.printf("- Mã hóa đơn liên kết : %s%n", invoice.getId());
+                    System.out.printf("- Tổng tiền thanh toán: %,.0f VND%n", invoice.getTotalAmount());
+                    String statusColor = BOLD_RED;
+                    if ("Paid".equalsIgnoreCase(invoice.getPaymentStatus())) statusColor = BOLD_GREEN;
+                    else if ("Collected".equalsIgnoreCase(invoice.getPaymentStatus())) statusColor = BOLD_YELLOW;
+                    System.out.printf("- Trạng thái thanh toán: %s%s%s%n", 
+                            statusColor, invoice.getPaymentStatus(), RESET);
+                    if (invoice.getPaymentMethod() != null) {
+                        System.out.printf("- Phương thức thanh toán: %s%n", invoice.getPaymentMethod());
+                    }
+                    if (invoice.getPaymentDate() != null) {
+                        System.out.printf("- Ngày thanh toán     : %s%n", invoice.getPaymentDate());
+                    }
+                }
+                if (staff != null) {
+                    System.out.printf("- Shipper phụ trách  : %s (%s - SĐT: %s)%n",
+                            staff.getId(), staff.getName(), staff.getPhone());
+                } else {
+                    System.out.println("- Shipper phụ trách  : Chưa phân công");
+                }
+                System.out.printf("- Ngày tạo đơn       : %s%n", order.getOrderDate() != null ? order.getOrderDate() : "N/A");
+                System.out.printf("- Ngày giao dự kiến  : %s%n", order.getExpectedDeliveryDate() != null ? order.getExpectedDeliveryDate() : "N/A");
+                if (order.getPickupDate() != null) {
+                    System.out.printf("- Ngày lấy thực tế   : %s%n", order.getPickupDate());
+                }
+                if (order.getDeliveryDate() != null) {
+                    System.out.printf("- Ngày giao thực tế  : %s%n", order.getDeliveryDate());
+                }
+                System.out.println(BOLD_GREEN + "-----------------------------------------------------------" + RESET);
+                System.out.println(BOLD_YELLOW + "📜 LỊCH SỬ HÀNH TRÌNH / GHI CHÚ TỪ SHIPPER:" + RESET);
+                if (order.getNotes() == null || order.getNotes().isEmpty()) {
+                    System.out.println("  (Chưa có ghi chú hành trình nào)");
+                } else {
+                    for (int i = 0; i < order.getNotes().size(); i++) {
+                        System.out.printf("  [%d] %s%n", i + 1, order.getNotes().get(i));
+                    }
+                }
+                System.out.println(BOLD_GREEN + "===========================================================" + RESET);
             } catch (Exception e) {
                 System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
             }
@@ -220,9 +307,13 @@ public class ParcelOrderView {
                 }
 
                 System.out.println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng:" + RESET);
+                System.out.println("+------------+------------+------------+------------+------------+--------------+");
+                System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
+                System.out.println("+------------+------------+------------+------------+------------+--------------+");
                 for (DeliveryOrder o : orders) {
                     System.out.println(o);
                 }
+                System.out.println("+------------+------------+------------+------------+------------+--------------+");
             } catch (Exception e) {
                 System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
             }
@@ -248,7 +339,11 @@ public class ParcelOrderView {
                 try {
                     DeliveryOrder order = OrderService.cancelOrder(orderId);
                     System.out.println(BOLD_GREEN + "✅ Hủy đơn hàng thành công!" + RESET);
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
+                    System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
                     System.out.println(order);
+                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
                 } catch (Exception e) {
                     System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
                 }
