@@ -97,13 +97,20 @@ public class CustomerStaffService {
         return "❌ Lỗi: Không tìm thấy khách hàng với mã '" + updated.getId() + "'!";
     }
 
-    /**
-     * Xóa một khách hàng theo mã.
-     *
-     * @param customerId Mã khách hàng cần xóa
-     * @return Thông báo kết quả (String) để View hiển thị
-     */
     public static String deleteCustomer(String customerId) {
+        if (customerId == null || customerId.trim().isEmpty()) {
+            return "❌ Lỗi: Mã khách hàng không được để trống.";
+        }
+        final String finalCustomerId = customerId.trim();
+        
+        // Kiểm tra xem khách hàng có bưu kiện nào liên kết không
+        long parcelCount = com.cdms.repository.ParcelRepository.findAll().stream()
+                .filter(p -> finalCustomerId.equalsIgnoreCase(p.getSenderId()))
+                .count();
+        if (parcelCount > 0) {
+            return "❌ Lỗi: Không thể xóa khách hàng vì có " + parcelCount + " bưu kiện liên kết với khách hàng này!";
+        }
+
         boolean success = CustomerRepository.delete(customerId);
         if (success) {
             return "✅ Đã xóa khách hàng: " + customerId;

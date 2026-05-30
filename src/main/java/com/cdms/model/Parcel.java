@@ -131,7 +131,7 @@ public abstract class Parcel {
 
     @Override
     public String toString() {
-        return String.format("| %-10s | %-10s | %-15s | %-10s | %8.1f kg | %-10s | Phí: %,.0f VND |",
+        return String.format("| %-10s | %-10s | %-15s | %-10s | %8.1f kg | %-10s | Phí: %,11.0f VND |",
                 id, senderId, receiverName, type, weight, status, calculateFee());
     }
 }

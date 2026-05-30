@@ -7,9 +7,13 @@
 // ============================================================
 package com.cdms.view;
 
-import com.cdms.core.JSONDataManager;
 import com.cdms.model.DeliveryStaff;
 import com.cdms.model.Invoice;
+import com.cdms.repository.CustomerRepository;
+import com.cdms.repository.ParcelRepository;
+import com.cdms.repository.DeliveryOrderRepository;
+import com.cdms.repository.DeliveryStaffRepository;
+import com.cdms.repository.InvoiceRepository;
 
 public class DashboardView {
 
@@ -32,27 +36,28 @@ public class DashboardView {
      * với phong cách thiết kế UI bảng Console tối giản và sang trọng bậc nhất.
      */
     public static void showDashboard() {
-        // 1. Tính toán các chỉ số thời gian thực từ JSONDataManager
-        int totalCustomers = JSONDataManager.customers.size();
-        int totalParcels   = JSONDataManager.parcels.size();
-        int totalOrders    = JSONDataManager.orders.size();
+        // 1. Tính toán các chỉ số thời gian thực từ các Repositories (BUG-09)
+        int totalCustomers = CustomerRepository.findAll().size();
+        int totalParcels   = ParcelRepository.findAll().size();
+        int totalOrders    = DeliveryOrderRepository.findAll().size();
         
         // Đếm số lượng shipper đang hoạt động
-        long activeShippersCount = JSONDataManager.staffs.stream()
+        long activeShippersCount = DeliveryStaffRepository.findAll().stream()
                 .filter(s -> "Active".equalsIgnoreCase(s.getStatus()))
                 .count();
-        int totalShippers = JSONDataManager.staffs.size();
+        int totalShippers = DeliveryStaffRepository.findAll().size();
 
         // Tính toán doanh thu thực tế đã thanh toán (Paid Invoices)
-        double totalRevenue = JSONDataManager.invoices.stream()
-                .filter(i -> "Paid".equalsIgnoreCase(i.getPaymentStatus()))
+        double totalRevenue = InvoiceRepository.findPaidInvoices().stream()
                 .mapToDouble(Invoice::getTotalAmount)
                 .sum();
 
-        // Đếm số lượng đơn giao thành công (Delivered)
-        long deliveredOrders = JSONDataManager.orders.stream()
-                .filter(o -> "Delivered".equalsIgnoreCase(o.getStatus()))
-                .count();
+        // Đếm số lượng đơn theo các trạng thái (UX-12)
+        long deliveredOrders = DeliveryOrderRepository.countByStatus("Delivered");
+        long inTransitOrders = DeliveryOrderRepository.countByStatus("In Transit");
+        long failedOrders    = DeliveryOrderRepository.countByStatus("Failed");
+        long cancelledOrders = DeliveryOrderRepository.countByStatus("Cancelled");
+        long assignedOrders  = DeliveryOrderRepository.countByStatus("Assigned") + DeliveryOrderRepository.countByStatus("Picked Up");
 
         // 2. In Banner nghệ thuật CDMS phối màu mượt mà
         System.out.println(BOLD_CYAN + "   ▄████████ ▀█████████▄   ▄▄▄▄███▄▄▄▄    ▄████████ " + RESET);
@@ -79,6 +84,14 @@ public class DashboardView {
         
         System.out.printf(BOLD_YELLOW + "║" + RESET + "  ✅ Đơn giao xong : " + BOLD_GREEN + "%-15d" + RESET + BOLD_YELLOW + "║" + RESET + "  💰 Thực thu (VND) : " + BOLD_GREEN + "%,-16.0f" + RESET + BOLD_YELLOW + "║%n" + RESET, 
                 deliveredOrders, totalRevenue);
+
+        System.out.println(BOLD_YELLOW + "╠══════════════════════════════════════╬═══════════════════════════════════╣" + RESET);
+
+        System.out.printf(BOLD_YELLOW + "║" + RESET + "  ⚡ Đang vận chuyển: " + BOLD_CYAN + "%-14d" + RESET + BOLD_YELLOW + "║" + RESET + "  📋 Đơn đã phân công: " + BOLD_WHITE + "%-14d" + RESET + BOLD_YELLOW + "║%n" + RESET, 
+                inTransitOrders, assignedOrders);
+
+        System.out.printf(BOLD_YELLOW + "║" + RESET + "  ❌ Giao thất bại  : " + BOLD_RED + "%-14d" + RESET + BOLD_YELLOW + "║" + RESET + "  🚫 Đơn hàng đã hủy : " + BOLD_RED + "%-14d" + RESET + BOLD_YELLOW + "║%n" + RESET, 
+                failedOrders, cancelledOrders);
         
         System.out.println(BOLD_YELLOW + "╚══════════════════════════════════════╩═══════════════════════════════════╝" + RESET);
         System.out.println();

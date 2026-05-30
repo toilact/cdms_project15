@@ -3,7 +3,6 @@
 // Package: com.cdms.core
 // Description: Quản lý toàn bộ dữ liệu in-memory (RAM) và
 //              đồng bộ xuống/lên file JSON trong thư mục data/.
-//              Đây là "trái tim" lưu trữ của hệ thống CDMS.
 // Phân công: Đỗ Chí Thành (Leader - Thành viên 1)
 // ============================================================
 package com.cdms.core;
@@ -29,25 +28,26 @@ public class JSONDataManager {
     private static final String DATA_DIR = "data";
 
     // ===== TÊN CÁC FILE JSON =====
-    private static final String CUSTOMERS_FILE   = DATA_DIR + "/customers.json";
-    private static final String PARCELS_FILE     = DATA_DIR + "/parcels.json";
-    private static final String ORDERS_FILE      = DATA_DIR + "/orders.json";
-    private static final String STAFFS_FILE      = DATA_DIR + "/staffs.json";
-    private static final String INVOICES_FILE    = DATA_DIR + "/invoices.json";
+    private static final String CUSTOMERS_FILE = DATA_DIR + "/customers.json";
+    private static final String PARCELS_FILE = DATA_DIR + "/parcels.json";
+    private static final String ORDERS_FILE = DATA_DIR + "/orders.json";
+    private static final String STAFFS_FILE = DATA_DIR + "/staffs.json";
+    private static final String INVOICES_FILE = DATA_DIR + "/invoices.json";
 
     // ===== DỮ LIỆU IN-MEMORY (RAM) =====
-    public static List<Customer>      customers = new ArrayList<>();
-    public static List<Parcel>        parcels   = new ArrayList<>();
-    public static List<DeliveryOrder> orders    = new ArrayList<>();
-    public static List<DeliveryStaff> staffs    = new ArrayList<>();
-    public static List<Invoice>       invoices  = new ArrayList<>();
+    public static List<Customer> customers = new ArrayList<>();
+    public static List<Parcel> parcels = new ArrayList<>();
+    public static List<DeliveryOrder> orders = new ArrayList<>();
+    public static List<DeliveryStaff> staffs = new ArrayList<>();
+    public static List<Invoice> invoices = new ArrayList<>();
 
     // ===== GSON INSTANCE =====
-    /** 
+    /**
      * Cấu hình Gson:
      * - PrettyPrinting: File JSON dễ đọc cho dev.
      * - LocalDateAdapter: Xử lý Java 8+ LocalDate.
-     * - ParcelDeserializer: Xử lý abstract class Parcel → DocumentParcel / GoodsParcel.
+     * - ParcelDeserializer: Xử lý abstract class Parcel → DocumentParcel /
+     * GoodsParcel.
      */
     private static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
@@ -60,7 +60,7 @@ public class JSONDataManager {
     }
 
     // ==========================================================
-    //                   ĐỌC DỮ LIỆU (LOAD)
+    // ĐỌC DỮ LIỆU (LOAD)
     // ==========================================================
 
     /**
@@ -74,19 +74,24 @@ public class JSONDataManager {
         System.out.println("📂 Đang nạp dữ liệu từ thư mục '" + DATA_DIR + "/'...");
 
         customers = loadList(CUSTOMERS_FILE,
-                new TypeToken<List<Customer>>() {}.getType());
+                new TypeToken<List<Customer>>() {
+                }.getType());
 
         parcels = loadList(PARCELS_FILE,
-                new TypeToken<List<Parcel>>() {}.getType());
+                new TypeToken<List<Parcel>>() {
+                }.getType());
 
         orders = loadList(ORDERS_FILE,
-                new TypeToken<List<DeliveryOrder>>() {}.getType());
+                new TypeToken<List<DeliveryOrder>>() {
+                }.getType());
 
         staffs = loadList(STAFFS_FILE,
-                new TypeToken<List<DeliveryStaff>>() {}.getType());
+                new TypeToken<List<DeliveryStaff>>() {
+                }.getType());
 
         invoices = loadList(INVOICES_FILE,
-                new TypeToken<List<Invoice>>() {}.getType());
+                new TypeToken<List<Invoice>>() {
+                }.getType());
 
         System.out.printf("   ✅ Khách hàng : %d bản ghi%n", customers.size());
         System.out.printf("   ✅ Kiện hàng  : %d bản ghi%n", parcels.size());
@@ -125,7 +130,7 @@ public class JSONDataManager {
     }
 
     // ==========================================================
-    //                   GHI DỮ LIỆU (SAVE)
+    // GHI DỮ LIỆU (SAVE)
     // ==========================================================
 
     /**
@@ -161,7 +166,7 @@ public class JSONDataManager {
     }
 
     // ==========================================================
-    //                   TIỆN ÍCH NỘI BỘ
+    // TIỆN ÍCH NỘI BỘ
     // ==========================================================
 
     /**

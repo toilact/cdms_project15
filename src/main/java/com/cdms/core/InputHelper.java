@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class InputHelper {
 
     /** Scanner dùng chung cho toàn bộ ứng dụng */
-    private static final Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
 
     /** Định dạng ngày tháng chuẩn: DD/MM/YYYY */
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -357,5 +357,45 @@ public class InputHelper {
     public static void pressEnterToContinue() {
         System.out.print("\nBấm Enter để tiếp tục...");
         scanner.nextLine();
+    }
+
+    // ---------------------------------------------------------
+    // 6. TIỆN ÍCH: Hiển thị phân trang danh sách bất kỳ (UX-13)
+    // ---------------------------------------------------------
+
+    /**
+     * Hiển thị phân trang cho danh sách bất kỳ kèm đường kẻ phân cách tùy chọn.
+     *
+     * @param list Danh sách cần hiển thị
+     * @param pageSize Số lượng dòng hiển thị trên một trang
+     * @param separator Đường kẻ bảng phân cách (ví dụ: "+---+"), có thể null
+     */
+    public static <T> void printPaginatedList(java.util.List<T> list, int pageSize, String separator) {
+        if (list == null || list.isEmpty()) {
+            System.out.println("  (Chưa có dữ liệu nào phù hợp.)");
+            return;
+        }
+        int count = 0;
+        for (T item : list) {
+            System.out.println(item);
+            count++;
+            if (count % pageSize == 0 && count < list.size()) {
+                if (separator != null && !separator.isEmpty()) {
+                    System.out.println(separator);
+                }
+                System.out.print("\u001B[1;33m👉 Nhấn Enter để xem tiếp (" + count + "/" + list.size() + ") hoặc nhập 'q' để dừng: \u001B[0m");
+                String input = scanner.nextLine().trim();
+                if (input.equalsIgnoreCase("q")) {
+                    System.out.println("  🛑 Đã dừng hiển thị.");
+                    break;
+                }
+                if (separator != null && !separator.isEmpty()) {
+                    System.out.println(separator);
+                }
+            }
+        }
+        if (separator != null && !separator.isEmpty() && (count == list.size() || count % pageSize != 0)) {
+            System.out.println(separator);
+        }
     }
 }

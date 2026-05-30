@@ -64,8 +64,39 @@ public class ParcelService {
 
         // Lưu qua Repository và đồng bộ
         ParcelRepository.add(newParcel);
-        JSONDataManager.saveAllData();
 
         return newParcel;
+    }
+
+    /**
+     * Xóa bưu kiện theo ID (Có kiểm tra ràng buộc nghiệp vụ)
+     */
+    public static String deleteParcel(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return "❌ Lỗi: Mã bưu kiện không được để trống.";
+        }
+        final String finalId = id.trim();
+        Parcel parcel = ParcelRepository.findById(finalId);
+        if (parcel == null) {
+            return "❌ Lỗi: Không tìm thấy bưu kiện với mã '" + finalId + "'!";
+        }
+
+        // B1: Nếu bưu kiện đã được gán đơn hàng hoặc vận chuyển (trạng thái khác Pending)
+        if (!"Pending".equalsIgnoreCase(parcel.getStatus())) {
+            return "❌ Lỗi: Không thể xóa bưu kiện vì nó đã được tạo đơn giao hàng (trạng thái hiện tại: " + parcel.getStatus() + ")!";
+        }
+
+        // B2: Kiểm tra xem có đơn hàng nào liên kết với kiện hàng này trong dữ liệu hay không
+        boolean hasOrder = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
+                .anyMatch(o -> finalId.equalsIgnoreCase(o.getParcelId()));
+        if (hasOrder) {
+            return "❌ Lỗi: Không thể xóa bưu kiện vì đang liên kết với đơn giao hàng trong hệ thống!";
+        }
+
+        boolean success = ParcelRepository.delete(id);
+        if (success) {
+            return "✅ Đã xóa bưu kiện: " + id;
+        }
+        return "❌ Lỗi: Xóa bưu kiện thất bại.";
     }
 }

@@ -91,7 +91,7 @@ public class DeliveryStaff {
 
     @Override
     public String toString() {
-        return String.format("| %-10s | %-20s | %-15s | %-12s | %-8s | Đã giao: %d đơn |",
+        return String.format("| %-10s | %-20s | %-15s | %-12s | %-8s | Đã giao: %5d đơn |",
                 id, name, phone, vehicleType, status, deliveredOrdersCount);
     }
 }

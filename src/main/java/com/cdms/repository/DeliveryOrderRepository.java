@@ -93,6 +93,7 @@ public class DeliveryOrderRepository {
     public static void add(DeliveryOrder order) {
         if (order != null) {
             JSONDataManager.orders.add(order);
+            JSONDataManager.saveAllData();
         }
     }
 

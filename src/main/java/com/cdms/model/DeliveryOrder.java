@@ -23,6 +23,7 @@ public class DeliveryOrder {
     private String deliveryType;     // "Standard" hoặc "Urgent"
     private String status;           // "Pending", "Assigned", "In Transit", "Delivered", "Failed"
     private List<String> notes;      // Danh sách ghi chú giao hàng
+    private String paymentTerms;     // "Sender Pay" (Người gửi trả) hoặc "Receiver Pay" (Người nhận trả - COD)
 
     // ===== CONSTRUCTORS =====
 
@@ -50,6 +51,10 @@ public class DeliveryOrder {
     }
 
     // ===== GETTERS =====
+
+    public String getPaymentTerms() {
+        return paymentTerms;
+    }
 
     public String getId() {
         return id;
@@ -133,6 +138,10 @@ public class DeliveryOrder {
         this.notes = notes;
     }
 
+    public void setPaymentTerms(String paymentTerms) {
+        this.paymentTerms = paymentTerms;
+    }
+
     // ===== HELPER: Thêm ghi chú =====
 
     /**
@@ -149,7 +158,7 @@ public class DeliveryOrder {
 
     @Override
     public String toString() {
-        return String.format("| %-10s | Parcel: %-10s | Staff: %-10s | %-10s | %-10s | %-12s |",
+        return String.format("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |",
                 id, parcelId,
                 (staffId != null ? staffId : "Chưa phân"),
                 deliveryType, status,

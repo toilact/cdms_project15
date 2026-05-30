@@ -3,8 +3,16 @@
     "id": "SHIP001",
     "name": "Nguyen Quoc Cuong",
     "phone": "0123456789",
-    "vehicleType": "xe m\u0000y",
+    "vehicleType": "Xe máy",
     "status": "Active",
     "deliveredOrdersCount": 0
+  },
+  {
+    "id": "nv001",
+    "name": "Phạm Đắc Anh",
+    "phone": "0366363636",
+    "vehicleType": "Xe máy",
+    "status": "Active",
+    "deliveredOrdersCount": 4
   }
 ]

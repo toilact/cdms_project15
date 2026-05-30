@@ -62,6 +62,44 @@ public class BillingReportService {
         return DeliveryStaffRepository.findTopShippers(limit);
     }
 
+    /**
+     * B21 / BR19 — Lấy danh sách Top Shipper tích cực nhất trong một khoảng thời gian được chọn.
+     */
+    public static List<DeliveryStaff> getTopShippersInPeriod(LocalDate start, LocalDate end, int limit) {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("Khoảng thời gian không được để trống!");
+        }
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("Ngày bắt đầu không được sau ngày kết thúc!");
+        }
+
+        // Thống kê số đơn hàng hoàn thành của shipper trong khoảng [start, end]
+        Map<String, Long> counts = DeliveryOrderRepository.findAll().stream()
+                .filter(o -> "Delivered".equalsIgnoreCase(o.getStatus()) && o.getDeliveryDate() != null)
+                .filter(o -> !o.getDeliveryDate().isBefore(start) && !o.getDeliveryDate().isAfter(end))
+                .filter(o -> o.getStaffId() != null)
+                .collect(Collectors.groupingBy(DeliveryOrder::getStaffId, Collectors.counting()));
+
+        return counts.entrySet().stream()
+                .map(entry -> {
+                    DeliveryStaff original = DeliveryStaffRepository.findById(entry.getKey());
+                    if (original == null) return null;
+                    // Tạo bản sao tạm thời để chứa số lượng đơn đã giao trong giai đoạn này
+                    return new DeliveryStaff(
+                            original.getId(),
+                            original.getName(),
+                            original.getPhone(),
+                            original.getVehicleType(),
+                            original.getStatus(),
+                            entry.getValue().intValue()
+                    );
+                })
+                .filter(java.util.Objects::nonNull)
+                .sorted((s1, s2) -> Integer.compare(s2.getDeliveredOrdersCount(), s1.getDeliveredOrdersCount()))
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
     public static boolean invoiceExistsForOrder(String orderId) {
         return InvoiceRepository.existsByOrderId(orderId);
     }
@@ -128,6 +166,15 @@ public class BillingReportService {
 
         Invoice invoice = createInvoice(order);
         if (invoice != null) {
+            if (order.getPaymentTerms() != null && "Sender Pay".equalsIgnoreCase(order.getPaymentTerms())) {
+                invoice.setPaymentStatus("Paid");
+                invoice.setPaymentMethod("Cash"); // Mặc định đã thanh toán tại quầy
+                invoice.setPaymentDate(order.getOrderDate() != null ? order.getOrderDate() : LocalDate.now());
+            } else {
+                // Đơn hàng COD (hoặc đơn hàng cũ chưa có paymentTerms): Shipper đã thu tiền mặt khi giao hàng thành công
+                invoice.setPaymentStatus("Collected");
+                invoice.setPaymentDate(order.getDeliveryDate() != null ? order.getDeliveryDate() : LocalDate.now());
+            }
             InvoiceRepository.add(invoice);
         }
         return invoice;
@@ -143,6 +190,44 @@ public class BillingReportService {
             return false;
         if ("Paid".equalsIgnoreCase(invoice.getPaymentStatus()))
             return false;
+
+        // BUG-12: Ràng buộc ngày thanh toán không được trước ngày giao đơn hàng thực tế
+        DeliveryOrder order = DeliveryOrderRepository.findById(invoice.getOrderId());
+        if (order != null && order.getDeliveryDate() != null && paymentDate.isBefore(order.getDeliveryDate())) {
+            throw new IllegalArgumentException("Ngày thanh toán không được trước ngày giao đơn hàng thực tế (" + order.getDeliveryDate() + ")!");
+        }
+
+        invoice.setPaymentStatus("Paid");
+        invoice.setPaymentMethod(paymentMethod);
+        invoice.setPaymentDate(paymentDate);
+        return InvoiceRepository.update(invoice);
+    }
+
+    /**
+     * Lấy danh sách hóa đơn đã được Shipper thu hộ COD nhưng chưa đối soát (paymentStatus = "Collected").
+     */
+    public static List<Invoice> getCollectedInvoices() {
+        return InvoiceRepository.findAll().stream()
+                .filter(inv -> "Collected".equalsIgnoreCase(inv.getPaymentStatus()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Stage 3: Đối soát tiền COD (Chuyển trạng thái "Collected" sang "Paid").
+     * Trả về false nếu hóa đơn không tồn tại hoặc không ở trạng thái "Collected".
+     */
+    public static boolean reconcileInvoice(String invoiceId, String paymentMethod, LocalDate paymentDate) {
+        Invoice invoice = findInvoiceById(invoiceId);
+        if (invoice == null)
+            return false;
+        if (!"Collected".equalsIgnoreCase(invoice.getPaymentStatus()))
+            return false;
+
+        // Ràng buộc ngày đối soát không được trước ngày giao đơn hàng thực tế
+        DeliveryOrder order = DeliveryOrderRepository.findById(invoice.getOrderId());
+        if (order != null && order.getDeliveryDate() != null && paymentDate.isBefore(order.getDeliveryDate())) {
+            throw new IllegalArgumentException("Ngày đối soát không được trước ngày giao đơn hàng thực tế (" + order.getDeliveryDate() + ")!");
+        }
 
         invoice.setPaymentStatus("Paid");
         invoice.setPaymentMethod(paymentMethod);
