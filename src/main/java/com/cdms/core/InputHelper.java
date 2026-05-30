@@ -44,6 +44,9 @@ public class InputHelper {
             try {
                 System.out.print(prompt);
                 String line = scanner.nextLine().trim();
+                if (line.equalsIgnoreCase("cancel")) {
+                    throw new FormCancelledException();
+                }
                 int value = Integer.parseInt(line);
                 if (value >= min && value <= max) {
                     return value;
@@ -71,6 +74,9 @@ public class InputHelper {
             try {
                 System.out.print(prompt);
                 String line = scanner.nextLine().trim();
+                if (line.equalsIgnoreCase("cancel")) {
+                    throw new FormCancelledException();
+                }
                 double value = Double.parseDouble(line);
                 if (value > min) {
                     return value;
@@ -95,6 +101,9 @@ public class InputHelper {
             try {
                 System.out.print(prompt);
                 String line = scanner.nextLine().trim();
+                if (line.equalsIgnoreCase("cancel")) {
+                    throw new FormCancelledException();
+                }
                 double value = Double.parseDouble(line);
                 if (value >= min && value <= max) {
                     return value;
@@ -124,6 +133,9 @@ public class InputHelper {
         while (true) {
             System.out.print(prompt);
             String line = scanner.nextLine().trim();
+            if (line.equalsIgnoreCase("cancel")) {
+                throw new FormCancelledException();
+            }
             if (!line.isEmpty()) {
                 return line;
             }
@@ -165,6 +177,43 @@ public class InputHelper {
         }
     }
 
+    /**
+     * Nhập chuỗi và kiểm tra tính hợp lệ qua một Predicate tùy chọn ngay lập tức.
+     *
+     * @param prompt       Thông báo hiển thị
+     * @param validator    Hàm kiểm tra tính hợp lệ
+     * @param errorMessage Thông báo lỗi khi không hợp lệ
+     * @return Chuỗi hợp lệ
+     */
+    public static String getStringInput(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {
+        while (true) {
+            String val = getStringInput(prompt);
+            if (validator.test(val)) {
+                return val;
+            }
+            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
+        }
+    }
+
+    /**
+     * Nhập số thực và kiểm tra tính hợp lệ qua DoublePredicate tùy chọn ngay lập tức.
+     *
+     * @param prompt       Thông báo hiển thị
+     * @param min          Giá trị tối thiểu
+     * @param validator    Hàm kiểm tra tính hợp lệ
+     * @param errorMessage Thông báo lỗi khi không hợp lệ
+     * @return Số thực hợp lệ
+     */
+    public static double getDoubleInput(String prompt, double min, java.util.function.DoublePredicate validator, String errorMessage) {
+        while (true) {
+            double val = getDoubleInput(prompt, min);
+            if (validator.test(val)) {
+                return val;
+            }
+            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
+        }
+    }
+
     // ---------------------------------------------------------
     // 4. NHẬP CHUỖI TÙY CHỌN (cho phép để trống)
     // ---------------------------------------------------------
@@ -179,7 +228,32 @@ public class InputHelper {
      */
     public static String getOptionalStringInput(String prompt) {
         System.out.print(prompt);
-        return scanner.nextLine().trim();
+        String line = scanner.nextLine().trim();
+        if (line.equalsIgnoreCase("cancel")) {
+            throw new FormCancelledException();
+        }
+        return line;
+    }
+
+    /**
+     * Nhập chuỗi tùy chọn và kiểm tra tính hợp lệ nếu người dùng không để trống.
+     *
+     * @param prompt       Thông báo hiển thị
+     * @param validator    Hàm kiểm tra tính hợp lệ
+     * @param errorMessage Thông báo lỗi khi không hợp lệ
+     * @return Chuỗi hợp lệ hoặc rỗng
+     */
+    public static String getOptionalValidatedStringInput(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {
+        while (true) {
+            String val = getOptionalStringInput(prompt);
+            if (val.isEmpty()) {
+                return val;
+            }
+            if (validator.test(val)) {
+                return val;
+            }
+            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
+        }
     }
 
     // ---------------------------------------------------------
@@ -199,6 +273,9 @@ public class InputHelper {
             try {
                 System.out.print(prompt + (allowBlank ? " (Enter để bỏ qua): " : ": "));
                 String line = scanner.nextLine().trim();
+                if (line.equalsIgnoreCase("cancel")) {
+                    throw new FormCancelledException();
+                }
 
                 // Cho phép bỏ trống
                 if (line.isEmpty() && allowBlank) {
