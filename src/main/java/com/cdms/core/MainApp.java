@@ -4,6 +4,7 @@
 // Description: Điểm khởi chạy chính (Entry Point) của ứng dụng
 //              CDMS. Hiển thị Main Menu phân quyền theo vai trò
 //              và điều hướng tới các Submenu tương ứng.
+// Phân công: Đỗ Chí Thành (Leader - Thành viên 1)
 // ============================================================
 package com.cdms.core;
 

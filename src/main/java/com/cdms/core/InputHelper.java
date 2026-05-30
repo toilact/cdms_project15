@@ -4,6 +4,7 @@
 // Description: Bộ tiện ích nhập liệu từ bàn phím an toàn.
 //              Tất cả phương thức đều là static và có cơ chế
 //              try-catch chống crash chương trình khi nhập sai.
+// Phân công: Đỗ Chí Thành (Leader - Thành viên 1)
 // ============================================================
 package com.cdms.core;
 

@@ -64,15 +64,15 @@ public class BillingReportView {
         System.out.println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "MANAGER - MENU CHÍNH          " + RESET);
         System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ THANH TOÁN]                                 " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Tính hóa đơn cho đơn hàng    (B16)                " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Xem chi tiết hóa đơn          (B17)                " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Ghi nhận thanh toán           (B18)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Tính hóa đơn cho đơn hàng                         " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Xem chi tiết hóa đơn                               " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Ghi nhận thanh toán                                " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [BÁO CÁO & THỐNG KÊ]                                 " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Báo cáo doanh thu theo ngày   (B19)                " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE + "Báo cáo doanh thu theo tháng  (B20)                " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE + "Shipper tích cực nhất         (B21)                " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE + "Thống kê đơn giao thành công  (B22)                " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Báo cáo doanh thu theo ngày                         " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE + "Báo cáo doanh thu theo tháng                        " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE + "Shipper tích cực nhất                               " + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE + "Thống kê đơn giao thành công                        " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ DỮ LIỆU - CRUD]                              " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE + "Thêm hóa đơn thủ công                              " + BOLD_YELLOW + "║" + RESET);
@@ -88,7 +88,7 @@ public class BillingReportView {
     // ==========================================================
 
     private static void handleCreateInvoice() {
-        System.out.println("\n" + PURPLE + "─── [B16] Tính hóa đơn cho đơn hàng đã giao ───" + RESET);
+        System.out.println("\n" + PURPLE + "─── Tính hóa đơn cho đơn hàng đã giao ───" + RESET);
         String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
 
         // Kiểm tra đơn hàng tồn tại
@@ -131,7 +131,7 @@ public class BillingReportView {
     // ==========================================================
 
     private static void handleViewInvoiceDetails() {
-        System.out.println("\n" + PURPLE + "─── [B17] Xem chi tiết hóa đơn ───" + RESET);
+        System.out.println("\n" + PURPLE + "─── Xem chi tiết hóa đơn ───" + RESET);
 
         List<Invoice> invoices = BillingReportService.getAllInvoices();
         if (invoices.isEmpty()) {
@@ -157,7 +157,7 @@ public class BillingReportView {
     // ==========================================================
 
     private static void handleRecordPayment() {
-        System.out.println("\n" + PURPLE + "─── [B18] Ghi nhận thanh toán ───" + RESET);
+        System.out.println("\n" + PURPLE + "─── Ghi nhận thanh toán ───" + RESET);
 
         // Chỉ hiển thị hóa đơn chưa thanh toán
         List<Invoice> unpaidInvoices = BillingReportService.getUnpaidInvoices();
@@ -202,7 +202,7 @@ public class BillingReportView {
     // ==========================================================
 
     private static void handleDailyRevenueReport() {
-        System.out.println("\n" + PURPLE + "─── [B19] Báo cáo doanh thu theo ngày ───" + RESET);
+        System.out.println("\n" + PURPLE + "─── Báo cáo doanh thu theo ngày ───" + RESET);
 
         Map<LocalDate, Double> dailyRevenue = BillingReportService.calculateDailyRevenue();
 
@@ -230,7 +230,7 @@ public class BillingReportView {
     // ==========================================================
 
     private static void handleMonthlyRevenueReport() {
-        System.out.println("\n" + PURPLE + "─── [B20] Báo cáo doanh thu theo tháng ───" + RESET);
+        System.out.println("\n" + PURPLE + "─── Báo cáo doanh thu theo tháng ───" + RESET);
         System.out.println("Chọn hình thức xem:");
         System.out.println("  1. Tất cả các tháng");
         System.out.println("  2. Theo năm cụ thể");
@@ -272,7 +272,7 @@ public class BillingReportView {
     // ==========================================================
 
     private static void handleTopShippers() {
-        System.out.println("\n" + PURPLE + "─── [B21] Shipper tích cực nhất ───" + RESET);
+        System.out.println("\n" + PURPLE + "─── Shipper tích cực nhất ───" + RESET);
 
         List<DeliveryStaff> shippers = BillingReportService.getTopShippers(5);
         if (shippers.isEmpty()) {
@@ -297,11 +297,11 @@ public class BillingReportView {
     // ==========================================================
 
     private static void handleDeliveryStatistics() {
-        System.out.println("\n" + PURPLE + "─── [B22] Thống kê đơn giao hàng ───" + RESET);
+        System.out.println("\n" + PURPLE + "─── Thống kê đơn giao hàng ───" + RESET);
 
         Map<String, Object> stats = BillingReportService.getDeliveryStatistics();
 
-        System.out.println(BOLD_CYAN + "\n══════════ THỐNG KÊ ĐƠN HÀNG ══════════" + RESET);
+        System.out.println(BOLD_CYAN + "\n══════════ THỐNG KÊ TỔNG HỢP ĐƠN HÀNG ══════════" + RESET);
         System.out.printf("  %-28s: %s%n", "Tổng số đơn hàng",       stats.get("totalOrders"));
         System.out.printf("  %-28s: %s%n", "Đã giao thành công",      stats.get("delivered"));
         System.out.printf("  %-28s: %s%n", "Đang giao (In Transit)",  stats.get("inTransit"));
@@ -309,7 +309,46 @@ public class BillingReportView {
         System.out.printf("  %-28s: %s%n", "Chờ xử lý (Pending)",     stats.get("pending"));
         System.out.printf("  %-28s: %s%n", "Giao thất bại (Failed)",  stats.get("failed"));
         System.out.printf("  %-28s: %.1f%%%n", "Tỷ lệ giao thành công", stats.get("successRate"));
-        System.out.println("═".repeat(42) + "\n");
+        System.out.println("═".repeat(42));
+
+        System.out.println("\nXem danh sách đơn hàng chi tiết:");
+        System.out.println("  1. Xem danh sách đơn giao thành công (Delivered)");
+        System.out.println("  2. Xem danh sách đơn giao thất bại (Failed)");
+        System.out.println("  0. Bỏ qua");
+        int detailChoice = InputHelper.getIntInput("Lựa chọn (0-2): ", 0, 2);
+
+        if (detailChoice == 1) {
+            List<com.cdms.model.DeliveryOrder> deliveredOrders = com.cdms.repository.DeliveryOrderRepository.findByStatus("Delivered");
+            System.out.println(BOLD_CYAN + "\n----------- SUCCESSFULLY DELIVERED ORDERS -----------" + RESET);
+            if (deliveredOrders.isEmpty()) {
+                System.out.println("  Không có đơn hàng nào giao thành công.");
+            } else {
+                for (com.cdms.model.DeliveryOrder o : deliveredOrders) {
+                    String receiverInfo = "";
+                    com.cdms.model.Parcel p = com.cdms.repository.ParcelRepository.findById(o.getParcelId());
+                    if (p != null) {
+                        receiverInfo = p.getReceiverName();
+                    }
+                    System.out.printf("  %-5s - %-20s - %s%n", o.getId(), receiverInfo, o.getDeliveryDate() != null ? o.getDeliveryDate() : "Chưa cập nhật");
+                }
+            }
+            System.out.println("-".repeat(50) + "\n");
+        } else if (detailChoice == 2) {
+            List<com.cdms.model.DeliveryOrder> failedOrders = com.cdms.repository.DeliveryOrderRepository.findByStatus("Failed");
+            System.out.println(BOLD_RED + "\n----------- FAILED DELIVERY ORDERS -----------" + RESET);
+            if (failedOrders.isEmpty()) {
+                System.out.println("  Không có đơn hàng nào giao thất bại.");
+            } else {
+                for (com.cdms.model.DeliveryOrder o : failedOrders) {
+                    String reason = "Không rõ lý do";
+                    if (o.getNotes() != null && !o.getNotes().isEmpty()) {
+                        reason = o.getNotes().get(o.getNotes().size() - 1);
+                    }
+                    System.out.printf("  %-5s - %-30s - %s%n", o.getId(), reason, o.getDeliveryDate() != null ? o.getDeliveryDate() : "Chưa cập nhật");
+                }
+            }
+            System.out.println("-".repeat(50) + "\n");
+        }
         InputHelper.pressEnterToContinue();
     }
 
