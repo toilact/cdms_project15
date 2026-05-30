@@ -1,0 +1,430 @@
+[
+  {
+    "id": "INV001",
+    "orderId": "ORD003",
+    "baseFee": 15000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 15000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-20"
+  },
+  {
+    "id": "INV002",
+    "orderId": "ORD004",
+    "baseFee": 120000.0,
+    "urgentCharge": 30000.0,
+    "totalAmount": 150000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-21"
+  },
+  {
+    "id": "INV003",
+    "orderId": "ORD009",
+    "baseFee": 50000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 50000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV004",
+    "orderId": "ORD010",
+    "baseFee": 25000.0,
+    "urgentCharge": 5000.0,
+    "totalAmount": 30000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-22"
+  },
+  {
+    "id": "INV005",
+    "orderId": "ORD011",
+    "baseFee": 80000.0,
+    "urgentCharge": 20000.0,
+    "totalAmount": 100000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-22"
+  },
+  {
+    "id": "INV006",
+    "orderId": "ORD012",
+    "baseFee": 45000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 45000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV007",
+    "orderId": "ORD013",
+    "baseFee": 100000.0,
+    "urgentCharge": 50000.0,
+    "totalAmount": 150000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Momo",
+    "paymentDate": "2026-05-23"
+  },
+  {
+    "id": "INV008",
+    "orderId": "ORD014",
+    "baseFee": 30000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 30000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-23"
+  },
+  {
+    "id": "INV009",
+    "orderId": "ORD015",
+    "baseFee": 60000.0,
+    "urgentCharge": 15000.0,
+    "totalAmount": 75000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV010",
+    "orderId": "ORD016",
+    "baseFee": 200000.0,
+    "urgentCharge": 50000.0,
+    "totalAmount": 250000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-24"
+  },
+  {
+    "id": "INV011",
+    "orderId": "ORD017",
+    "baseFee": 15000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 15000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-24"
+  },
+  {
+    "id": "INV012",
+    "orderId": "ORD018",
+    "baseFee": 70000.0,
+    "urgentCharge": 10000.0,
+    "totalAmount": 80000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "ZaloPay",
+    "paymentDate": "2026-05-24"
+  },
+  {
+    "id": "INV013",
+    "orderId": "ORD019",
+    "baseFee": 95000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 95000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV014",
+    "orderId": "ORD020",
+    "baseFee": 40000.0,
+    "urgentCharge": 5000.0,
+    "totalAmount": 45000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-25"
+  },
+  {
+    "id": "INV015",
+    "orderId": "ORD021",
+    "baseFee": 130000.0,
+    "urgentCharge": 20000.0,
+    "totalAmount": 150000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-25"
+  },
+  {
+    "id": "INV016",
+    "orderId": "ORD022",
+    "baseFee": 55000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 55000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV017",
+    "orderId": "ORD023",
+    "baseFee": 220000.0,
+    "urgentCharge": 30000.0,
+    "totalAmount": 250000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Momo",
+    "paymentDate": "2026-05-26"
+  },
+  {
+    "id": "INV018",
+    "orderId": "ORD024",
+    "baseFee": 35000.0,
+    "urgentCharge": 5000.0,
+    "totalAmount": 40000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-26"
+  },
+  {
+    "id": "INV019",
+    "orderId": "ORD025",
+    "baseFee": 75000.0,
+    "urgentCharge": 25000.0,
+    "totalAmount": 100000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-26"
+  },
+  {
+    "id": "INV020",
+    "orderId": "ORD026",
+    "baseFee": 28000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 28000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV021",
+    "orderId": "ORD027",
+    "baseFee": 110000.0,
+    "urgentCharge": 40000.0,
+    "totalAmount": 150000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "ZaloPay",
+    "paymentDate": "2026-05-27"
+  },
+  {
+    "id": "INV022",
+    "orderId": "ORD028",
+    "baseFee": 65000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 65000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-27"
+  },
+  {
+    "id": "INV023",
+    "orderId": "ORD029",
+    "baseFee": 180000.0,
+    "urgentCharge": 20000.0,
+    "totalAmount": 200000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV024",
+    "orderId": "ORD030",
+    "baseFee": 90000.0,
+    "urgentCharge": 10000.0,
+    "totalAmount": 100000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-28"
+  },
+  {
+    "id": "INV025",
+    "orderId": "ORD031",
+    "baseFee": 145000.0,
+    "urgentCharge": 25000.0,
+    "totalAmount": 170000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-28"
+  },
+  {
+    "id": "INV026",
+    "orderId": "ORD032",
+    "baseFee": 50000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 50000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV027",
+    "orderId": "ORD033",
+    "baseFee": 78000.0,
+    "urgentCharge": 12000.0,
+    "totalAmount": 90000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Momo",
+    "paymentDate": "2026-05-29"
+  },
+  {
+    "id": "INV028",
+    "orderId": "ORD034",
+    "baseFee": 35000.0,
+    "urgentCharge": 5000.0,
+    "totalAmount": 40000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-29"
+  },
+  {
+    "id": "INV029",
+    "orderId": "ORD035",
+    "baseFee": 125000.0,
+    "urgentCharge": 25000.0,
+    "totalAmount": 150000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV030",
+    "orderId": "ORD036",
+    "baseFee": 62000.0,
+    "urgentCharge": 8000.0,
+    "totalAmount": 70000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "ZaloPay",
+    "paymentDate": "2026-05-30"
+  },
+  {
+    "id": "INV031",
+    "orderId": "ORD037",
+    "baseFee": 45000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 45000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-05-30"
+  },
+  {
+    "id": "INV032",
+    "orderId": "ORD038",
+    "baseFee": 210000.0,
+    "urgentCharge": 40000.0,
+    "totalAmount": 250000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-30"
+  },
+  {
+    "id": "INV033",
+    "orderId": "ORD039",
+    "baseFee": 30000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 30000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV034",
+    "orderId": "ORD040",
+    "baseFee": 87000.0,
+    "urgentCharge": 13000.0,
+    "totalAmount": 100000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Momo",
+    "paymentDate": "2026-05-31"
+  },
+  {
+    "id": "INV035",
+    "orderId": "ORD041",
+    "baseFee": 150000.0,
+    "urgentCharge": 50000.0,
+    "totalAmount": 200000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-05-31"
+  },
+  {
+    "id": "INV036",
+    "orderId": "ORD042",
+    "baseFee": 25000.0,
+    "urgentCharge": 5000.0,
+    "totalAmount": 30000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-06-01"
+  },
+  {
+    "id": "INV037",
+    "orderId": "ORD043",
+    "baseFee": 56000.0,
+    "urgentCharge": 14000.0,
+    "totalAmount": 70000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV038",
+    "orderId": "ORD044",
+    "baseFee": 99000.0,
+    "urgentCharge": 1000.0,
+    "totalAmount": 100000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "ZaloPay",
+    "paymentDate": "2026-06-01"
+  },
+  {
+    "id": "INV039",
+    "orderId": "ORD045",
+    "baseFee": 67000.0,
+    "urgentCharge": 3000.0,
+    "totalAmount": 70000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-06-02"
+  },
+  {
+    "id": "INV040",
+    "orderId": "ORD046",
+    "baseFee": 115000.0,
+    "urgentCharge": 35000.0,
+    "totalAmount": 150000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Momo",
+    "paymentDate": "2026-06-02"
+  },
+  {
+    "id": "INV041",
+    "orderId": "ORD047",
+    "baseFee": 40000.0,
+    "urgentCharge": 0.0,
+    "totalAmount": 40000.0,
+    "paymentStatus": "Unpaid",
+    "paymentMethod": "None"
+  },
+  {
+    "id": "INV042",
+    "orderId": "ORD048",
+    "baseFee": 175000.0,
+    "urgentCharge": 25000.0,
+    "totalAmount": 200000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Banking",
+    "paymentDate": "2026-06-03"
+  },
+  {
+    "id": "INV043",
+    "orderId": "ORD049",
+    "baseFee": 52000.0,
+    "urgentCharge": 8000.0,
+    "totalAmount": 60000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "Cash",
+    "paymentDate": "2026-06-03"
+  },
+  {
+    "id": "IVN044",
+    "orderId": "ORD050",
+    "baseFee": 99000.0,
+    "urgentCharge": 36000.0,
+    "totalAmount": 135000.0,
+    "paymentStatus": "Paid",
+    "paymentMethod": "cash",
+    "paymentDate": "2026-05-25"
+  }
+]

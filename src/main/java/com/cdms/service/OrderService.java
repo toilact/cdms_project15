@@ -106,7 +106,6 @@ public class OrderService {
 
         // Lưu dữ liệu qua Repository
         DeliveryOrderRepository.add(newOrder);
-        JSONDataManager.saveAllData();
         return newOrder;
     }
 
@@ -129,19 +128,8 @@ public class OrderService {
         // Format và kiểm tra trạng thái hợp lệ
         String formattedStatus = formatStatus(newStatus);
         
-        // Đồng thời cập nhật trạng thái của kiện hàng tương ứng
-        Parcel parcel = ParcelRepository.findById(order.getParcelId());
-        if (parcel != null) {
-            if ("Cancelled".equals(formattedStatus)) {
-                parcel.setStatus("Pending");
-            } else {
-                parcel.setStatus(formattedStatus);
-            }
-        }
-
-        order.setStatus(formattedStatus);
-        DeliveryOrderRepository.update(order);
-        return order;
+        // Delegate tới TrackingService để sử dụng State Machine validation và cập nhật đồng bộ
+        return TrackingService.updateStatus(orderId, formattedStatus);
     }
 
     /**
@@ -185,21 +173,7 @@ public class OrderService {
             throw new IllegalArgumentException("Mã đơn hàng không được để trống!");
         }
 
-        DeliveryOrder order = getOrderDetail(orderId);
-
-        if ("Delivered".equalsIgnoreCase(order.getStatus())) {
-            throw new IllegalStateException("Không thể hủy đơn hàng đã giao thành công!");
-        }
-
-        order.setStatus("Cancelled");
-        
-        // Cập nhật lại trạng thái kiện hàng về Pending qua Repository
-        Parcel parcel = ParcelRepository.findById(order.getParcelId());
-        if (parcel != null) {
-            parcel.setStatus("Pending");
-        }
-
-        DeliveryOrderRepository.update(order);
-        return order;
+        // Hủy đơn hàng thực chất là cập nhật trạng thái sang "Cancelled" đi kèm với các kiểm tra logic
+        return TrackingService.updateStatus(orderId, "Cancelled");
     }
 }

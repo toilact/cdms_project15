@@ -1,8 +1,8 @@
 // ============================================================
 // File: CustomerStaffView.java
 // Package: com.cdms.view
-// Description: Giao diện Console cho phân hệ Khách hàng &
-//              Nhân viên giao hàng. (Hoàn thiện 100% đặc tả)
+// Description: Giao diện Console dành cho Nhân viên Lễ tân (Reception Staff)
+//              để quản lý khách hàng và tiếp nhận bưu kiện.
 // Phân công: Nguyên Quốc Cường (Developer A - Thành viên 2)
 // ============================================================
 package com.cdms.view;
@@ -14,10 +14,8 @@ import com.cdms.model.Parcel;
 import com.cdms.model.DeliveryOrder;
 import com.cdms.service.CustomerStaffService;
 import com.cdms.service.OrderService;
-import com.cdms.service.ParcelService;
 import com.cdms.repository.CustomerRepository;
 import com.cdms.repository.ParcelRepository;
-import com.cdms.repository.DeliveryOrderRepository;
 
 import java.util.List;
 
@@ -36,12 +34,8 @@ public class CustomerStaffView {
     private CustomerStaffView() {
     }
 
-    // ==========================================================
-    // SUBMENU: RECEPTION STAFF (Nhân viên lễ tân)
-    // ==========================================================
-
     /**
-     * Menu chính cho vai trò Reception Staff.
+     * Menu chính của Nhân viên Lễ tân (Reception Staff).
      */
     public static void showReceptionMenu() {
         boolean running = true;
@@ -100,6 +94,11 @@ public class CustomerStaffView {
                 default:
                     break;
             }
+
+            // Nhất quán pressEnterToContinue sau mỗi lựa chọn menu khác 0 (UX-04)
+            if (running && choice != 0) {
+                InputHelper.pressEnterToContinue();
+            }
         }
     }
 
@@ -108,16 +107,16 @@ public class CustomerStaffView {
     // ----------------------------------------------------------
     private static void handleAddCustomer() {
         System.out.println(BOLD_CYAN + "\n===== THÊM KHÁCH HÀNG MỚI =====" + RESET);
-        System.out.println("(Nhập 'cancel' để hủy bỏ)");
+        System.out.println("(Nhập 'cancel' tại bất kỳ trường nào để hủy thao tác)");
         try {
-            String id      = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ", 
-                    val -> CustomerRepository.findById(val) == null, 
+            String id = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ",
+                    val -> CustomerRepository.findById(val) == null,
                     "Mã khách hàng đã tồn tại trong hệ thống!");
-            String name    = InputHelper.getValidNameInput("Họ tên: ");
-            String phone   = InputHelper.getPhoneInput("Số điện thoại: ",
+            String name = InputHelper.getValidNameInput("Họ và tên khách hàng: ");
+            String phone = InputHelper.getPhoneInput("Số điện thoại: ",
                     val -> CustomerRepository.findByPhone(val) == null,
-                    "Số điện thoại đã được sử dụng bởi khách hàng khác!");
-            String address = InputHelper.getStringInput("Địa chỉ: ");
+                    "Số điện thoại này đã được sử dụng bởi khách hàng khác!");
+            String address = InputHelper.getStringInput("Địa chỉ khách hàng: ");
 
             System.out.println("\nXác nhận lưu thông tin khách hàng này?");
             System.out.println("  1. Lưu");
@@ -140,19 +139,19 @@ public class CustomerStaffView {
     //  [B2] Cập nhật thông tin khách hàng
     // ----------------------------------------------------------
     private static void handleUpdateCustomer() {
-        System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT KHÁCH HÀNG =====" + RESET);
-        System.out.println("(Nhập 'cancel' để hủy bỏ)");
+        System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT THÔNG TIN KHÁCH HÀNG =====" + RESET);
+        System.out.println("(Nhập 'cancel' để hủy)");
         try {
             String id = InputHelper.getStringInput("Mã khách hàng cần cập nhật: ",
                     val -> CustomerRepository.findById(val) != null,
-                    "Mã khách hàng không tồn tại!");
+                    "Mã khách hàng không tồn tại trong hệ thống!");
             Customer existing = CustomerStaffService.findCustomer(id);
 
             System.out.println("Thông tin hiện tại:");
             System.out.println(existing);
             System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-            String newName = InputHelper.getOptionalValidatedStringInput("Tên mới [" + existing.getName() + "]: ",
+            String newName = InputHelper.getOptionalValidatedStringInput("Họ tên mới [" + existing.getName() + "]: ",
                     val -> !val.matches("\\d+"),
                     "Tên khách hàng không được phép là số!");
             if (newName.isEmpty()) {
@@ -161,7 +160,7 @@ public class CustomerStaffView {
 
             String newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
                     val -> val.equalsIgnoreCase(existing.getPhone()) || CustomerRepository.findByPhone(val) == null,
-                    "Số điện thoại đã được sử dụng bởi khách hàng khác!");
+                    "Số điện thoại này đã được sử dụng bởi khách hàng khác!");
             if (newPhone.isEmpty()) {
                 newPhone = existing.getPhone();
             }
@@ -172,7 +171,7 @@ public class CustomerStaffView {
             }
 
             System.out.println("\nXác nhận cập nhật thông tin khách hàng?");
-            System.out.println("  1. Đồng ý");
+            System.out.println("  1. Cập nhật");
             System.out.println("  2. Hủy (Cancel)");
             int confirm = InputHelper.getIntInput("Lựa chọn (1-2): ", 1, 2);
 
@@ -202,10 +201,11 @@ public class CustomerStaffView {
         System.out.println("+------------+----------------------+-----------------+--------------------------------+");
         System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
         System.out.println("+------------+----------------------+-----------------+--------------------------------+");
-        for (Customer customer : customers) {
-            System.out.println(customer);
-        }
-        System.out.println("+------------+----------------------+-----------------+--------------------------------+\n");
+        
+        // Sử dụng phân trang tập trung với đường kẻ bảng đồng bộ (UX-13)
+        InputHelper.printPaginatedList(customers, 10, "+------------+----------------------+-----------------+--------------------------------+");
+        System.out.println(BOLD_GREEN + "Tổng số khách hàng: " + customers.size() + RESET);
+        System.out.println();
     }
 
     // ----------------------------------------------------------
@@ -222,6 +222,14 @@ public class CustomerStaffView {
 
             System.out.println("Thông tin khách hàng:");
             System.out.println(existing);
+
+            // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
+            long parcelCount = ParcelRepository.findAll().stream()
+                    .filter(p -> id.equalsIgnoreCase(p.getSenderId()))
+                    .count();
+            if (parcelCount > 0) {
+                System.out.println(BOLD_RED + "⚠️ CẢNH BÁO: Khách hàng này đang có " + parcelCount + " bưu kiện liên kết trong hệ thống!" + RESET);
+            }
 
             System.out.println("\nXác nhận xóa khách hàng này?");
             System.out.println("  1. Xóa");
@@ -256,10 +264,10 @@ public class CustomerStaffView {
                 if (result.isEmpty()) {
                     System.out.println("Không tìm thấy khách hàng nào khớp với tên: " + name);
                 } else {
-                    System.out.println(BOLD_GREEN + "Tìm thấy " + result.size() + " khách hàng:" + RESET);
-                    for (Customer c : result) {
-                        System.out.println(c);
-                    }
+                    System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+                    System.out.println("| Mã KH      | Tên khách hàng       | Điện thoại      | Địa chỉ                        |");
+                    System.out.println("+------------+----------------------+-----------------+--------------------------------+");
+                    InputHelper.printPaginatedList(result, 10, "+------------+----------------------+-----------------+--------------------------------+");
                 }
             } else {
                 String phone = InputHelper.getPhoneInput("Nhập số điện thoại: ");
@@ -298,7 +306,7 @@ public class CustomerStaffView {
 
             String receiverPhone = InputHelper.getOptionalValidatedStringInput("SĐT người nhận [" + existing.getReceiverPhone() + "]: ",
                     val -> val.matches("\\d{9,11}"),
-                    "Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)!");
+                    "Số điện thoại người nhận phải có từ 9 đến 11 số!");
             if (receiverPhone.isEmpty()) receiverPhone = existing.getReceiverPhone();
 
             String pickupAddress = InputHelper.getOptionalStringInput("Địa chỉ lấy hàng [" + existing.getPickupAddress() + "]: ");
@@ -308,16 +316,14 @@ public class CustomerStaffView {
             if (deliveryAddress.isEmpty()) deliveryAddress = existing.getDeliveryAddress();
 
             double weight = existing.getWeight();
-            String weightInput = InputHelper.getOptionalStringInput("Trọng lượng mới [" + existing.getWeight() + " kg]: ");
-            if (!weightInput.isEmpty()) {
+            String weightStr = InputHelper.getOptionalStringInput("Trọng lượng mới [" + existing.getWeight() + " kg]: ");
+            if (!weightStr.isEmpty()) {
                 try {
-                    weight = Double.parseDouble(weightInput);
-                    if (weight <= 0) {
-                        System.out.println("Trọng lượng không hợp lệ! Giữ nguyên trọng lượng cũ.");
-                        weight = existing.getWeight();
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Nhập sai định dạng số! Giữ nguyên trọng lượng cũ.");
+                    weight = Double.parseDouble(weightStr);
+                    if (weight <= 0) throw new IllegalArgumentException();
+                } catch (Exception e) {
+                    System.out.println(BOLD_RED + "⚠️ Trọng lượng không hợp lệ! Giữ nguyên giá trị cũ." + RESET);
+                    weight = existing.getWeight();
                 }
             }
 
@@ -332,16 +338,15 @@ public class CustomerStaffView {
                 existing.setPickupAddress(pickupAddress);
                 existing.setDeliveryAddress(deliveryAddress);
                 existing.setWeight(weight);
-
+                
                 boolean success = ParcelRepository.update(existing);
                 if (success) {
-                    System.out.println(BOLD_GREEN + "✅ Đã cập nhật thông tin bưu kiện thành công!" + RESET);
-                    System.out.println(existing);
+                    System.out.println(BOLD_GREEN + "✅ Đã cập nhật bưu kiện thành công!" + RESET);
                 } else {
-                    System.out.println(BOLD_RED + "❌ Cập nhật thất bại." + RESET);
+                    System.out.println(BOLD_RED + "❌ Cập nhật bưu kiện thất bại." + RESET);
                 }
             } else {
-                System.out.println(BOLD_RED + "❌ Đã hủy thao tác cập nhật bưu kiện." + RESET);
+                System.out.println("  Đã hủy thao tác.");
             }
         } catch (FormCancelledException e) {
             System.out.println(BOLD_RED + "\n❌ Đã hủy thao tác.\n" + RESET);
@@ -364,17 +369,24 @@ public class CustomerStaffView {
             System.out.println("Thông tin bưu kiện:");
             System.out.println(existing);
 
+            // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
+            boolean hasOrder = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
+                    .anyMatch(o -> id.equalsIgnoreCase(o.getParcelId()));
+            if (hasOrder) {
+                System.out.println(BOLD_RED + "⚠️ CẢNH BÁO: Bưu kiện này đang được liên kết với một đơn giao hàng trong hệ thống!" + RESET);
+            }
+
             System.out.println("\nXác nhận xóa bưu kiện này?");
             System.out.println("  1. Xóa");
             System.out.println("  2. Hủy (Cancel)");
             int confirm = InputHelper.getIntInput("Lựa chọn (1-2): ", 1, 2);
 
             if (confirm == 1) {
-                boolean success = ParcelRepository.delete(id);
-                if (success) {
-                    System.out.println(BOLD_GREEN + "✅ Xóa bưu kiện thành công!" + RESET);
+                String result = com.cdms.service.ParcelService.deleteParcel(id);
+                if (result.startsWith("✅")) {
+                    System.out.println(BOLD_GREEN + result + RESET);
                 } else {
-                    System.out.println(BOLD_RED + "❌ Xóa bưu kiện thất bại." + RESET);
+                    System.out.println(BOLD_RED + result + RESET);
                 }
             } else {
                 System.out.println("  Đã hủy thao tác.");
@@ -414,10 +426,11 @@ public class CustomerStaffView {
                 if (result.isEmpty()) {
                     System.out.println("Không tìm thấy bưu kiện nào có người nhận là: " + name);
                 } else {
-                    System.out.println(BOLD_GREEN + "Tìm thấy " + result.size() + " bưu kiện:" + RESET);
-                    for (Parcel p : result) {
-                        System.out.println(p);
-                    }
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+                    System.out.printf("| %-10s | %-10s | %-15s | %-10s | %-11s | %-10s | %-20s |%n",
+                            "Mã Kiện", "Mã Khách", "Tên Người Nhận", "Loại Kiện", "Trọng Lượng", "Trạng Thái", "Phí Vận Chuyển");
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+                    InputHelper.printPaginatedList(result, 10, "+------------+------------+-----------------+------------+-------------+------------+----------------------+");
                 }
             } else {
                 String status = InputHelper.getStringInput("Nhập trạng thái bưu kiện (Pending/Assigned/In Transit/Delivered/Failed/Cancelled): ");
@@ -428,9 +441,11 @@ public class CustomerStaffView {
                     System.out.println("Không tìm thấy bưu kiện nào có trạng thái: " + status);
                 } else {
                     System.out.println(BOLD_GREEN + "Tìm thấy " + result.size() + " bưu kiện có trạng thái '" + status + "':" + RESET);
-                    for (Parcel p : result) {
-                        System.out.println(p);
-                    }
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+                    System.out.printf("| %-10s | %-10s | %-15s | %-10s | %-11s | %-10s | %-20s |%n",
+                            "Mã Kiện", "Mã Khách", "Tên Người Nhận", "Loại Kiện", "Trọng Lượng", "Trạng Thái", "Phí Vận Chuyển");
+                    System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+                    InputHelper.printPaginatedList(result, 10, "+------------+------------+-----------------+------------+-------------+------------+----------------------+");
                 }
             }
         } catch (FormCancelledException e) {
@@ -451,7 +466,7 @@ public class CustomerStaffView {
                     "Không tìm thấy khách hàng với mã này!");
             Customer c = CustomerStaffService.findCustomer(customerId);
 
-            System.out.println("Khách hàng: " + c.getName() + " (" + customerId + ")");
+            System.out.println("\nKhách hàng: " + c.getName() + " (" + customerId + ")");
             System.out.println("SĐT: " + c.getPhone() + " | Địa chỉ: " + c.getAddress());
 
             // Lấy tất cả đơn hàng liên quan đến khách hàng gửi
@@ -462,15 +477,21 @@ public class CustomerStaffView {
             }
 
             System.out.println(BOLD_GREEN + "\nLịch sử đơn hàng gửi (" + orders.size() + " đơn):" + RESET);
-            System.out.println("─".repeat(85));
-            System.out.printf("  %-10s │ %-10s │ %-12s │ %-15s │ %-15s%n",
-                    "Mã Đơn", "Mã Kiện", "Loại dịch vụ", "Ngày tạo", "Trạng thái");
-            System.out.println("─".repeat(85));
-            for (DeliveryOrder o : orders) {
-                System.out.printf("  %-10s │ %-10s │ %-12s │ %-15s │ %-15s%n",
-                        o.getId(), o.getParcelId(), o.getDeliveryType(), o.getOrderDate(), o.getStatus());
-            }
-            System.out.println("─".repeat(85) + "\n");
+            System.out.println("+------------+------------+------------+------------+------------+--------------+");
+            System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |%n",
+                    "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Trạng Thái", "Ngày Tạo");
+            System.out.println("+------------+------------+------------+------------+------------+--------------+");
+            
+            List<String> formattedHistory = orders.stream()
+                    .map(o -> String.format("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |",
+                            o.getId(), o.getParcelId(),
+                            (o.getStaffId() != null ? o.getStaffId() : "Chưa phân"),
+                            o.getDeliveryType(), o.getStatus(),
+                            (o.getOrderDate() != null ? o.getOrderDate().toString() : "N/A")))
+                    .toList();
+            
+            // Sử dụng phân trang tập trung
+            InputHelper.printPaginatedList(formattedHistory, 10, "+------------+------------+------------+------------+------------+--------------+");
         } catch (FormCancelledException e) {
             System.out.println(BOLD_RED + "\n❌ Đã hủy thao tác.\n" + RESET);
         }

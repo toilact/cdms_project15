@@ -149,7 +149,7 @@ public class DeliveryOrder {
 
     @Override
     public String toString() {
-        return String.format("| %-10s | Parcel: %-10s | Staff: %-10s | %-10s | %-10s | %-12s |",
+        return String.format("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |",
                 id, parcelId,
                 (staffId != null ? staffId : "Chưa phân"),
                 deliveryType, status,

@@ -37,72 +37,7 @@ public class ParcelOrderView {
     private ParcelOrderView() {
     }
 
-    // ==========================================================
-    // SUBMENU: QUẢN LÝ KIỆN HÀNG & ĐƠN HÀNG (Chi tiết)
-    // ==========================================================
 
-    /**
-     * Menu quản lý chi tiết kiện hàng và đơn hàng.
-     */
-    public static void showMenu() {
-        boolean running = true;
-
-        while (running) {
-            System.out.println(
-                    BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "QUẢN LÝ KIỆN HÀNG & ĐƠN HÀNG" + RESET);
-            System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE
-                    + "Thêm kiện hàng mới                                 " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE
-                    + "Xem danh sách kiện hàng                            " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE
-                    + "Tạo đơn giao hàng mới                              " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE
-                    + "Cập nhật đơn giao hàng                             " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE
-                    + "Xem chi tiết đơn giao hàng                         " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE
-                    + "Tìm kiếm đơn theo KH                               " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE
-                    + "Hủy đơn giao hàng                                  " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
-                    + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
-
-            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-7): " + RESET, 0, 7);
-
-            switch (choice) {
-                case 1:
-                    executeCreateParcel();
-                    break;
-                case 2:
-                    executeViewParcels();
-                    break;
-                case 3:
-                    executeCreateOrder();
-                    break;
-                case 4:
-                    executeUpdateOrderStatus();
-                    break;
-                case 5:
-                    executeViewOrderDetail();
-                    break;
-                case 6:
-                    executeSearchOrdersByCustomer();
-                    break;
-                case 7:
-                    executeCancelOrder();
-                    break;
-                case 0:
-                    running = false;
-                    System.out.println("  ↩ Quay lại Menu chính...\n");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 
     // ==========================================================
     // CÁC HÀM THỰC THI (EXECUTE)
@@ -152,16 +87,20 @@ public class ParcelOrderView {
 
     public static void executeViewParcels() {
         System.out.println(BOLD_CYAN + "\n=== DANH SÁCH KIỆN HÀNG ===" + RESET);
-        List<Parcel> parcels = JSONDataManager.parcels;
+        List<Parcel> parcels = ParcelRepository.findAll();
 
         if (parcels.isEmpty()) {
             System.out.println("Chưa có kiện hàng nào.");
             return;
         }
 
-        for (Parcel p : parcels) {
-            System.out.println(p);
-        }
+        System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+        System.out.printf("| %-10s | %-10s | %-15s | %-10s | %-11s | %-10s | %-20s |%n",
+                "Mã Kiện", "Mã Khách", "Tên Người Nhận", "Loại Kiện", "Trọng Lượng", "Trạng Thái", "Phí Vận Chuyển");
+        System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
+
+        // Hỗ trợ hiển thị phân trang (UX-13)
+        InputHelper.printPaginatedList(parcels, 10, "+------------+------------+-----------------+------------+-------------+------------+----------------------+");
         System.out.println(BOLD_GREEN + "Tổng số kiện: " + parcels.size() + RESET);
     }
 

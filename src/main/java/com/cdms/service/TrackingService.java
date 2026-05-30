@@ -138,6 +138,17 @@ public class TrackingService {
             }
         } else if ("In Transit".equalsIgnoreCase(currentStatus) && "Failed".equalsIgnoreCase(formattedNewStatus)) {
             validTransition = true;
+        } else if ("Cancelled".equalsIgnoreCase(formattedNewStatus)) {
+            if ("Delivered".equalsIgnoreCase(currentStatus)) {
+                throw new IllegalStateException("Không thể hủy đơn hàng đã giao thành công!");
+            }
+            if ("Cancelled".equalsIgnoreCase(currentStatus)) {
+                throw new IllegalStateException("Đơn hàng này đã được hủy trước đó!");
+            }
+            if ("Failed".equalsIgnoreCase(currentStatus)) {
+                throw new IllegalStateException("Không thể hủy đơn hàng đã giao thất bại!");
+            }
+            validTransition = true;
         }
 
         if (!validTransition) {
@@ -150,7 +161,12 @@ public class TrackingService {
         // Cập nhật trạng thái kiện hàng tương ứng qua Repository
         Parcel parcel = ParcelRepository.findById(order.getParcelId());
         if (parcel != null) {
-            parcel.setStatus(formattedNewStatus);
+            if ("Cancelled".equalsIgnoreCase(formattedNewStatus)) {
+                parcel.setStatus("Pending");
+            } else {
+                parcel.setStatus(formattedNewStatus);
+            }
+            ParcelRepository.update(parcel);
         }
 
         DeliveryOrderRepository.update(order);
@@ -204,6 +220,16 @@ public class TrackingService {
             throw new IllegalStateException("Không thể cập nhật ngày lấy hàng cho đơn hàng đã hoàn thành hoặc đã hủy!");
         }
 
+        // BR16 Ràng buộc: Ngày lấy hàng phải >= ngày tạo đơn
+        if (pickupDate.isBefore(order.getOrderDate())) {
+            throw new IllegalArgumentException("Ngày lấy hàng thực tế không được trước ngày tạo đơn (" + order.getOrderDate() + ")!");
+        }
+
+        // BR16 Ràng buộc: Ngày lấy hàng phải <= ngày giao thực tế (nếu có)
+        if (order.getDeliveryDate() != null && pickupDate.isAfter(order.getDeliveryDate())) {
+            throw new IllegalArgumentException("Ngày lấy hàng thực tế không được sau ngày giao hàng thực tế (" + order.getDeliveryDate() + ")!");
+        }
+
         order.setPickupDate(pickupDate);
         DeliveryOrderRepository.update(order);
     }
@@ -222,6 +248,16 @@ public class TrackingService {
         DeliveryOrder order = DeliveryOrderRepository.findById(orderId.trim());
         if (order == null) {
             throw new IllegalArgumentException("Không tìm thấy đơn hàng với mã: " + orderId);
+        }
+
+        // BR16 Ràng buộc: Ngày giao hàng phải >= ngày tạo đơn
+        if (deliveryDate.isBefore(order.getOrderDate())) {
+            throw new IllegalArgumentException("Ngày giao hàng thực tế không được trước ngày tạo đơn (" + order.getOrderDate() + ")!");
+        }
+
+        // BR16 Ràng buộc: Ngày giao hàng phải >= ngày lấy hàng (nếu có)
+        if (order.getPickupDate() != null && deliveryDate.isBefore(order.getPickupDate())) {
+            throw new IllegalArgumentException("Ngày giao hàng thực tế không được trước ngày lấy hàng thực tế (" + order.getPickupDate() + ")!");
         }
 
         order.setDeliveryDate(deliveryDate);

@@ -1,0 +1,675 @@
+[
+  {
+    "id": "ORD001",
+    "parcelId": "PAR001",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-25",
+    "deliveryType": "Standard",
+    "status": "Pending",
+    "notes": []
+  },
+  {
+    "id": "ORD002",
+    "parcelId": "PAR002",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-21",
+    "expectedDeliveryDate": "2026-05-23",
+    "pickupDate": "2026-05-22",
+    "deliveryType": "Urgent",
+    "status": "In Transit",
+    "notes": [
+      "Đã lấy hàng từ người gửi, hàng nguyên vẹn.",
+      "Đang trên đường vận chuyển liên tỉnh."
+    ]
+  },
+  {
+    "id": "ORD003",
+    "parcelId": "PAR003",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-18",
+    "expectedDeliveryDate": "2026-05-21",
+    "pickupDate": "2026-05-19",
+    "deliveryDate": "2026-05-20",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Đã lấy hàng thành công.",
+      "Người nhận đã nhận hàng và ký tên xác nhận."
+    ]
+  },
+  {
+    "id": "ORD004",
+    "parcelId": "PAR004",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-19",
+    "expectedDeliveryDate": "2026-05-21",
+    "pickupDate": "2026-05-20",
+    "deliveryDate": "2026-05-21",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Hàng cồng kềnh, cần đi xe tải.",
+      "Đã giao cho người nhận lúc 15:30 ngày 21/05."
+    ]
+  },
+  {
+    "id": "ORD005",
+    "parcelId": "PAR005",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-26",
+    "pickupDate": "2026-05-23",
+    "deliveryType": "Standard",
+    "status": "In Transit",
+    "notes": [
+      "Đã lấy hàng từ bưu cục Hải Phòng."
+    ]
+  },
+  {
+    "id": "ORD006",
+    "parcelId": "PAR006",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-23",
+    "expectedDeliveryDate": "2026-05-27",
+    "deliveryType": "Standard",
+    "status": "Assigned",
+    "notes": [
+      "Đã phân công cho shipper Lê Văn Chung."
+    ]
+  },
+  {
+    "id": "ORD007",
+    "parcelId": "PAR007",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-15",
+    "expectedDeliveryDate": "2026-05-18",
+    "pickupDate": "2026-05-16",
+    "deliveryDate": "2026-05-18",
+    "deliveryType": "Standard",
+    "status": "Failed",
+    "notes": [
+      "Giao hàng thất bại: Người nhận không nghe máy sau 3 lần gọi."
+    ]
+  },
+  {
+    "id": "ORD008",
+    "parcelId": "PAR008",
+    "orderDate": "2026-05-24",
+    "expectedDeliveryDate": "2026-05-25",
+    "deliveryType": "Urgent",
+    "status": "Pending",
+    "notes": []
+  },
+  {
+    "id": "ORD009",
+    "parcelId": "PAR009",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-20",
+    "expectedDeliveryDate": "2026-05-23",
+    "pickupDate": "2026-05-21",
+    "deliveryDate": "2026-05-22",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Hàng dễ vỡ, đã bọc chống sốc kỹ càng.",
+      "Đã bàn giao cho người nhận nguyên vẹn."
+    ]
+  },
+  {
+    "id": "ORD010",
+    "parcelId": "PAR010",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-21",
+    "expectedDeliveryDate": "2026-05-22",
+    "pickupDate": "2026-05-21",
+    "deliveryDate": "2026-05-22",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hàng hỏa tốc, đã giao và thu tiền mặt thành công."
+    ]
+  },
+  {
+    "id": "ORD011",
+    "parcelId": "PAR011",
+    "staffId": "SHIP004",
+    "orderDate": "2026-05-20",
+    "expectedDeliveryDate": "2026-05-22",
+    "pickupDate": "2026-05-21",
+    "deliveryDate": "2026-05-22",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Khách chuyển khoản Banking trước, đã hoàn thành giao hàng."
+    ]
+  },
+  {
+    "id": "ORD012",
+    "parcelId": "PAR012",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": "2026-05-23",
+    "deliveryType": "Standard",
+    "status": "In Transit",
+    "notes": [
+      "Hàng đang luân chuyển qua kho trung chuyển, chưa thanh toán."
+    ]
+  },
+  {
+    "id": "ORD013",
+    "parcelId": "PAR013",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-23",
+    "pickupDate": "2026-05-22",
+    "deliveryDate": "2026-05-23",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Giao hỏa tốc nhận trong ngày, khách quét mã Momo."
+    ]
+  },
+  {
+    "id": "ORD014",
+    "parcelId": "PAR014",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-21",
+    "expectedDeliveryDate": "2026-05-24",
+    "pickupDate": "2026-05-22",
+    "deliveryDate": "2026-05-23",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Đã giao thành công, thu tiền mặt."
+    ]
+  },
+  {
+    "id": "ORD015",
+    "parcelId": "PAR015",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-23",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": "2026-05-24",
+    "deliveryType": "Urgent",
+    "status": "In Transit",
+    "notes": [
+      "Hàng hỏa tốc đang trên đường giao, đơn chưa thanh toán."
+    ]
+  },
+  {
+    "id": "ORD016",
+    "parcelId": "PAR016",
+    "staffId": "SHIP004",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-24",
+    "pickupDate": "2026-05-23",
+    "deliveryDate": "2026-05-24",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hàng giá trị cao, đã ký nhận và thanh toán chuyển khoản."
+    ]
+  },
+  {
+    "id": "ORD017",
+    "parcelId": "PAR017",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-22",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": "2026-05-23",
+    "deliveryDate": "2026-05-24",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Giao hàng tiêu chuẩn, thu tiền mặt tại nhà."
+    ]
+  },
+  {
+    "id": "ORD018",
+    "parcelId": "PAR018",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-23",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": "2026-05-23",
+    "deliveryDate": "2026-05-24",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Khách hàng thanh toán qua ví ZaloPay thành công."
+    ]
+  },
+  {
+    "id": "ORD019",
+    "parcelId": "PAR019",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-24",
+    "expectedDeliveryDate": "2026-05-27",
+    "deliveryType": "Standard",
+    "status": "Assigned",
+    "notes": [
+      "Đã phân công shipper lấy hàng, đơn công nợ chưa trả."
+    ]
+  },
+  {
+    "id": "ORD020",
+    "parcelId": "PAR020",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-24",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": "2026-05-24",
+    "deliveryDate": "2026-05-25",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Giao hỏa tốc, thu tiền mặt trực tiếp."
+    ]
+  },
+  {
+    "id": "ORD021",
+    "parcelId": "PAR021",
+    "staffId": "SHIP004",
+    "orderDate": "2026-05-23",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": "2026-05-24",
+    "deliveryDate": "2026-05-25",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Thanh toán ngân hàng thành công, hàng đã ký nhận."
+    ]
+  },
+  {
+    "id": "ORD022",
+    "parcelId": "PAR022",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-25",
+    "expectedDeliveryDate": "2026-05-28",
+    "deliveryType": "Standard",
+    "status": "Pending",
+    "notes": [
+      "Đơn hàng mới tạo, chưa thanh toán, chờ lấy hàng."
+    ]
+  },
+  {
+    "id": "ORD023",
+    "parcelId": "PAR023",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-25",
+    "expectedDeliveryDate": "2026-05-26",
+    "pickupDate": "2026-05-25",
+    "deliveryDate": "2026-05-26",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hỏa tốc giá trị lớn, đã thanh toán Momo."
+    ]
+  },
+  {
+    "id": "ORD024",
+    "parcelId": "PAR024",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-25",
+    "expectedDeliveryDate": "2026-05-26",
+    "pickupDate": "2026-05-25",
+    "deliveryDate": "2026-05-26",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã giao xong và thu tiền mặt."
+    ]
+  },
+  {
+    "id": "ORD025",
+    "parcelId": "PAR025",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-24",
+    "expectedDeliveryDate": "2026-05-26",
+    "pickupDate": "2026-05-25",
+    "deliveryDate": "2026-05-26",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã nhận tiền qua Banking, hàng giao nguyên vẹn."
+    ]
+  },
+  {
+    "id": "ORD026",
+    "parcelId": "PAR026",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-25",
+    "expectedDeliveryDate": "2026-05-29",
+    "deliveryType": "Standard",
+    "status": "Pending",
+    "notes": [
+      "Chưa thanh toán, chờ bưu cục gom hàng."
+    ]
+  },
+  {
+    "id": "ORD027",
+    "parcelId": "PAR027",
+    "staffId": "SHIP004",
+    "orderDate": "2026-05-26",
+    "expectedDeliveryDate": "2026-05-27",
+    "pickupDate": "2026-05-26",
+    "deliveryDate": "2026-05-27",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hỏa tốc thanh toán ZaloPay."
+    ]
+  },
+  {
+    "id": "ORD028",
+    "parcelId": "PAR028",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-25",
+    "expectedDeliveryDate": "2026-05-28",
+    "pickupDate": "2026-05-26",
+    "deliveryDate": "2026-05-27",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Giao thành công và hoàn tất thu tiền mặt."
+    ]
+  },
+  {
+    "id": "ORD029",
+    "parcelId": "PAR029",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-26",
+    "expectedDeliveryDate": "2026-05-28",
+    "pickupDate": "2026-05-27",
+    "deliveryType": "Urgent",
+    "status": "In Transit",
+    "notes": [
+      "Hàng hỏa tốc đang vận chuyển giữa các kho, chưa trả tiền."
+    ]
+  },
+  {
+    "id": "ORD030",
+    "parcelId": "PAR030",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-27",
+    "expectedDeliveryDate": "2026-05-28",
+    "pickupDate": "2026-05-27",
+    "deliveryDate": "2026-05-28",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã giao hỏa tốc và thu tiền mặt đầy đủ."
+    ]
+  },
+  {
+    "id": "ORD031",
+    "parcelId": "PAR031",
+    "staffId": "SHIP004",
+    "orderDate": "2026-05-26",
+    "expectedDeliveryDate": "2026-05-28",
+    "pickupDate": "2026-05-27",
+    "deliveryDate": "2026-05-28",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Khách chuyển khoản Banking, đơn hàng hoàn thành."
+    ]
+  },
+  {
+    "id": "ORD032",
+    "parcelId": "PAR032",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-28",
+    "expectedDeliveryDate": "2026-06-01",
+    "deliveryType": "Standard",
+    "status": "Pending",
+    "notes": [
+      "Đơn hàng tiêu chuẩn chưa thanh toán, chờ xử lý."
+    ]
+  },
+  {
+    "id": "ORD033",
+    "parcelId": "PAR033",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-28",
+    "expectedDeliveryDate": "2026-05-29",
+    "pickupDate": "2026-05-28",
+    "deliveryDate": "2026-05-29",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hỏa tốc, thanh toán qua Momo."
+    ]
+  },
+  {
+    "id": "ORD034",
+    "parcelId": "PAR034",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-27",
+    "expectedDeliveryDate": "2026-05-29",
+    "pickupDate": "2026-05-28",
+    "deliveryDate": "2026-05-29",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Hàng giao tận tay, nhận tiền mặt."
+    ]
+  },
+  {
+    "id": "ORD035",
+    "parcelId": "PAR035",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-28",
+    "expectedDeliveryDate": "2026-05-30",
+    "pickupDate": "2026-05-29",
+    "deliveryType": "Urgent",
+    "status": "In Transit",
+    "notes": [
+      "Đơn hỏa tốc đang đi giao, chưa thanh toán."
+    ]
+  },
+  {
+    "id": "ORD036",
+    "parcelId": "PAR036",
+    "staffId": "SHIP004",
+    "orderDate": "2026-05-29",
+    "expectedDeliveryDate": "2026-05-30",
+    "pickupDate": "2026-05-29",
+    "deliveryDate": "2026-05-30",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Giao thành công, thanh toán ví ZaloPay."
+    ]
+  },
+  {
+    "id": "ORD037",
+    "parcelId": "PAR037",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-28",
+    "expectedDeliveryDate": "2026-05-31",
+    "pickupDate": "2026-05-29",
+    "deliveryDate": "2026-05-30",
+    "deliveryType": "Standard",
+    "status": "Delivered",
+    "notes": [
+      "Đã thu tiền mặt từ người nhận."
+    ]
+  },
+  {
+    "id": "ORD038",
+    "parcelId": "PAR038",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-29",
+    "expectedDeliveryDate": "2026-05-30",
+    "pickupDate": "2026-05-29",
+    "deliveryDate": "2026-05-30",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hỏa tốc giá trị lớn, hoàn thành thanh toán Banking."
+    ]
+  },
+  {
+    "id": "ORD039",
+    "parcelId": "PAR039",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-30",
+    "expectedDeliveryDate": "2026-06-02",
+    "deliveryType": "Standard",
+    "status": "Pending",
+    "notes": [
+      "Đơn hàng tiêu chuẩn mới lập, chưa đóng tiền."
+    ]
+  },
+  {
+    "id": "ORD040",
+    "parcelId": "PAR040",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-30",
+    "expectedDeliveryDate": "2026-05-31",
+    "pickupDate": "2026-05-30",
+    "deliveryDate": "2026-05-31",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã nhận tiền Momo, hoàn tất giao hàng hỏa tốc."
+    ]
+  },
+  {
+    "id": "ORD041",
+    "parcelId": "PAR041",
+    "staffId": "SHIP004",
+    "orderDate": "2026-05-29",
+    "expectedDeliveryDate": "2026-05-31",
+    "pickupDate": "2026-05-30",
+    "deliveryDate": "2026-05-31",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã xác nhận thanh toán chuyển khoản và bàn giao."
+    ]
+  },
+  {
+    "id": "ORD042",
+    "parcelId": "PAR042",
+    "staffId": "SHIP001",
+    "orderDate": "2026-05-31",
+    "expectedDeliveryDate": "2026-06-02",
+    "pickupDate": "2026-05-31",
+    "deliveryDate": "2026-06-01",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hỏa tốc, đã thu tiền mặt."
+    ]
+  },
+  {
+    "id": "ORD043",
+    "parcelId": "PAR043",
+    "staffId": "SHIP003",
+    "orderDate": "2026-05-31",
+    "expectedDeliveryDate": "2026-06-02",
+    "pickupDate": "2026-06-01",
+    "deliveryType": "Urgent",
+    "status": "In Transit",
+    "notes": [
+      "Đơn hỏa tốc đang luân chuyển, chưa thanh toán."
+    ]
+  },
+  {
+    "id": "ORD044",
+    "parcelId": "PAR044",
+    "staffId": "SHIP002",
+    "orderDate": "2026-05-31",
+    "expectedDeliveryDate": "2026-06-01",
+    "pickupDate": "2026-05-31",
+    "deliveryDate": "2026-06-01",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã thanh toán qua ZaloPay, giao thành công."
+    ]
+  },
+  {
+    "id": "ORD045",
+    "parcelId": "PAR045",
+    "staffId": "SHIP005",
+    "orderDate": "2026-06-01",
+    "expectedDeliveryDate": "2026-06-02",
+    "pickupDate": "2026-06-01",
+    "deliveryDate": "2026-06-02",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã giao xong và hoàn thành nhận tiền mặt."
+    ]
+  },
+  {
+    "id": "ORD046",
+    "parcelId": "PAR046",
+    "staffId": "SHIP004",
+    "orderDate": "2026-06-01",
+    "expectedDeliveryDate": "2026-06-02",
+    "pickupDate": "2026-06-01",
+    "deliveryDate": "2026-06-02",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Giao hỏa tốc thành công, thanh toán qua ví Momo."
+    ]
+  },
+  {
+    "id": "ORD047",
+    "parcelId": "PAR047",
+    "staffId": "SHIP001",
+    "orderDate": "2026-06-02",
+    "expectedDeliveryDate": "2026-06-05",
+    "deliveryType": "Standard",
+    "status": "Pending",
+    "notes": [
+      "Đơn hàng tiêu chuẩn chưa thanh toán, chờ shipper gom."
+    ]
+  },
+  {
+    "id": "ORD048",
+    "parcelId": "PAR048",
+    "staffId": "SHIP003",
+    "orderDate": "2026-06-02",
+    "expectedDeliveryDate": "2026-06-03",
+    "pickupDate": "2026-06-02",
+    "deliveryDate": "2026-06-03",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đơn hỏa tốc, thanh toán chuyển khoản Banking đầy đủ."
+    ]
+  },
+  {
+    "id": "ORD049",
+    "parcelId": "PAR049",
+    "staffId": "SHIP002",
+    "orderDate": "2026-06-02",
+    "expectedDeliveryDate": "2026-06-03",
+    "pickupDate": "2026-06-02",
+    "deliveryDate": "2026-06-03",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Đã bàn giao bưu kiện và thu tiền mặt trực tiếp."
+    ]
+  },
+  {
+    "id": "ORD050",
+    "parcelId": "PAR050",
+    "staffId": "SHIP005",
+    "orderDate": "2026-05-24",
+    "expectedDeliveryDate": "2026-05-25",
+    "pickupDate": "2026-05-24",
+    "deliveryDate": "2026-05-25",
+    "deliveryType": "Urgent",
+    "status": "Delivered",
+    "notes": [
+      "Khớp thông tin hóa đơn IVN044: Giao hỏa tốc, thu tiền mặt ngày 25/05."
+    ]
+  }
+]
