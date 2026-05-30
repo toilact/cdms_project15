@@ -31,7 +31,7 @@ public class CustomerRepository {
      * @return List<Customer> chứa tất cả khách hàng
      */
     public static List<Customer> findAll() {
-        return JSONDataManager.customers;
+        return new java.util.ArrayList<>(JSONDataManager.customers);
     }
 
     /**

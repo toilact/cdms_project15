@@ -21,7 +21,7 @@ public class DeliveryOrder {
     private LocalDate pickupDate;
     private LocalDate deliveryDate;
     private String deliveryType;     // "Standard" hoặc "Urgent"
-    private String status;           // "Pending", "Assigned", "In Transit", "Delivered", "Failed"
+    private String status;           // "Pending", "Assigned", "Picked Up", "In Transit", "Delivered", "Failed", "Cancelled"
     private List<String> notes;      // Danh sách ghi chú giao hàng
     private String paymentTerms;     // "Sender Pay" (Người gửi trả) hoặc "Receiver Pay" (Người nhận trả - COD)
 
@@ -33,14 +33,23 @@ public class DeliveryOrder {
         this.notes = new ArrayList<>();
     }
 
-    /** Constructor đầy đủ tham số */
+    /** Constructor đầy đủ tham số (không bao gồm paymentTerms) */
     public DeliveryOrder(String id, String parcelId, String staffId,
+                         LocalDate orderDate, LocalDate expectedDeliveryDate,
+                         LocalDate pickupDate, LocalDate deliveryDate,
+                         String deliveryType, String status, List<String> notes) {
+        this(id, parcelId, staffId, null, orderDate, expectedDeliveryDate, pickupDate, deliveryDate, deliveryType, status, notes);
+    }
+
+    /** Constructor đầy đủ tham số bao gồm cả paymentTerms */
+    public DeliveryOrder(String id, String parcelId, String staffId, String paymentTerms,
                          LocalDate orderDate, LocalDate expectedDeliveryDate,
                          LocalDate pickupDate, LocalDate deliveryDate,
                          String deliveryType, String status, List<String> notes) {
         this.id = id;
         this.parcelId = parcelId;
         this.staffId = staffId;
+        this.paymentTerms = paymentTerms;
         this.orderDate = orderDate;
         this.expectedDeliveryDate = expectedDeliveryDate;
         this.pickupDate = pickupDate;

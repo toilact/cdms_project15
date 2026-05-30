@@ -417,16 +417,19 @@ public class BillingReportView {
         System.out.printf("  %-28s: %s%n", "Đã giao thành công",      stats.get("delivered"));
         System.out.printf("  %-28s: %s%n", "Đang giao (In Transit)",  stats.get("inTransit"));
         System.out.printf("  %-28s: %s%n", "Đã phân công (Assigned)", stats.get("assigned"));
+        System.out.printf("  %-28s: %s%n", "Đã lấy hàng (Picked Up)", stats.get("pickedUp"));
         System.out.printf("  %-28s: %s%n", "Chờ xử lý (Pending)",     stats.get("pending"));
         System.out.printf("  %-28s: %s%n", "Giao thất bại (Failed)",  stats.get("failed"));
+        System.out.printf("  %-28s: %s%n", "Đã hủy (Cancelled)",      stats.get("cancelled"));
         System.out.printf("  %-28s: %.1f%%%n", "Tỷ lệ giao thành công", stats.get("successRate"));
         System.out.println("═".repeat(42));
 
         System.out.println("\nXem danh sách đơn hàng chi tiết:");
         System.out.println("  1. Xem danh sách đơn giao thành công (Delivered)");
         System.out.println("  2. Xem danh sách đơn giao thất bại (Failed)");
+        System.out.println("  3. Xem danh sách đơn đã hủy (Cancelled)");
         System.out.println("  0. Bỏ qua");
-        int detailChoice = InputHelper.getIntInput("Lựa chọn (0-2): ", 0, 2);
+        int detailChoice = InputHelper.getIntInput("Lựa chọn (0-3): ", 0, 3);
 
         if (detailChoice == 1) {
             List<com.cdms.model.DeliveryOrder> deliveredOrders = com.cdms.repository.DeliveryOrderRepository.findByStatus("Delivered");
@@ -456,6 +459,21 @@ public class BillingReportView {
                         reason = o.getNotes().get(o.getNotes().size() - 1);
                     }
                     System.out.printf("  %-5s - %-30s - %s%n", o.getId(), reason, o.getDeliveryDate() != null ? o.getDeliveryDate() : "Chưa cập nhật");
+                }
+            }
+            System.out.println("-".repeat(50) + "\n");
+        } else if (detailChoice == 3) {
+            List<com.cdms.model.DeliveryOrder> cancelledOrders = com.cdms.repository.DeliveryOrderRepository.findByStatus("Cancelled");
+            System.out.println(BOLD_RED + "\n----------- CANCELLED DELIVERY ORDERS -----------" + RESET);
+            if (cancelledOrders.isEmpty()) {
+                System.out.println("  Không có đơn hàng nào bị hủy.");
+            } else {
+                for (com.cdms.model.DeliveryOrder o : cancelledOrders) {
+                    String reason = "Không rõ lý do";
+                    if (o.getNotes() != null && !o.getNotes().isEmpty()) {
+                        reason = o.getNotes().get(o.getNotes().size() - 1);
+                    }
+                    System.out.printf("  %-5s - %-30s - %s%n", o.getId(), reason, o.getOrderDate() != null ? o.getOrderDate() : "N/A");
                 }
             }
             System.out.println("-".repeat(50) + "\n");
@@ -602,6 +620,11 @@ public class BillingReportView {
             } else {
                 paymentMethod = null;
                 paymentDate   = null;
+            }
+
+            if ("Unpaid".equalsIgnoreCase(newStatus) && 
+                ("Paid".equalsIgnoreCase(existing.getPaymentStatus()) || "Partially Paid".equalsIgnoreCase(existing.getPaymentStatus()))) {
+                System.out.println(BOLD_YELLOW + "\n  ⚠ CẢNH BÁO: Chuyển trạng thái sang 'Unpaid' sẽ xóa sạch thông tin Ngày thanh toán và Phương thức thanh toán hiện tại!" + RESET);
             }
 
             System.out.println("\nXác nhận cập nhật thông tin hóa đơn?");

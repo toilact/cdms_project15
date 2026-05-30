@@ -18,7 +18,7 @@ public class InvoiceRepository {
     }
 
     public static List<Invoice> findAll() {
-        return JSONDataManager.invoices;
+        return new java.util.ArrayList<>(JSONDataManager.invoices);
     }
 
     public static Invoice findById(String invoiceId) {
