@@ -71,7 +71,7 @@ public class DispatcherView {
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE
                     + "Hiển thị đơn giao thất bại                        " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE
-                    + " Tìm kiếm shipper theo Tên/SĐT                   " + BOLD_YELLOW + "║" + RESET);
+                    + " Tìm kiếm shipper theo Tên/SĐT                    " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
                     + "Quay lại Menu chính                               " + BOLD_YELLOW + "║" + RESET);
@@ -335,7 +335,7 @@ public class DispatcherView {
     }
 
     // ----------------------------------------------------------
-    //  Tìm kiếm shipper theo tên hoặc SĐT
+    // Tìm kiếm shipper theo tên hoặc SĐT
     // ----------------------------------------------------------
     private static void handleSearchStaff() {
         System.out.println(BOLD_CYAN + "\n===== TÌM KIẾM NHÂN VIÊN GIAO HÀNG (SHIPPER) =====" + RESET);

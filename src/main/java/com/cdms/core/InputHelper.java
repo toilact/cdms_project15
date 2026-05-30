@@ -132,17 +132,6 @@ public class InputHelper {
     }
 
     /**
-<<<<<<< HEAD
-     * Nhập chuỗi tùy chọn — cho phép để trống (nhấn Enter để bỏ qua).
-     * Trả về chuỗi đã trim, có thể là rỗng "".
-     *
-     * @param prompt Thông báo hiển thị
-     * @return Chuỗi đã trim (có thể rỗng)
-     */
-    public static String getOptionalStringInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine().trim();
-=======
      * Yêu cầu nhập họ tên hợp lệ (không được là số thuần túy).
      *
      * @param prompt Thông báo hiển thị
@@ -174,7 +163,6 @@ public class InputHelper {
             }
             return phone;
         }
->>>>>>> 2e7296aa199894929ca8beb2f896d33934ddeecf
     }
 
     // ---------------------------------------------------------

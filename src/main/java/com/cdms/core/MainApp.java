@@ -39,10 +39,13 @@ public class MainApp {
                 // Đổi code page của console hiện tại sang UTF-8 (shared với parent process)
                 new ProcessBuilder("cmd", "/c", "chcp", "65001")
                         .inheritIO().start().waitFor();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
-        System.setOut(new PrintStream(new java.io.FileOutputStream(java.io.FileDescriptor.out), true, StandardCharsets.UTF_8));
-        System.setErr(new PrintStream(new java.io.FileOutputStream(java.io.FileDescriptor.err), true, StandardCharsets.UTF_8));
+        System.setOut(new PrintStream(new java.io.FileOutputStream(java.io.FileDescriptor.out), true,
+                StandardCharsets.UTF_8));
+        System.setErr(new PrintStream(new java.io.FileOutputStream(java.io.FileDescriptor.err), true,
+                StandardCharsets.UTF_8));
 
         // ============================
         // BƯỚC 1: Nạp dữ liệu từ JSON
@@ -57,23 +60,31 @@ public class MainApp {
 
         while (running) {
             DashboardView.showDashboard();
-            
-            System.out.println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "XIN CHỌN VAI TRÒ HỆ THỐNG   " + RESET);
+
+            System.out.println(
+                    BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "XIN CHỌN VAI TRÒ HỆ THỐNG   " + RESET);
             System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [DANH SÁCH VAI TRÒ]                                  " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Reception Staff      (Nhân viên lễ tân)            " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Dispatcher           (Điều phối viên)              " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Delivery Staff       (Shipper)                     " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Manager              (Quản lý)                     " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [DANH SÁCH VAI TRÒ]                                  "
+                    + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE
+                    + "Reception Staff      (Nhân viên lễ tân)           " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE
+                    + "Dispatcher           (Điều phối viên)             " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE
+                    + "Delivery Staff       (Shipper)                    " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE
+                    + "Manager              (Quản lý)                    " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  5. " + BOLD_WHITE + "Thoát & Lưu dữ liệu                                " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  5. " + BOLD_WHITE
+                    + "Thoát & Lưu dữ liệu                               " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
             int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn vai trò (1-5): " + RESET, 1, 5);
 
             switch (choice) {
                 case 1:
-                    System.out.println("\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: RECEPTION STAFF <<<" + RESET + "\n");
+                    System.out.println(
+                            "\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: RECEPTION STAFF <<<" + RESET + "\n");
                     CustomerStaffView.showReceptionMenu();
                     break;
 
@@ -83,7 +94,8 @@ public class MainApp {
                     break;
 
                 case 3:
-                    System.out.println("\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: DELIVERY STAFF (SHIPPER) <<<" + RESET + "\n");
+                    System.out.println("\n" + BOLD_GREEN + ">>> Đăng nhập với vai trò: DELIVERY STAFF (SHIPPER) <<<"
+                            + RESET + "\n");
                     ShipperView.showShipperMenu();
                     break;
 
