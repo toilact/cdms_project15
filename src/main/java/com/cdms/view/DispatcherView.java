@@ -74,7 +74,7 @@ public class DispatcherView {
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE
                     + "Hiển thị đơn giao thất bại                        " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE
-                    + " Tìm kiếm shipper theo Tên/SĐT                   " + BOLD_YELLOW + "║" + RESET);
+                    + " Tìm kiếm shipper theo Tên/SĐT                    " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE
                     + " Xem tất cả đơn hàng                              " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);

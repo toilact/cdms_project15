@@ -42,7 +42,7 @@ public class ShipperView {
     public static void showShipperMenu() {
         System.out.println(BOLD_CYAN + "\n===== ĐĂNG NHẬP SHIPPER =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy và quay lại menu chính)");
-        
+
         String staffId;
         try {
             staffId = InputHelper.getStringInput("Nhập mã shipper của bạn (Staff ID): ",
@@ -54,7 +54,8 @@ public class ShipperView {
         }
 
         DeliveryStaff currentStaff = CustomerStaffService.findStaff(staffId);
-        System.out.println(BOLD_GREEN + "\n👋 Chào mừng Shipper: " + currentStaff.getName() + " (Mã: " + currentStaff.getId() + ") đăng nhập thành công!" + RESET);
+        System.out.println(BOLD_GREEN + "\n👋 Chào mừng Shipper: " + currentStaff.getName() + " (Mã: "
+                + currentStaff.getId() + ") đăng nhập thành công!" + RESET);
         System.out.println();
 
         boolean running = true;
@@ -62,20 +63,22 @@ public class ShipperView {
             System.out.println(
                     BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "DELIVERY STAFF (SHIPPER) - MENU" + RESET);
             System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [TÁC VỤ SHIPPER: " + String.format("%-18s", currentStaff.getName()) + "]                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [TÁC VỤ SHIPPER: "
+                    + String.format("%-18s", currentStaff.getName()) + "]                 " + BOLD_YELLOW + "║"
+                    + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE
-                    + "Xem danh sách đơn hàng được giao                   " + BOLD_YELLOW + "║" + RESET);
+                    + "Xem danh sách đơn hàng được giao                  " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE
-                    + "Cập nhật ngày nhận hàng thực tế                     " + BOLD_YELLOW + "║" + RESET);
+                    + "Cập nhật ngày nhận hàng thực tế                   " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE
-                    + "Cập nhật ngày giao hàng thực tế                     " + BOLD_YELLOW + "║" + RESET);
+                    + "Cập nhật ngày giao hàng thực tế                   " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE
-                    + "Thêm ghi chú giao hàng / hành trình                 " + BOLD_YELLOW + "║" + RESET);
+                    + "Thêm ghi chú giao hàng / hành trình               " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE
-                    + "Cập nhật trạng thái đơn giao hàng                   " + BOLD_YELLOW + "║" + RESET);
+                    + "Cập nhật trạng thái đơn giao hàng                 " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
-                    + "Đăng xuất & Quay lại Menu chính                    " + BOLD_YELLOW + "║" + RESET);
+                    + "Đăng xuất & Quay lại Menu chính                   " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
             int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-5): " + RESET, 0, 5);
@@ -98,7 +101,8 @@ public class ShipperView {
                     break;
                 case 0:
                     running = false;
-                    System.out.println("  ↩ Shipper " + currentStaff.getName() + " đã đăng xuất. Quay lại Menu chính...\n");
+                    System.out.println(
+                            "  ↩ Shipper " + currentStaff.getName() + " đã đăng xuất. Quay lại Menu chính...\n");
                     break;
                 default:
                     break;
@@ -118,10 +122,14 @@ public class ShipperView {
                 System.out.println("Không có đơn hàng nào được phân công cho bạn.");
                 return;
             }
-            System.out.println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng được phân công cho bạn:" + RESET);
-            System.out.println("+------------+------------+------------+------------+------------+---------------+-----------------------+");
-            System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Hình Thức TT  | Tiền Thu Hộ (COD)     |");
-            System.out.println("+------------+------------+------------+------------+------------+---------------+-----------------------+");
+            System.out
+                    .println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng được phân công cho bạn:" + RESET);
+            System.out.println(
+                    "+------------+------------+------------+------------+------------+---------------+-----------------------+");
+            System.out.println(
+                    "| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Hình Thức TT  | Tiền Thu Hộ (COD)     |");
+            System.out.println(
+                    "+------------+------------+------------+------------+------------+---------------+-----------------------+");
             for (DeliveryOrder o : orders) {
                 // Lấy thông tin hóa đơn tương ứng
                 com.cdms.model.Invoice inv = com.cdms.service.BillingReportService.findInvoiceByOrderId(o.getId());
@@ -137,7 +145,8 @@ public class ShipperView {
                             codAmountStr = String.format("%,.0f VND", inv.getTotalAmount());
                         } else {
                             // Tính toán động từ Parcel vì chưa phát hành hóa đơn
-                            com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(o.getParcelId());
+                            com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository
+                                    .findById(o.getParcelId());
                             double parcelFee = (parcel != null) ? parcel.calculateFee() : 0.0;
                             double urgentCharge = "Urgent".equalsIgnoreCase(o.getDeliveryType()) ? 20000.0 : 0.0;
                             codAmountStr = String.format("%,.0f VND", parcelFee + urgentCharge);
@@ -156,13 +165,14 @@ public class ShipperView {
                         codAmountStr = String.format("%,.0f VND", parcelFee + urgentCharge);
                     }
                 }
-                
+
                 System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-10s | %-13s | %-21s |%n",
                         o.getId(), o.getParcelId(),
                         (o.getStaffId() != null ? o.getStaffId() : "Chưa phân"),
                         o.getDeliveryType(), o.getStatus(), termsStr, codAmountStr);
             }
-            System.out.println("+------------+------------+------------+------------+------------+---------------+-----------------------+");
+            System.out.println(
+                    "+------------+------------+------------+------------+------------+---------------+-----------------------+");
         } catch (Exception e) {
             System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
         } finally {
@@ -333,7 +343,8 @@ public class ShipperView {
             System.out.println();
 
             String status = InputHelper.getStringInput("Trạng thái mới (Picked Up/In Transit/Delivered/Failed): ",
-                    val -> val.equalsIgnoreCase("Picked Up") || val.equalsIgnoreCase("In Transit") || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Failed"),
+                    val -> val.equalsIgnoreCase("Picked Up") || val.equalsIgnoreCase("In Transit")
+                            || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Failed"),
                     "Trạng thái không hợp lệ! (Chỉ chấp nhận 'Picked Up', 'In Transit', 'Delivered' hoặc 'Failed')");
 
             System.out.println("\nXác nhận cập nhật trạng thái đơn hàng?");

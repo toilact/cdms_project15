@@ -99,36 +99,36 @@ public class BillingReportView {
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE
                 + "Tính hóa đơn cho đơn hàng                         " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE
-                + "Xem chi tiết một hóa đơn                    " + BOLD_YELLOW + "║" + RESET);
+                + "Xem chi tiết một hóa đơn                          " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE
-                + "Đối soát tiền COD từ Shipper                       " + BOLD_YELLOW + "║" + RESET);
+                + "Đối soát tiền COD từ Shipper                      " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [BÁO CÁO & THỐNG KÊ]                                 "
                 + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE
-                + "Báo cáo doanh thu theo ngày                         " + BOLD_YELLOW + "║" + RESET);
+                + "Báo cáo doanh thu theo ngày                       " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE
-                + "Báo cáo doanh thu theo tháng                        " + BOLD_YELLOW + "║" + RESET);
+                + "Báo cáo doanh thu theo tháng                      " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE
-                + "Shipper tích cực nhất                               " + BOLD_YELLOW + "║" + RESET);
+                + "Shipper tích cực nhất                             " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE
                 + "Thống kê tổng hợp đơn hàng                        " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ DỮ LIỆU - CRUD & TIỆN ÍCH]                   "
+        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ DỮ LIỆU - CRUD & TIỆN ÍCH]                  "
                 + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE
-                + "Thêm hóa đơn thủ công                              " + BOLD_YELLOW + "║" + RESET);
+                + "Thêm hóa đơn thủ công                             " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE
-                + "Sửa trạng thái hóa đơn                             " + BOLD_YELLOW + "║" + RESET);
+                + "Sửa trạng thái hóa đơn                            " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE
-                + " Xóa hóa đơn                                       " + BOLD_YELLOW + "║" + RESET);
+                + " Xóa hóa đơn                                      " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE
-                + " Xem danh sách tất cả hóa đơn             " + BOLD_YELLOW + "║" + RESET);
+                + " Xem danh sách tất cả hóa đơn                     " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  12." + WHITE
-                + " Quản lý hoàn tiền (Đơn Hủy/Thất bại)              " + BOLD_YELLOW + "║" + RESET);
+                + " Quản lý hoàn tiền (Đơn Hủy/Thất bại)             " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
         System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
-                + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
+                + "Quay lại Menu chính                               " + BOLD_YELLOW + "║" + RESET);
         System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
     }
 
@@ -140,8 +140,10 @@ public class BillingReportView {
         System.out.println("\n" + PURPLE + "─── Tính hóa đơn cho đơn hàng đã giao ───" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            List<com.cdms.model.DeliveryOrder> pendingInvoiceOrders = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
-                    .filter(o -> "Delivered".equalsIgnoreCase(o.getStatus()) && !BillingReportService.invoiceExistsForOrder(o.getId()))
+            List<com.cdms.model.DeliveryOrder> pendingInvoiceOrders = com.cdms.repository.DeliveryOrderRepository
+                    .findAll().stream()
+                    .filter(o -> "Delivered".equalsIgnoreCase(o.getStatus())
+                            && !BillingReportService.invoiceExistsForOrder(o.getId()))
                     .toList();
 
             System.out.println(BOLD_YELLOW + "\nDanh sách đơn hàng đã Delivered chưa tạo hóa đơn:" + RESET);
@@ -155,11 +157,11 @@ public class BillingReportView {
             System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-18s | %-15s | %-15s |%n",
                     "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Thanh Toán", "Cước Phí (VND)", "Trạng thái TT");
             System.out.println(tableHeader);
-            
+
             for (com.cdms.model.DeliveryOrder o : pendingInvoiceOrders) {
                 String pt = o.getPaymentTerms() != null ? o.getPaymentTerms() : "Receiver Pay";
                 String ptFormatted = "Sender Pay".equalsIgnoreCase(pt) ? "Sender (Prepaid)" : "Receiver (COD)";
-                
+
                 double totalFee = 0.0;
                 com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(o.getParcelId());
                 if (parcel != null) {
@@ -168,10 +170,10 @@ public class BillingReportView {
                     totalFee = baseFee + urgent;
                 }
                 String totalFeeStr = String.format("%,.0f", totalFee);
-                
+
                 String payStatus = "Sender Pay".equalsIgnoreCase(pt) ? "Paid (Quầy)" : "Shipper đã thu";
-                String payStatusColored = "Sender Pay".equalsIgnoreCase(pt) 
-                        ? BOLD_GREEN + String.format("%-15s", payStatus) + RESET 
+                String payStatusColored = "Sender Pay".equalsIgnoreCase(pt)
+                        ? BOLD_GREEN + String.format("%-15s", payStatus) + RESET
                         : BOLD_CYAN + String.format("%-15s", payStatus) + RESET;
 
                 System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-18s | %15s | %s |%n",
