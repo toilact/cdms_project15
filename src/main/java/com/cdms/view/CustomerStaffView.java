@@ -64,11 +64,12 @@ public class CustomerStaffView {
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  14." + WHITE + " Tìm kiếm đơn theo KH                              " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  15." + WHITE + " Hủy đơn giao hàng                                 " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  16." + WHITE + " Xem lịch sử giao hàng của một KH                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  17." + WHITE + " Xem danh sách đơn giao hàng                       " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
-            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-16): " + RESET, 0, 16);
+            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-17): " + RESET, 0, 17);
 
             switch (choice) {
                 case 1:  handleAddCustomer(); break;
@@ -87,6 +88,7 @@ public class CustomerStaffView {
                 case 14: ParcelOrderView.executeSearchOrdersByCustomer(); break;
                 case 15: ParcelOrderView.executeCancelOrder(); break;
                 case 16: handleViewCustomerDeliveryHistory(); break;
+                case 17: ParcelOrderView.executeViewOrders(); break;
                 case 0:
                     running = false;
                     System.out.println("  ↩ Quay lại Menu chính...\n");
