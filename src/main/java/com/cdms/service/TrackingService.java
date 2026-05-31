@@ -77,7 +77,7 @@ public class TrackingService {
         if (staffId == null || staffId.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã nhân viên không được để trống!");
         }
-        
+
         // Kiểm tra xem nhân viên tồn tại
         if (DeliveryStaffRepository.findById(staffId.trim()) == null) {
             throw new IllegalArgumentException("Không tìm thấy nhân viên với mã: " + staffId);
@@ -89,7 +89,8 @@ public class TrackingService {
     }
 
     /**
-     * B12: Cập nhật trạng thái đơn hàng (Có chuyển tiếp trạng thái hợp lệ, cập nhật Delivered count, lưu file)
+     * B12: Cập nhật trạng thái đơn hàng (Có chuyển tiếp trạng thái hợp lệ, cập nhật
+     * Delivered count, lưu file)
      */
     public static DeliveryOrder updateStatus(String orderId, String newStatus) {
         if (orderId == null || orderId.trim().isEmpty()) {
@@ -110,27 +111,41 @@ public class TrackingService {
 
         // Kiểm tra chuyển tiếp trạng thái hợp lệ (Luật chuyển tiếp trạng thái)
         boolean validTransition = false;
-        
+
         if ("Pending".equalsIgnoreCase(currentStatus) && "Assigned".equalsIgnoreCase(formattedNewStatus)) {
             validTransition = true;
         } else if ("Pending".equalsIgnoreCase(currentStatus) && "Picked Up".equalsIgnoreCase(formattedNewStatus)) {
+            if (order.getPickupDate() == null) {
+                throw new IllegalStateException(
+                        "Không thể chuyển sang trạng thái Picked Up vì chưa cập nhật ngày nhận thực tế!");
+            }
             validTransition = true;
         } else if ("Assigned".equalsIgnoreCase(currentStatus) && "Picked Up".equalsIgnoreCase(formattedNewStatus)) {
+            if (order.getPickupDate() == null) {
+                throw new IllegalStateException(
+                        "Không thể chuyển sang trạng thái Picked Up vì chưa cập nhật ngày nhận thực tế!");
+            }
             validTransition = true;
         } else if ("Picked Up".equalsIgnoreCase(currentStatus) && "In Transit".equalsIgnoreCase(formattedNewStatus)) {
             validTransition = true;
         } else if ("Pending".equalsIgnoreCase(currentStatus) && "In Transit".equalsIgnoreCase(formattedNewStatus)) {
-            // Trường hợp đi thẳng In Transit nếu bỏ qua Picked Up
+            if (order.getPickupDate() == null) {
+                throw new IllegalStateException(
+                        "Không thể chuyển sang trạng thái In Transit vì chưa cập nhật ngày nhận thực tế!");
+            }
             validTransition = true;
         } else if ("Assigned".equalsIgnoreCase(currentStatus) && "In Transit".equalsIgnoreCase(formattedNewStatus)) {
+            if (order.getPickupDate() == null) {
+                throw new IllegalStateException(
+                        "Không thể chuyển sang trạng thái In Transit vì chưa cập nhật ngày nhận thực tế!");
+            }
             validTransition = true;
         } else if ("In Transit".equalsIgnoreCase(currentStatus) && "Delivered".equalsIgnoreCase(formattedNewStatus)) {
-            validTransition = true;
-            
-            // Đảm bảo cập nhật ngày giao hàng thực tế nếu chưa có
             if (order.getDeliveryDate() == null) {
-                order.setDeliveryDate(LocalDate.now());
+                throw new IllegalStateException(
+                        "Không thể chuyển sang trạng thái Delivered vì chưa có ngày giao thực tế từ Shipper!");
             }
+            validTransition = true;
 
             // Tăng số lượng đơn đã giao thành công của Shipper qua Repository
             if (order.getStaffId() != null) {
@@ -156,7 +171,7 @@ public class TrackingService {
         }
 
         if (!validTransition) {
-            throw new IllegalStateException("Quy trình chuyển tiếp trạng thái không hợp lệ! Không thể chuyển từ '" 
+            throw new IllegalStateException("Quy trình chuyển tiếp trạng thái không hợp lệ! Không thể chuyển từ '"
                     + currentStatus + "' sang '" + formattedNewStatus + "'.");
         }
 
@@ -185,7 +200,8 @@ public class TrackingService {
     }
 
     /**
-     * B14: Xem danh sách các đơn giao hàng thất bại (Failed) hoặc bị hủy (Cancelled)
+     * B14: Xem danh sách các đơn giao hàng thất bại (Failed) hoặc bị hủy
+     * (Cancelled)
      */
     public static List<DeliveryOrder> getFailedOrders() {
         return DeliveryOrderRepository.findAll().stream()
@@ -226,14 +242,21 @@ public class TrackingService {
             throw new IllegalStateException("Không thể cập nhật ngày lấy hàng cho đơn hàng đã hoàn thành hoặc đã hủy!");
         }
 
+        // Chặn ngày nhận ở tương lai
+        if (pickupDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Ngày lấy hàng thực tế không được vượt quá ngày hiện tại!");
+        }
+
         // BR16 Ràng buộc: Ngày lấy hàng phải >= ngày tạo đơn
         if (pickupDate.isBefore(order.getOrderDate())) {
-            throw new IllegalArgumentException("Ngày lấy hàng thực tế không được trước ngày tạo đơn (" + order.getOrderDate() + ")!");
+            throw new IllegalArgumentException(
+                    "Ngày lấy hàng thực tế không được trước ngày tạo đơn (" + order.getOrderDate() + ")!");
         }
 
         // BR16 Ràng buộc: Ngày lấy hàng phải <= ngày giao thực tế (nếu có)
         if (order.getDeliveryDate() != null && pickupDate.isAfter(order.getDeliveryDate())) {
-            throw new IllegalArgumentException("Ngày lấy hàng thực tế không được sau ngày giao hàng thực tế (" + order.getDeliveryDate() + ")!");
+            throw new IllegalArgumentException(
+                    "Ngày lấy hàng thực tế không được sau ngày giao hàng thực tế (" + order.getDeliveryDate() + ")!");
         }
 
         order.setPickupDate(pickupDate);
@@ -256,14 +279,21 @@ public class TrackingService {
             throw new IllegalArgumentException("Không tìm thấy đơn hàng với mã: " + orderId);
         }
 
+        // Chặn ngày giao ở tương lai
+        if (deliveryDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Ngày giao hàng thực tế không được vượt quá ngày hiện tại!");
+        }
+
         // BR16 Ràng buộc: Ngày giao hàng phải >= ngày tạo đơn
         if (deliveryDate.isBefore(order.getOrderDate())) {
-            throw new IllegalArgumentException("Ngày giao hàng thực tế không được trước ngày tạo đơn (" + order.getOrderDate() + ")!");
+            throw new IllegalArgumentException(
+                    "Ngày giao hàng thực tế không được trước ngày tạo đơn (" + order.getOrderDate() + ")!");
         }
 
         // BR16 Ràng buộc: Ngày giao hàng phải >= ngày lấy hàng (nếu có)
         if (order.getPickupDate() != null && deliveryDate.isBefore(order.getPickupDate())) {
-            throw new IllegalArgumentException("Ngày giao hàng thực tế không được trước ngày lấy hàng thực tế (" + order.getPickupDate() + ")!");
+            throw new IllegalArgumentException(
+                    "Ngày giao hàng thực tế không được trước ngày lấy hàng thực tế (" + order.getPickupDate() + ")!");
         }
 
         order.setDeliveryDate(deliveryDate);

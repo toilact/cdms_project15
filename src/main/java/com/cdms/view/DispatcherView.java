@@ -76,7 +76,7 @@ public class DispatcherView {
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE
                     + " Tìm kiếm shipper theo Tên/SĐT                   " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE
-                    + " Xem tất cả đơn hàng (UX-07)                      " + BOLD_YELLOW + "║" + RESET);
+                    + " Xem tất cả đơn hàng                              " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
                     + "Quay lại Menu chính                               " + BOLD_YELLOW + "║" + RESET);
@@ -128,7 +128,6 @@ public class DispatcherView {
         }
     }
 
-
     // ----------------------------------------------------------
     // [B9] Thêm nhân viên giao hàng mới
     // ----------------------------------------------------------
@@ -176,13 +175,16 @@ public class DispatcherView {
         }
 
         // Căn chỉnh tiêu đề bảng khớp hoàn hảo với toString() của Model (UX-05)
-        System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
-        System.out.printf("| %-10s | %-20s | %-15s | %-12s | %-8s | %-18s |%n", 
+        System.out.println(
+                "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+        System.out.printf("| %-10s | %-20s | %-15s | %-12s | %-8s | %-18s |%n",
                 "Mã NV", "Họ tên", "Điện thoại", "Phương tiện", "T.Thái", "Số đơn đã giao");
-        System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
-        
+        System.out.println(
+                "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+
         // Hỗ trợ phân trang danh sách shipper (UX-13)
-        InputHelper.printPaginatedList(staffs, 10, "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+        InputHelper.printPaginatedList(staffs, 10,
+                "+------------+----------------------+-----------------+--------------+----------+--------------------+");
         System.out.println(BOLD_GREEN + "Tổng số nhân viên: " + staffs.size() + RESET);
         System.out.println();
         InputHelper.pressEnterToContinue(); // UX-04
@@ -201,11 +203,15 @@ public class DispatcherView {
             DeliveryStaff existing = CustomerStaffService.findStaff(id);
 
             System.out.println("\nThông tin hiện tại:");
-            System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
-            System.out.println("| Mã NV      | Họ tên               | Điện thoại      | Phương tiện  | T.Thái   | Số đơn đã giao     |");
-            System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
+            System.out.println(
+                    "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+            System.out.println(
+                    "| Mã NV      | Họ tên               | Điện thoại      | Phương tiện  | T.Thái   | Số đơn đã giao     |");
+            System.out.println(
+                    "+------------+----------------------+-----------------+--------------+----------+--------------------+");
             System.out.println(existing);
-            System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
+            System.out.println(
+                    "+------------+----------------------+-----------------+--------------+----------+--------------------+");
             System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
             String newName = InputHelper.getOptionalValidatedStringInput("Tên mới [" + existing.getName() + "]: ",
@@ -216,20 +222,24 @@ public class DispatcherView {
             }
 
             String newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
-                    val -> val.equalsIgnoreCase(existing.getPhone()) || DeliveryStaffRepository.findByPhone(val) == null,
+                    val -> val.equalsIgnoreCase(existing.getPhone())
+                            || DeliveryStaffRepository.findByPhone(val) == null,
                     "Số điện thoại đã được sử dụng bởi shipper khác!");
             if (newPhone.isEmpty()) {
                 newPhone = existing.getPhone();
             }
 
-            String newVehicle = InputHelper.getOptionalStringInput("Loại phương tiện mới [" + existing.getVehicleType() + "]: ");
+            String newVehicle = InputHelper
+                    .getOptionalStringInput("Loại phương tiện mới [" + existing.getVehicleType() + "]: ");
             if (newVehicle.isEmpty()) {
                 newVehicle = existing.getVehicleType();
             }
 
-            String newStatus = InputHelper.getOptionalValidatedStringInput("Trạng thái mới [" + existing.getStatus() + "] (Active/Inactive): ",
-                    val -> val.equalsIgnoreCase("Active") || val.equalsIgnoreCase("Inactive"),
-                    "Trạng thái không hợp lệ (Chỉ nhận Active hoặc Inactive)!");
+            String newStatus = InputHelper.getOptionalValidatedStringInput(
+                    "Trạng thái mới [" + existing.getStatus() + "] (Active/Inactive/Fired): ",
+                    val -> val.equalsIgnoreCase("Active") || val.equalsIgnoreCase("Inactive")
+                            || val.equalsIgnoreCase("Fired"),
+                    "Trạng thái không hợp lệ (Chỉ nhận Active, Inactive hoặc Fired)!");
             if (newStatus.isEmpty()) {
                 newStatus = existing.getStatus();
             }
@@ -266,20 +276,25 @@ public class DispatcherView {
             DeliveryStaff existing = CustomerStaffService.findStaff(id);
 
             System.out.println("\nThông tin shipper sẽ bị xóa:");
-            System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
-            System.out.println("| Mã NV      | Họ tên               | Điện thoại      | Phương tiện  | T.Thái   | Số đơn đã giao     |");
-            System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
+            System.out.println(
+                    "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+            System.out.println(
+                    "| Mã NV      | Họ tên               | Điện thoại      | Phương tiện  | T.Thái   | Số đơn đã giao     |");
+            System.out.println(
+                    "+------------+----------------------+-----------------+--------------+----------+--------------------+");
             System.out.println(existing);
-            System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
+            System.out.println(
+                    "+------------+----------------------+-----------------+--------------+----------+--------------------+");
 
             // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
             long activeOrders = DeliveryOrderRepository.findByStaffId(id).stream()
-                    .filter(o -> !"Delivered".equalsIgnoreCase(o.getStatus()) 
+                    .filter(o -> !"Delivered".equalsIgnoreCase(o.getStatus())
                             && !"Cancelled".equalsIgnoreCase(o.getStatus())
                             && !"Failed".equalsIgnoreCase(o.getStatus()))
                     .count();
             if (activeOrders > 0) {
-                System.out.println(BOLD_RED + "⚠️ CẢNH BÁO: Shipper này đang chịu trách nhiệm cho " + activeOrders + " đơn hàng chưa hoàn thành!" + RESET);
+                System.out.println(BOLD_RED + "⚠️ CẢNH BÁO: Shipper này đang chịu trách nhiệm cho " + activeOrders
+                        + " đơn hàng chưa hoàn thành!" + RESET);
                 System.out.println(BOLD_RED + "❌ Không thể xóa shipper khi họ đang có đơn hàng cần xử lý!" + RESET);
                 return;
             }
@@ -318,27 +333,32 @@ public class DispatcherView {
                 return;
             }
             for (DeliveryStaff s : activeStaffs) {
-                System.out.printf("  - %-6s : %-20s (Đã giao: %d đơn)%n", s.getId(), s.getName(), s.getDeliveredOrdersCount());
+                System.out.printf("  - %-6s : %-20s (Đã giao: %d đơn)%n", s.getId(), s.getName(),
+                        s.getDeliveredOrdersCount());
             }
 
             // Hiển thị danh sách các đơn hàng chưa gán shipper hoặc đang Pending (UX-03)
             List<DeliveryOrder> pendingOrders = DeliveryOrderRepository.findAll().stream()
-                    .filter(o -> o.getStaffId() == null || o.getStaffId().trim().isEmpty() || "Pending".equalsIgnoreCase(o.getStatus()))
+                    .filter(o -> "Pending".equalsIgnoreCase(o.getStatus()))
                     .toList();
             System.out.println(BOLD_YELLOW + "\nDanh sách đơn hàng chưa phân công (Pending):" + RESET);
             if (pendingOrders.isEmpty()) {
                 System.out.println("  (Không có đơn hàng nào cần phân công.)");
             } else {
                 for (DeliveryOrder o : pendingOrders) {
-                    System.out.printf("  - Đơn: %-6s | Kiện: %-6s | Ngày: %s%n", o.getId(), o.getParcelId(), o.getOrderDate());
+                    System.out.printf("  - Đơn: %-6s | Kiện: %-6s | Ngày: %s%n", o.getId(), o.getParcelId(),
+                            o.getOrderDate());
                 }
             }
             System.out.println();
 
             String orderId = InputHelper.getStringInput("Nhập mã đơn hàng cần phân công: ",
-                    val -> DeliveryOrderRepository.existsById(val),
-                    "Mã đơn hàng không tồn tại!");
-            
+                    val -> {
+                        DeliveryOrder o = DeliveryOrderRepository.findById(val);
+                        return o != null && "Pending".equalsIgnoreCase(o.getStatus());
+                    },
+                    "Mã đơn hàng không hợp lệ (đã phân công, bị hủy hoặc không tồn tại)!");
+
             // Hiển thị chi tiết đơn trước khi chọn shipper
             DeliveryOrder order = DeliveryOrderRepository.findById(orderId);
             System.out.println("\nThông tin đơn hàng đã chọn:");
@@ -401,12 +421,14 @@ public class DispatcherView {
                     System.out.println("Shipper này chưa giao thành công đơn hàng nào.");
                     return;
                 }
-                System.out.println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng đã giao thành công:" + RESET);
+                System.out
+                        .println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng đã giao thành công:" + RESET);
                 System.out.println("+------------+------------+------------+------------+------------+--------------+");
                 System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |%n",
                         "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Trạng Thái", "Ngày Tạo");
                 System.out.println("+------------+------------+------------+------------+------------+--------------+");
-                InputHelper.printPaginatedList(orders, 10, "+------------+------------+------------+------------+------------+--------------+");
+                InputHelper.printPaginatedList(orders, 10,
+                        "+------------+------------+------------+------------+------------+--------------+");
             } catch (Exception e) {
                 System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
             }
@@ -428,20 +450,18 @@ public class DispatcherView {
                     val -> DeliveryOrderRepository.existsById(val),
                     "Mã đơn hàng không tồn tại!");
 
-            // Hiển thị trạng thái hiện tại trước khi cập nhật (UX-01)
+            // Hiển thị trạng thái hiện tại trước khi cập nhật với đầy đủ cước phí
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println(current);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
+            ParcelOrderView.printSingleOrderDetails(current);
             System.out.println("Trạng thái hiện tại: " + BOLD_WHITE + current.getStatus() + RESET);
             System.out.println();
 
-            String status = InputHelper.getStringInput("Trạng thái mới (In Transit/Delivered/Failed/Cancelled): ",
-                    val -> val.equalsIgnoreCase("In Transit") || val.equalsIgnoreCase("Delivered") 
-                            || val.equalsIgnoreCase("Failed") || val.equalsIgnoreCase("Cancelled"),
+            String status = InputHelper.getStringInput(
+                    "Trạng thái mới (Picked Up/In Transit/Delivered/Failed/Cancelled): ",
+                    val -> val.equalsIgnoreCase("Picked Up") || val.equalsIgnoreCase("In Transit")
+                            || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Failed")
+                            || val.equalsIgnoreCase("Cancelled"),
                     "Trạng thái không hợp lệ!");
 
             System.out.println("\nXác nhận cập nhật trạng thái đơn hàng?");
@@ -453,11 +473,7 @@ public class DispatcherView {
                 try {
                     DeliveryOrder o = com.cdms.service.TrackingService.updateStatus(orderId, status);
                     System.out.println(BOLD_GREEN + "✅ Cập nhật trạng thái thành công sang: " + o.getStatus() + RESET);
-                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
-                    System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
-                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
-                    System.out.println(o);
-                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
+                    ParcelOrderView.printSingleOrderDetails(o);
                 } catch (Exception e) {
                     System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
                 }
@@ -487,7 +503,8 @@ public class DispatcherView {
         System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |%n",
                 "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Trạng Thái", "Ngày Tạo");
         System.out.println("+------------+------------+------------+------------+------------+--------------+");
-        InputHelper.printPaginatedList(orders, 10, "+------------+------------+------------+------------+------------+--------------+");
+        InputHelper.printPaginatedList(orders, 10,
+                "+------------+------------+------------+------------+------------+--------------+");
         InputHelper.pressEnterToContinue(); // UX-04
     }
 
@@ -522,11 +539,14 @@ public class DispatcherView {
                 .toList();
 
         System.out.println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng giao thất bại hoặc bị hủy:" + RESET);
-        System.out.println("+------------+------------+------------+------------+--------------+--------------------------------+");
+        System.out.println(
+                "+------------+------------+------------+------------+--------------+--------------------------------+");
         System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-12s | %-30s |%n",
                 "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Trạng Thái", "Lý do Thất bại/Hủy");
-        System.out.println("+------------+------------+------------+------------+--------------+--------------------------------+");
-        InputHelper.printPaginatedList(formattedFailed, 10, "+------------+------------+------------+------------+--------------+--------------------------------+");
+        System.out.println(
+                "+------------+------------+------------+------------+--------------+--------------------------------+");
+        InputHelper.printPaginatedList(formattedFailed, 10,
+                "+------------+------------+------------+------------+--------------+--------------------------------+");
         InputHelper.pressEnterToContinue(); // UX-04
     }
 
@@ -548,11 +568,14 @@ public class DispatcherView {
                     System.out.println("Không tìm thấy shipper nào khớp với tên: " + name);
                 } else {
                     System.out.println(BOLD_GREEN + "Tìm thấy " + result.size() + " shipper:" + RESET);
-                    System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
-                    System.out.printf("| %-10s | %-20s | %-15s | %-12s | %-8s | %-18s |%n", 
+                    System.out.println(
+                            "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+                    System.out.printf("| %-10s | %-20s | %-15s | %-12s | %-8s | %-18s |%n",
                             "Mã NV", "Họ tên", "Điện thoại", "Phương tiện", "T.Thái", "Số đơn đã giao");
-                    System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
-                    InputHelper.printPaginatedList(result, 10, "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+                    System.out.println(
+                            "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+                    InputHelper.printPaginatedList(result, 10,
+                            "+------------+----------------------+-----------------+--------------+----------+--------------------+");
                 }
             } else {
                 String phone = InputHelper.getPhoneInput("Nhập số điện thoại: ");
@@ -561,11 +584,15 @@ public class DispatcherView {
                     System.out.println("Không tìm thấy shipper nào có số điện thoại: " + phone);
                 } else {
                     System.out.println(BOLD_GREEN + "Đã tìm thấy shipper:" + RESET);
-                    System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
-                    System.out.println("| Mã NV      | Họ tên               | Điện thoại      | Phương tiện  | T.Thái   | Số đơn đã giao     |");
-                    System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
+                    System.out.println(
+                            "+------------+----------------------+-----------------+--------------+----------+--------------------+");
+                    System.out.println(
+                            "| Mã NV      | Họ tên               | Điện thoại      | Phương tiện  | T.Thái   | Số đơn đã giao     |");
+                    System.out.println(
+                            "+------------+----------------------+-----------------+--------------+----------+--------------------+");
                     System.out.println(s);
-                    System.out.println("+------------+----------------------+-----------------+--------------+----------+--------------------+");
+                    System.out.println(
+                            "+------------+----------------------+-----------------+--------------+----------+--------------------+");
                 }
             }
         } catch (FormCancelledException e) {
@@ -586,12 +613,85 @@ public class DispatcherView {
             InputHelper.pressEnterToContinue();
             return;
         }
+
+        List<String> formattedLines = orders.stream().map(order -> {
+            String pt = order.getPaymentTerms() != null ? order.getPaymentTerms() : "Receiver Pay";
+            String ptFormatted = "Sender Pay".equalsIgnoreCase(pt) ? "Sender (Prepaid)" : "Receiver (COD)";
+
+            // Tính toán cước phí tương ứng (lấy từ hóa đơn hoặc tính động)
+            double totalFee = 0.0;
+            com.cdms.model.Invoice invoice = com.cdms.repository.InvoiceRepository.findByOrderId(order.getId());
+            if (invoice != null) {
+                totalFee = invoice.getTotalAmount();
+            } else {
+                com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(order.getParcelId());
+                if (parcel != null) {
+                    double baseFee = parcel.calculateFee();
+                    double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? 20000.0 : 0.0;
+                    totalFee = baseFee + urgent;
+                }
+            }
+            String totalFeeStr = String.format("%,.0f", totalFee);
+
+            String payStatus = "Unpaid";
+            if (invoice != null) {
+                payStatus = invoice.getPaymentStatus();
+                if ("Collected".equalsIgnoreCase(payStatus)) {
+                    payStatus = "Shipper đã thu";
+                }
+            } else {
+                if ("Sender Pay".equalsIgnoreCase(pt)) {
+                    payStatus = "Paid (Quầy)";
+                } else {
+                    if ("Delivered".equalsIgnoreCase(order.getStatus())) {
+                        payStatus = "Shipper đã thu";
+                    } else {
+                        payStatus = "COD (Chờ thu)";
+                    }
+                }
+            }
+
+            // Chọn màu cho Trạng thái Thanh toán để UI cực kỳ cao cấp
+            String payStatusColored;
+            if ("Paid".equalsIgnoreCase(payStatus) || "Paid (Quầy)".equalsIgnoreCase(payStatus)) {
+                payStatusColored = BOLD_GREEN + String.format("%-15s", payStatus) + RESET;
+            } else if ("Collected".equalsIgnoreCase(payStatus) || "Shipper đã thu".equalsIgnoreCase(payStatus)) {
+                payStatusColored = BOLD_CYAN + String.format("%-15s", payStatus) + RESET;
+            } else {
+                payStatusColored = BOLD_RED + String.format("%-15s", payStatus) + RESET;
+            }
+
+            // Chọn màu cho Trạng thái đơn hàng
+            String statusColor = BOLD_YELLOW;
+            if ("Delivered".equalsIgnoreCase(order.getStatus())) {
+                statusColor = BOLD_GREEN;
+            } else if ("Failed".equalsIgnoreCase(order.getStatus())
+                    || "Cancelled".equalsIgnoreCase(order.getStatus())) {
+                statusColor = BOLD_RED;
+            }
+
+            return String.format(
+                    "| %-10s | %-10s | %-10s | %-10s | " + statusColor + "%-10s" + RESET + " | %-18s | %15s | %s |",
+                    order.getId(),
+                    order.getParcelId(),
+                    (order.getStaffId() != null ? order.getStaffId() : "Chưa phân"),
+                    order.getDeliveryType(),
+                    order.getStatus(),
+                    ptFormatted,
+                    totalFeeStr,
+                    payStatusColored);
+        }).toList();
+
+        String tableHeader = "+------------+------------+------------+------------+------------+--------------------+-----------------+-----------------+";
         System.out.println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng trong hệ thống:" + RESET);
-        System.out.println("+------------+------------+------------+------------+------------+--------------+");
-        System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |%n",
-                "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Trạng Thái", "Ngày Tạo");
-        System.out.println("+------------+------------+------------+------------+------------+--------------+");
-        InputHelper.printPaginatedList(orders, 10, "+------------+------------+------------+------------+------------+--------------+");
+        System.out.println(tableHeader);
+        System.out.printf("| %-10s | %-10s | %-10s | %-10s | %-10s | %-18s | %-15s | %-15s |%n",
+                "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Trạng Thái", "Thanh Toán", "Cước Phí (VND)",
+                "Trạng thái TT");
+        System.out.println(tableHeader);
+
+        // Hỗ trợ hiển thị phân trang
+        InputHelper.printPaginatedList(formattedLines, 10, tableHeader);
         InputHelper.pressEnterToContinue(); // UX-04
     }
 }

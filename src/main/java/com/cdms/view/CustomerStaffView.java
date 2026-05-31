@@ -70,6 +70,7 @@ public class CustomerStaffView {
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE
                     + " Tìm kiếm bưu kiện                                 " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
+<<<<<<< HEAD
             System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ ĐƠN GIAO HÀNG]                              "
                     + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE
@@ -84,14 +85,25 @@ public class CustomerStaffView {
                     + " Hủy đơn giao hàng                                 " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  16." + WHITE
                     + " Xem lịch sử giao hàng của một KH                  " + BOLD_YELLOW + "║" + RESET);
+=======
+            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ ĐƠN GIAO HÀNG]                              " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE + " Tạo đơn giao hàng mới                             " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  12." + WHITE + " Cập nhật trạng thái đơn                           " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  13." + WHITE + " Xem chi tiết đơn giao hàng                        " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  14." + WHITE + " Tìm kiếm đơn theo KH                              " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  15." + WHITE + " Hủy đơn giao hàng                                 " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  16." + WHITE + " Xem lịch sử giao hàng của một KH                  " + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  17." + WHITE + " Xem danh sách đơn giao hàng                       " + BOLD_YELLOW + "║" + RESET);
+>>>>>>> 325e04bd63a2a37daca7b0e68620e454d9a72431
             System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
                     + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
-            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-16): " + RESET, 0, 16);
+            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-17): " + RESET, 0, 17);
 
             switch (choice) {
+<<<<<<< HEAD
                 case 1:
                     handleAddCustomer();
                     break;
@@ -140,6 +152,25 @@ public class CustomerStaffView {
                 case 16:
                     handleViewCustomerDeliveryHistory();
                     break;
+=======
+                case 1:  handleAddCustomer(); break;
+                case 2:  handleUpdateCustomer(); break;
+                case 3:  handleShowCustomerList(); break;
+                case 4:  handleDeleteCustomer(); break;
+                case 5:  handleSearchCustomer(); break;
+                case 6:  ParcelOrderView.executeCreateParcel(); break;
+                case 7:  ParcelOrderView.executeViewParcels(); break;
+                case 8:  handleUpdateParcel(); break;
+                case 9:  handleDeleteParcel(); break;
+                case 10: handleSearchParcel(); break;
+                case 11: ParcelOrderView.executeCreateOrder(); break;
+                case 12: ParcelOrderView.executeUpdateOrderStatus(); break;
+                case 13: ParcelOrderView.executeViewOrderDetail(); break;
+                case 14: ParcelOrderView.executeSearchOrdersByCustomer(); break;
+                case 15: ParcelOrderView.executeCancelOrder(); break;
+                case 16: handleViewCustomerDeliveryHistory(); break;
+                case 17: ParcelOrderView.executeViewOrders(); break;
+>>>>>>> 325e04bd63a2a37daca7b0e68620e454d9a72431
                 case 0:
                     running = false;
                     System.out.println("  ↩ Quay lại Menu chính...\n");

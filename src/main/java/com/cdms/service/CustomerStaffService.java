@@ -192,6 +192,30 @@ public class CustomerStaffService {
      * @return Thông báo kết quả (String) để View hiển thị
      */
     public static String deleteStaff(String staffId) {
+        if (staffId == null || staffId.trim().isEmpty()) {
+            return "❌ Lỗi: Mã shipper không được để trống.";
+        }
+        final String finalStaffId = staffId.trim();
+
+        // 1. Kiểm tra xem shipper có đơn hàng nào chưa hoàn thành hay không
+        long activeOrders = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
+                .filter(o -> finalStaffId.equalsIgnoreCase(o.getStaffId()))
+                .filter(o -> !"Delivered".equalsIgnoreCase(o.getStatus()) 
+                        && !"Cancelled".equalsIgnoreCase(o.getStatus())
+                        && !"Failed".equalsIgnoreCase(o.getStatus()))
+                .count();
+        if (activeOrders > 0) {
+            return "❌ Lỗi: Không thể xóa shipper vì đang chịu trách nhiệm cho " + activeOrders + " đơn hàng chưa hoàn thành!";
+        }
+
+        // 2. Kiểm tra xem shipper có bất kỳ đơn hàng lịch sử nào không
+        long completedOrders = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
+                .filter(o -> finalStaffId.equalsIgnoreCase(o.getStaffId()))
+                .count();
+        if (completedOrders > 0) {
+            return "❌ Lỗi: Không thể xóa shipper này vì đã có dữ liệu giao hàng lịch sử trong hệ thống! Vui lòng chuyển trạng thái shipper sang 'Fired' (Đã sa thải) để ngừng hoạt động.";
+        }
+
         boolean success = DeliveryStaffRepository.delete(staffId);
         if (success) {
             return "✅ Đã xóa shipper: " + staffId;

@@ -187,11 +187,7 @@ public class ShipperView {
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println(current);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
+            ParcelOrderView.printSingleOrderDetails(current);
             System.out.println("Trạng thái hiện tại: " + BOLD_WHITE + current.getStatus() + RESET);
             if (current.getPickupDate() != null) {
                 System.out.println("Ngày nhận hàng hiện tại: " + BOLD_WHITE + current.getPickupDate() + RESET);
@@ -239,11 +235,7 @@ public class ShipperView {
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println(current);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
+            ParcelOrderView.printSingleOrderDetails(current);
             System.out.println("Trạng thái hiện tại: " + BOLD_WHITE + current.getStatus() + RESET);
             if (current.getDeliveryDate() != null) {
                 System.out.println("Ngày giao thực tế hiện tại: " + BOLD_WHITE + current.getDeliveryDate() + RESET);
@@ -291,11 +283,7 @@ public class ShipperView {
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println(current);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
+            ParcelOrderView.printSingleOrderDetails(current);
             System.out.println("Các ghi chú hiện tại: " + BOLD_WHITE + current.getNotes() + RESET);
             System.out.println();
 
@@ -339,18 +327,14 @@ public class ShipperView {
                     "Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn!");
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
-            System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI (UX-01)]:" + RESET);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
-            System.out.println(current);
-            System.out.println("+------------+------------+------------+------------+------------+--------------+");
+            System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
+            ParcelOrderView.printSingleOrderDetails(current);
             System.out.println("Trạng thái hiện tại: " + BOLD_WHITE + current.getStatus() + RESET);
             System.out.println();
 
-            String status = InputHelper.getStringInput("Trạng thái mới (In Transit/Delivered/Failed): ",
-                    val -> val.equalsIgnoreCase("In Transit") || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Failed"),
-                    "Trạng thái không hợp lệ! (Chỉ chấp nhận 'In Transit', 'Delivered' hoặc 'Failed')");
+            String status = InputHelper.getStringInput("Trạng thái mới (Picked Up/In Transit/Delivered/Failed): ",
+                    val -> val.equalsIgnoreCase("Picked Up") || val.equalsIgnoreCase("In Transit") || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Failed"),
+                    "Trạng thái không hợp lệ! (Chỉ chấp nhận 'Picked Up', 'In Transit', 'Delivered' hoặc 'Failed')");
 
             System.out.println("\nXác nhận cập nhật trạng thái đơn hàng?");
             System.out.println("  1. Cập nhật");
@@ -361,11 +345,7 @@ public class ShipperView {
                 try {
                     com.cdms.model.DeliveryOrder o = com.cdms.service.TrackingService.updateStatus(orderId, status);
                     System.out.println(BOLD_GREEN + "✅ Cập nhật trạng thái đơn hàng thành công!" + RESET);
-                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
-                    System.out.println("| Mã Đơn     | Mã Kiện    | Mã Shipper | Dịch Vụ    | Trạng Thái | Ngày Tạo     |");
-                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
-                    System.out.println(o);
-                    System.out.println("+------------+------------+------------+------------+------------+--------------+");
+                    ParcelOrderView.printSingleOrderDetails(o);
                 } catch (Exception e) {
                     System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
                 }

@@ -294,6 +294,16 @@ public class BillingReportService {
         return stats;
     }
 
+    /**
+     * Lấy danh sách đơn hàng đã bị hủy hoặc giao thất bại phục vụ hoàn tiền.
+     */
+    public static List<DeliveryOrder> getCancelledOrFailedOrders() {
+        return DeliveryOrderRepository.findAll().stream()
+                .filter(o -> "Cancelled".equalsIgnoreCase(o.getStatus()) || "Failed".equalsIgnoreCase(o.getStatus()))
+                .collect(Collectors.toList());
+    }
+
+
     // ============================================================
     // DOANH THU — tính từ Invoice đã Paid (B19, B20)
     // ============================================================
