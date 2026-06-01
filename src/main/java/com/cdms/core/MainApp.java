@@ -29,6 +29,51 @@ public class MainApp {
     private static final String WHITE = "\u001B[37m";
     private static final String BOLD_WHITE = "\u001B[1;37m";
 
+    private static int getVisualWidth(String str) {
+        if (str == null) return 0;
+        // Strip ANSI escape sequences
+        String stripped = str.replaceAll("\\u001B\\[[;\\d]*[a-zA-Z]", "");
+        int width = 0;
+        for (int i = 0; i < stripped.length(); ) {
+            int cp = stripped.codePointAt(i);
+            width += getCodePointWidth(cp);
+            i += Character.charCount(cp);
+        }
+        return width;
+    }
+
+    private static int getCodePointWidth(int cp) {
+        // Emojis and other wide symbols
+        if (cp >= 0x1F000 && cp <= 0x1FFFF) {
+            return 2;
+        }
+        if (cp >= 0x2600 && cp <= 0x27BF) {
+            return 2; // Miscellaneous Symbols & Dingbats
+        }
+        // CJK Unified Ideographs
+        if (cp >= 0x4E00 && cp <= 0x9FFF) {
+            return 2;
+        }
+        // Hangul, Hiragana, Katakana, Fullwidth forms
+        if (cp >= 0x3000 && cp <= 0x30FF || cp >= 0xFF00 && cp <= 0xFFEF) {
+            return 2;
+        }
+        return 1;
+    }
+
+    private static String padRight(String text, int targetVisualWidth) {
+        int currentWidth = getVisualWidth(text);
+        if (currentWidth >= targetVisualWidth) {
+            return text;
+        }
+        int neededSpaces = targetVisualWidth - currentWidth;
+        StringBuilder sb = new StringBuilder(text);
+        for (int i = 0; i < neededSpaces; i++) {
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
     public static void main(String[] args) throws Exception {
 
         // ============================
@@ -60,13 +105,23 @@ public class MainApp {
             
             System.out.println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "XIN CHỌN VAI TRÒ HỆ THỐNG   " + RESET);
             System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [DANH SÁCH VAI TRÒ]                                  " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE + "Reception Staff      (Nhân viên lễ tân)            " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE + "Dispatcher           (Điều phối viên)              " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE + "Delivery Staff       (Shipper)                     " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE + "Manager              (Quản lý)                     " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  5. " + BOLD_WHITE + "Thoát & Lưu dữ liệu                                " + BOLD_YELLOW + "║" + RESET);
+            
+            String lineHeader = BOLD_CYAN + "  [DANH SÁCH VAI TRÒ]";
+            String line1 = BOLD_WHITE + "  1. " + WHITE + "Reception Staff      (Nhân viên lễ tân)";
+            String line2 = BOLD_WHITE + "  2. " + WHITE + "Dispatcher           (Điều phối viên)";
+            String line3 = BOLD_WHITE + "  3. " + WHITE + "Delivery Staff       (Shipper)";
+            String line4 = BOLD_WHITE + "  4. " + WHITE + "Manager              (Quản lý)";
+            String lineEmpty = " ";
+            String line5 = BOLD_RED + "  5. " + BOLD_WHITE + "Thoát & Lưu dữ liệu";
+            
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineHeader, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line1, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line2, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line3, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line4, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineEmpty, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line5, 55) + BOLD_YELLOW + "║" + RESET);
+            
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
             int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn vai trò (1-5): " + RESET, 1, 5);

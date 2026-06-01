@@ -31,6 +31,51 @@ public class DashboardView {
     private DashboardView() {
     }
 
+    private static int getVisualWidth(String str) {
+        if (str == null) return 0;
+        // Strip ANSI escape sequences
+        String stripped = str.replaceAll("\\u001B\\[[;\\d]*[a-zA-Z]", "");
+        int width = 0;
+        for (int i = 0; i < stripped.length(); ) {
+            int cp = stripped.codePointAt(i);
+            width += getCodePointWidth(cp);
+            i += Character.charCount(cp);
+        }
+        return width;
+    }
+
+    private static int getCodePointWidth(int cp) {
+        // Emojis and other wide symbols
+        if (cp >= 0x1F000 && cp <= 0x1FFFF) {
+            return 2;
+        }
+        if (cp >= 0x2600 && cp <= 0x27BF) {
+            return 2; // Miscellaneous Symbols & Dingbats (contains ⚡, ✅, ❌, etc.)
+        }
+        // CJK Unified Ideographs
+        if (cp >= 0x4E00 && cp <= 0x9FFF) {
+            return 2;
+        }
+        // Hangul, Hiragana, Katakana, Fullwidth forms
+        if (cp >= 0x3000 && cp <= 0x30FF || cp >= 0xFF00 && cp <= 0xFFEF) {
+            return 2;
+        }
+        return 1;
+    }
+
+    private static String padRight(String text, int targetVisualWidth) {
+        int currentWidth = getVisualWidth(text);
+        if (currentWidth >= targetVisualWidth) {
+            return text;
+        }
+        int neededSpaces = targetVisualWidth - currentWidth;
+        StringBuilder sb = new StringBuilder(text);
+        for (int i = 0; i < neededSpaces; i++) {
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
     /**
      * Hiển thị bảng điều khiển thống kê thời gian thực (Real-time Live Stats)
      * với phong cách thiết kế UI bảng Console tối giản và sang trọng bậc nhất.
@@ -72,28 +117,34 @@ public class DashboardView {
         System.out.println();
 
         // 3. Thiết kế khung thẻ thông tin (Dynamic Data Cards) cực kỳ sang trọng
-        System.out.println(BOLD_YELLOW + "╔══════════════════════════════════════════════════════════════════════════╗" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_YELLOW + "                    📊 DỰ ÁN CDMS - GIÁM SÁT THỜI GIAN THỰC               " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "╠══════════════════════════════════════╦═══════════════════════════════════╣" + RESET);
+        System.out.println(BOLD_YELLOW + "╔═════════════════════════════════════════════════════════════════════════╗" + RESET);
+        String title = BOLD_YELLOW + "                    📊 DỰ ÁN CDMS - GIÁM SÁT THỜI GIAN THỰC";
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(title, 73) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "╠════════════════════════════════════╦════════════════════════════════════╣" + RESET);
         
-        System.out.printf(BOLD_YELLOW + "║" + RESET + "  👥 Khách hàng    : " + BOLD_WHITE + "%-15d" + RESET + BOLD_YELLOW + "║" + RESET + "  📦 Tổng kiện hàng : " + BOLD_WHITE + "%-16d" + RESET + BOLD_YELLOW + "║%n" + RESET, 
-                totalCustomers, totalParcels);
+        String left1 = "  👥 Khách hàng    : " + BOLD_WHITE + totalCustomers + RESET;
+        String right1 = "  📦 Tổng kiện hàng : " + BOLD_WHITE + totalParcels + RESET;
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(left1, 36) + BOLD_YELLOW + "║" + RESET + padRight(right1, 36) + BOLD_YELLOW + "║" + RESET);
         
-        System.out.printf(BOLD_YELLOW + "║" + RESET + "  🚚 Hoạt động/Tổng: " + BOLD_GREEN + "%-2d" + RESET + "/" + BOLD_WHITE + "%-12d" + RESET + BOLD_YELLOW + "║" + RESET + "  📝 Tổng đơn hàng  : " + BOLD_WHITE + "%-16d" + RESET + BOLD_YELLOW + "║%n" + RESET, 
-                activeShippersCount, totalShippers, totalOrders);
+        String left2 = "  🚚 Hoạt động/Tổng: " + BOLD_GREEN + activeShippersCount + RESET + "/" + BOLD_WHITE + totalShippers + RESET;
+        String right2 = "  📝 Tổng đơn hàng  : " + BOLD_WHITE + totalOrders + RESET;
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(left2, 36) + BOLD_YELLOW + "║" + RESET + padRight(right2, 36) + BOLD_YELLOW + "║" + RESET);
         
-        System.out.printf(BOLD_YELLOW + "║" + RESET + "  ✅ Đơn giao xong : " + BOLD_GREEN + "%-15d" + RESET + BOLD_YELLOW + "║" + RESET + "  💰 Thực thu (VND) : " + BOLD_GREEN + "%,-16.0f" + RESET + BOLD_YELLOW + "║%n" + RESET, 
-                deliveredOrders, totalRevenue);
+        String left3 = "  ✅ Đơn giao xong : " + BOLD_GREEN + deliveredOrders + RESET;
+        String right3 = "  💰 Thực thu (VND) : " + BOLD_GREEN + String.format("%,.0f", totalRevenue) + RESET;
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(left3, 36) + BOLD_YELLOW + "║" + RESET + padRight(right3, 36) + BOLD_YELLOW + "║" + RESET);
 
-        System.out.println(BOLD_YELLOW + "╠══════════════════════════════════════╬═══════════════════════════════════╣" + RESET);
+        System.out.println(BOLD_YELLOW + "╠════════════════════════════════════╬════════════════════════════════════╣" + RESET);
 
-        System.out.printf(BOLD_YELLOW + "║" + RESET + "  ⚡ Đang vận chuyển: " + BOLD_CYAN + "%-14d" + RESET + BOLD_YELLOW + "║" + RESET + "  📋 Đơn đã phân công: " + BOLD_WHITE + "%-14d" + RESET + BOLD_YELLOW + "║%n" + RESET, 
-                inTransitOrders, assignedOrders);
+        String left4 = "  ⚡ Đang vận chuyển: " + BOLD_CYAN + inTransitOrders + RESET;
+        String right4 = "  📋 Đơn đã phân công: " + BOLD_WHITE + assignedOrders + RESET;
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(left4, 36) + BOLD_YELLOW + "║" + RESET + padRight(right4, 36) + BOLD_YELLOW + "║" + RESET);
 
-        System.out.printf(BOLD_YELLOW + "║" + RESET + "  ❌ Giao thất bại  : " + BOLD_RED + "%-14d" + RESET + BOLD_YELLOW + "║" + RESET + "  🚫 Đơn hàng đã hủy : " + BOLD_RED + "%-14d" + RESET + BOLD_YELLOW + "║%n" + RESET, 
-                failedOrders, cancelledOrders);
+        String left5 = "  ❌ Giao thất bại  : " + BOLD_RED + failedOrders + RESET;
+        String right5 = "  🚫 Đơn hàng đã hủy : " + BOLD_RED + cancelledOrders + RESET;
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(left5, 36) + BOLD_YELLOW + "║" + RESET + padRight(right5, 36) + BOLD_YELLOW + "║" + RESET);
         
-        System.out.println(BOLD_YELLOW + "╚══════════════════════════════════════╩═══════════════════════════════════╝" + RESET);
+        System.out.println(BOLD_YELLOW + "╚════════════════════════════════════╩════════════════════════════════════╝" + RESET);
         System.out.println();
     }
 }

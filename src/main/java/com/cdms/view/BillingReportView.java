@@ -31,6 +31,51 @@ public class BillingReportView {
     private static final String BOLD_WHITE = "\u001B[1;37m";
     private static final String PURPLE = "\u001B[35m";
 
+    private static int getVisualWidth(String str) {
+        if (str == null) return 0;
+        // Strip ANSI escape sequences
+        String stripped = str.replaceAll("\\u001B\\[[;\\d]*[a-zA-Z]", "");
+        int width = 0;
+        for (int i = 0; i < stripped.length(); ) {
+            int cp = stripped.codePointAt(i);
+            width += getCodePointWidth(cp);
+            i += Character.charCount(cp);
+        }
+        return width;
+    }
+
+    private static int getCodePointWidth(int cp) {
+        // Emojis and other wide symbols
+        if (cp >= 0x1F000 && cp <= 0x1FFFF) {
+            return 2;
+        }
+        if (cp >= 0x2600 && cp <= 0x27BF) {
+            return 2; // Miscellaneous Symbols & Dingbats
+        }
+        // CJK Unified Ideographs
+        if (cp >= 0x4E00 && cp <= 0x9FFF) {
+            return 2;
+        }
+        // Hangul, Hiragana, Katakana, Fullwidth forms
+        if (cp >= 0x3000 && cp <= 0x30FF || cp >= 0xFF00 && cp <= 0xFFEF) {
+            return 2;
+        }
+        return 1;
+    }
+
+    private static String padRight(String text, int targetVisualWidth) {
+        int currentWidth = getVisualWidth(text);
+        if (currentWidth >= targetVisualWidth) {
+            return text;
+        }
+        int neededSpaces = targetVisualWidth - currentWidth;
+        StringBuilder sb = new StringBuilder(text);
+        for (int i = 0; i < neededSpaces; i++) {
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
     private BillingReportView() {
     }
 
@@ -94,41 +139,45 @@ public class BillingReportView {
         System.out
                 .println(BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "MANAGER - MENU CHÍNH          " + RESET);
         System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ THANH TOÁN]                                 "
-                + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE
-                + "Tính hóa đơn cho đơn hàng                         " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE
-                + "Xem chi tiết một hóa đơn                    " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE
-                + "Đối soát tiền COD từ Shipper                       " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [BÁO CÁO & THỐNG KÊ]                                 "
-                + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE
-                + "Báo cáo doanh thu theo ngày                         " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE
-                + "Báo cáo doanh thu theo tháng                        " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  6. " + WHITE
-                + "Shipper tích cực nhất                               " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  7. " + WHITE
-                + "Thống kê tổng hợp đơn hàng                        " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [QUẢN LÝ DỮ LIỆU - CRUD & TIỆN ÍCH]                   "
-                + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  8. " + WHITE
-                + "Thêm hóa đơn thủ công                              " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  9. " + WHITE
-                + "Sửa trạng thái hóa đơn                             " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  10." + WHITE
-                + " Xóa hóa đơn                                       " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  11." + WHITE
-                + " Xem danh sách tất cả hóa đơn             " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  12." + WHITE
-                + " Quản lý hoàn tiền (Đơn Hủy/Thất bại)              " + BOLD_YELLOW + "║" + RESET);
-        System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-        System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
-                + "Quay lại Menu chính                                " + BOLD_YELLOW + "║" + RESET);
+        
+        String group1 = BOLD_CYAN + "  [QUẢN LÝ THANH TOÁN]";
+        String line1  = BOLD_WHITE + "  1. " + WHITE + "Tính hóa đơn cho đơn hàng";
+        String line2  = BOLD_WHITE + "  2. " + WHITE + "Xem chi tiết một hóa đơn";
+        String line3  = BOLD_WHITE + "  3. " + WHITE + "Đối soát tiền COD từ Shipper";
+        String lineSep = " ";
+        String group2 = BOLD_CYAN + "  [BÁO CÁO & THỐNG KÊ]";
+        String line4  = BOLD_WHITE + "  4. " + WHITE + "Báo cáo doanh thu theo ngày";
+        String line5  = BOLD_WHITE + "  5. " + WHITE + "Báo cáo doanh thu theo tháng";
+        String line6  = BOLD_WHITE + "  6. " + WHITE + "Shipper tích cực nhất";
+        String line7  = BOLD_WHITE + "  7. " + WHITE + "Thống kê tổng hợp đơn hàng";
+        String group3 = BOLD_CYAN + "  [QUẢN LÝ DỮ LIỆU - CRUD & TIỆN ÍCH]";
+        String line8  = BOLD_WHITE + "  8. " + WHITE + "Thêm hóa đơn thủ công";
+        String line9  = BOLD_WHITE + "  9. " + WHITE + "Sửa trạng thái hóa đơn";
+        String line10 = BOLD_WHITE + "  10." + WHITE + " Xóa hóa đơn";
+        String line11 = BOLD_WHITE + "  11." + WHITE + " Xem danh sách tất cả hóa đơn";
+        String line12 = BOLD_WHITE + "  12." + WHITE + " Quản lý hoàn tiền (Đơn Hủy/Thất bại)";
+        String line0  = BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính";
+
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(group1, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line1, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line2, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line3, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineSep, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(group2, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line4, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line5, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line6, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line7, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineSep, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(group3, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line8, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line9, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line10, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line11, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line12, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineSep, 55) + BOLD_YELLOW + "║" + RESET);
+        System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line0, 55) + BOLD_YELLOW + "║" + RESET);
+        
         System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
     }
 

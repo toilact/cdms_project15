@@ -29,6 +29,51 @@ public class ShipperView {
     private static final String WHITE = "\u001B[37m";
     private static final String BOLD_WHITE = "\u001B[1;37m";
 
+    private static int getVisualWidth(String str) {
+        if (str == null) return 0;
+        // Strip ANSI escape sequences
+        String stripped = str.replaceAll("\\u001B\\[[;\\d]*[a-zA-Z]", "");
+        int width = 0;
+        for (int i = 0; i < stripped.length(); ) {
+            int cp = stripped.codePointAt(i);
+            width += getCodePointWidth(cp);
+            i += Character.charCount(cp);
+        }
+        return width;
+    }
+
+    private static int getCodePointWidth(int cp) {
+        // Emojis and other wide symbols
+        if (cp >= 0x1F000 && cp <= 0x1FFFF) {
+            return 2;
+        }
+        if (cp >= 0x2600 && cp <= 0x27BF) {
+            return 2; // Miscellaneous Symbols & Dingbats
+        }
+        // CJK Unified Ideographs
+        if (cp >= 0x4E00 && cp <= 0x9FFF) {
+            return 2;
+        }
+        // Hangul, Hiragana, Katakana, Fullwidth forms
+        if (cp >= 0x3000 && cp <= 0x30FF || cp >= 0xFF00 && cp <= 0xFFEF) {
+            return 2;
+        }
+        return 1;
+    }
+
+    private static String padRight(String text, int targetVisualWidth) {
+        int currentWidth = getVisualWidth(text);
+        if (currentWidth >= targetVisualWidth) {
+            return text;
+        }
+        int neededSpaces = targetVisualWidth - currentWidth;
+        StringBuilder sb = new StringBuilder(text);
+        for (int i = 0; i < neededSpaces; i++) {
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
     // Ngăn khởi tạo đối tượng
     private ShipperView() {
     }
@@ -62,20 +107,25 @@ public class ShipperView {
             System.out.println(
                     BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "DELIVERY STAFF (SHIPPER) - MENU" + RESET);
             System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_CYAN + "  [TÁC VỤ SHIPPER: " + String.format("%-18s", currentStaff.getName()) + "]                 " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  1. " + WHITE
-                    + "Xem danh sách đơn hàng được giao                   " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  2. " + WHITE
-                    + "Cập nhật ngày nhận hàng thực tế                     " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  3. " + WHITE
-                    + "Cập nhật ngày giao hàng thực tế                     " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  4. " + WHITE
-                    + "Thêm ghi chú giao hàng / hành trình                 " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_WHITE + "  5. " + WHITE
-                    + "Cập nhật trạng thái đơn giao hàng                   " + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║                                                       ║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + BOLD_RED + "  0. " + BOLD_WHITE
-                    + "Đăng xuất & Quay lại Menu chính                    " + BOLD_YELLOW + "║" + RESET);
+            
+            String lineHeader = BOLD_CYAN + "  [TÁC VỤ SHIPPER: " + currentStaff.getName() + "]";
+            String line1 = BOLD_WHITE + "  1. " + WHITE + "Xem danh sách đơn hàng được giao";
+            String line2 = BOLD_WHITE + "  2. " + WHITE + "Cập nhật ngày nhận hàng thực tế";
+            String line3 = BOLD_WHITE + "  3. " + WHITE + "Cập nhật ngày giao hàng thực tế";
+            String line4 = BOLD_WHITE + "  4. " + WHITE + "Thêm ghi chú giao hàng / hành trình";
+            String line5 = BOLD_WHITE + "  5. " + WHITE + "Cập nhật trạng thái đơn giao hàng";
+            String lineEmpty = " ";
+            String line0 = BOLD_RED + "  0. " + BOLD_WHITE + "Đăng xuất & Quay lại Menu chính";
+            
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineHeader, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line1, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line2, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line3, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line4, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line5, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineEmpty, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line0, 55) + BOLD_YELLOW + "║" + RESET);
+            
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
             int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-5): " + RESET, 0, 5);
