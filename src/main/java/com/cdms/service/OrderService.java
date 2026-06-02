@@ -102,8 +102,8 @@ public class OrderService {
         newOrder.setPaymentTerms(paymentTermsFormatted);
         newOrder.addNote("Đơn hàng được tạo từ kiện hàng: " + parcelId);
 
-        // Kiện hàng vẫn giữ trạng thái Pending nhưng đã liên kết với đơn hàng
-        parcel.setStatus("Pending");
+        // Kiện hàng chuyển sang trạng thái Pending Order để tránh việc liên kết trùng lặp đơn hàng
+        parcel.setStatus("Pending Order");
 
         // Lưu dữ liệu qua Repository (sẽ tự động gọi JSONDataManager.saveAllData())
         DeliveryOrderRepository.add(newOrder);
