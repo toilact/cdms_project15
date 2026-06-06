@@ -90,9 +90,11 @@ public class ShipperView {
         
         String staffId;
         try {
-            staffId = InputHelper.getStringInput("Nhập mã shipper của bạn (Staff ID): ",
-                    val -> CustomerStaffService.findStaff(val) != null,
-                    "Mã shipper không tồn tại trong hệ thống!");
+            while (true) {
+                staffId = InputHelper.getStringInput("Nhập mã shipper của bạn (Staff ID): ");
+                if (CustomerStaffService.findStaff(staffId) != null) break;
+                System.out.println("  ⚠ Lỗi: Mã shipper không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
         } catch (FormCancelledException e) {
             System.out.println("  ↩ Quay lại Menu chính...\n");
             return;
@@ -189,7 +191,7 @@ public class ShipperView {
                             // Tính toán động từ Parcel vì chưa phát hành hóa đơn
                             com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(o.getParcelId());
                             double parcelFee = (parcel != null) ? parcel.calculateFee() : 0.0;
-                            double urgentCharge = "Urgent".equalsIgnoreCase(o.getDeliveryType()) ? 20000.0 : 0.0;
+                            double urgentCharge = "Urgent".equalsIgnoreCase(o.getDeliveryType()) ? com.cdms.service.BillingReportService.URGENT_CHARGE : 0.0;
                             codAmountStr = String.format("%,.0f VND", parcelFee + urgentCharge);
                         }
                     }
@@ -202,7 +204,7 @@ public class ShipperView {
                         // Tính toán động từ Parcel vì chưa phát hành hóa đơn
                         com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(o.getParcelId());
                         double parcelFee = (parcel != null) ? parcel.calculateFee() : 0.0;
-                        double urgentCharge = "Urgent".equalsIgnoreCase(o.getDeliveryType()) ? 20000.0 : 0.0;
+                        double urgentCharge = "Urgent".equalsIgnoreCase(o.getDeliveryType()) ? com.cdms.service.BillingReportService.URGENT_CHARGE : 0.0;
                         codAmountStr = String.format("%,.0f VND", parcelFee + urgentCharge);
                     }
                 }
@@ -228,12 +230,13 @@ public class ShipperView {
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
             // Bảo mật: Chỉ cho phép shipper nhập mã đơn được gán cho chính mình!
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
-                    val -> {
-                        DeliveryOrder o = DeliveryOrderRepository.findById(val);
-                        return o != null && staffId.equalsIgnoreCase(o.getStaffId());
-                    },
-                    "Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
+                DeliveryOrder _o = DeliveryOrderRepository.findById(orderId);
+                if (_o != null && staffId.equalsIgnoreCase(_o.getStaffId())) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn! Vui lòng nhập lại.");
+            }
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
@@ -276,12 +279,13 @@ public class ShipperView {
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
             // Bảo mật: Chỉ cho phép shipper nhập mã đơn được gán cho chính mình!
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
-                    val -> {
-                        DeliveryOrder o = DeliveryOrderRepository.findById(val);
-                        return o != null && staffId.equalsIgnoreCase(o.getStaffId());
-                    },
-                    "Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
+                DeliveryOrder _o = DeliveryOrderRepository.findById(orderId);
+                if (_o != null && staffId.equalsIgnoreCase(_o.getStaffId())) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn! Vui lòng nhập lại.");
+            }
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
@@ -324,12 +328,13 @@ public class ShipperView {
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
             // Bảo mật: Chỉ cho phép shipper nhập mã đơn được gán cho chính mình!
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
-                    val -> {
-                        DeliveryOrder o = DeliveryOrderRepository.findById(val);
-                        return o != null && staffId.equalsIgnoreCase(o.getStaffId());
-                    },
-                    "Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
+                DeliveryOrder _o = DeliveryOrderRepository.findById(orderId);
+                if (_o != null && staffId.equalsIgnoreCase(_o.getStaffId())) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn! Vui lòng nhập lại.");
+            }
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
@@ -369,12 +374,13 @@ public class ShipperView {
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
             // Bảo mật: Chỉ cho phép shipper nhập mã đơn được gán cho chính mình!
-            String orderId = InputHelper.getStringInput("Mã đơn hàng: ",
-                    val -> {
-                        DeliveryOrder o = DeliveryOrderRepository.findById(val);
-                        return o != null && staffId.equalsIgnoreCase(o.getStaffId());
-                    },
-                    "Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Mã đơn hàng: ");
+                DeliveryOrder _o = DeliveryOrderRepository.findById(orderId);
+                if (_o != null && staffId.equalsIgnoreCase(_o.getStaffId())) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại hoặc đơn hàng này không được phân công cho bạn! Vui lòng nhập lại.");
+            }
 
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
             System.out.println(BOLD_YELLOW + "\n[ĐƠN HÀNG HIỆN TẠI]:" + RESET);
@@ -382,9 +388,17 @@ public class ShipperView {
             System.out.println("Trạng thái hiện tại: " + BOLD_WHITE + current.getStatus() + RESET);
             System.out.println();
 
-            String status = InputHelper.getStringInput("Trạng thái mới (Picked Up/In Transit/Delivered/Failed): ",
-                    val -> val.equalsIgnoreCase("Picked Up") || val.equalsIgnoreCase("In Transit") || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Failed"),
-                    "Trạng thái không hợp lệ! (Chỉ chấp nhận 'Picked Up', 'In Transit', 'Delivered' hoặc 'Failed')");
+            String status = InputHelper.getOptionalChoiceInput(
+                    "Trạng thái mới (Picked Up/In Transit/Delivered/Failed): ",
+                    "Trạng thái không hợp lệ! (Chỉ chấp nhận 'Picked Up', 'In Transit', 'Delivered' hoặc 'Failed')",
+                    "Picked Up", "In Transit", "Delivered", "Failed");
+            while (status.isEmpty()) {
+                System.out.println("  ⚠ Lỗi: Trạng thái không được để trống! Vui lòng nhập lại.");
+                status = InputHelper.getOptionalChoiceInput(
+                        "Trạng thái mới (Picked Up/In Transit/Delivered/Failed): ",
+                        "Trạng thái không hợp lệ! (Chỉ chấp nhận 'Picked Up', 'In Transit', 'Delivered' hoặc 'Failed')",
+                        "Picked Up", "In Transit", "Delivered", "Failed");
+            }
 
             System.out.println("\nXác nhận cập nhật trạng thái đơn hàng?");
             System.out.println("  1. Cập nhật");

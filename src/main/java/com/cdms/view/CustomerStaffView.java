@@ -181,13 +181,19 @@ public class CustomerStaffView {
         System.out.println(BOLD_CYAN + "\n===== THÊM KHÁCH HÀNG MỚI =====" + RESET);
         System.out.println("(Nhập 'cancel' tại bất kỳ trường nào để hủy thao tác)");
         try {
-            String id = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ",
-                    val -> CustomerRepository.findById(val) == null,
-                    "Mã khách hàng đã tồn tại trong hệ thống!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Mã khách hàng (VD: KH001): ");
+                if (CustomerRepository.findById(id) == null) break;
+                System.out.println("  ⚠ Lỗi: Mã khách hàng đã tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
             String name = InputHelper.getValidNameInput("Họ và tên khách hàng: ");
-            String phone = InputHelper.getPhoneInput("Số điện thoại: ",
-                    val -> CustomerRepository.findByPhone(val) == null,
-                    "Số điện thoại này đã được sử dụng bởi khách hàng khác!");
+            String phone;
+            while (true) {
+                phone = InputHelper.getPhoneInput("Số điện thoại: ");
+                if (CustomerRepository.findByPhone(phone) == null) break;
+                System.out.println("  ⚠ Lỗi: Số điện thoại này đã được sử dụng bởi khách hàng khác! Vui lòng nhập lại.");
+            }
             String address = InputHelper.getStringInput("Địa chỉ khách hàng: ");
 
             System.out.println("\nXác nhận lưu thông tin khách hàng này?");
@@ -214,9 +220,12 @@ public class CustomerStaffView {
         System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT THÔNG TIN KHÁCH HÀNG =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Mã khách hàng cần cập nhật: ",
-                    val -> CustomerRepository.findById(val) != null,
-                    "Mã khách hàng không tồn tại trong hệ thống!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Mã khách hàng cần cập nhật: ");
+                if (CustomerRepository.findById(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Mã khách hàng không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
             Customer existing = CustomerStaffService.findCustomer(id);
 
             System.out.println("Thông tin hiện tại:");
@@ -227,16 +236,18 @@ public class CustomerStaffView {
             System.out.println("+------------+----------------------+-----------------+--------------------------------+");
             System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-            String newName = InputHelper.getOptionalValidatedStringInput("Họ tên mới [" + existing.getName() + "]: ",
-                    val -> !val.matches("\\d+"),
-                    "Tên khách hàng không được phép là số!");
+            String newName = InputHelper.getOptionalValidNameInput("Họ tên mới [" + existing.getName() + "]: ");
             if (newName.isEmpty()) {
                 newName = existing.getName();
             }
 
-            String newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
-                    val -> val.equalsIgnoreCase(existing.getPhone()) || CustomerRepository.findByPhone(val) == null,
-                    "Số điện thoại này đã được sử dụng bởi khách hàng khác!");
+            String newPhone;
+            while (true) {
+                newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ");
+                if (newPhone.isEmpty()) break;
+                if (newPhone.equalsIgnoreCase(existing.getPhone()) || CustomerRepository.findByPhone(newPhone) == null) break;
+                System.out.println("  ⚠ Lỗi: Số điện thoại này đã được sử dụng bởi khách hàng khác! Vui lòng nhập lại.");
+            }
             if (newPhone.isEmpty()) {
                 newPhone = existing.getPhone();
             }
@@ -291,9 +302,12 @@ public class CustomerStaffView {
         System.out.println(BOLD_CYAN + "\n===== XÓA KHÁCH HÀNG =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Nhập mã khách hàng cần xóa: ",
-                    val -> CustomerRepository.findById(val) != null,
-                    "Không tìm thấy khách hàng với mã này!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Nhập mã khách hàng cần xóa: ");
+                if (CustomerRepository.findById(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Không tìm thấy khách hàng với mã này! Vui lòng nhập lại.");
+            }
             Customer existing = CustomerStaffService.findCustomer(id);
 
             System.out.println("Thông tin khách hàng:");
@@ -379,9 +393,12 @@ public class CustomerStaffView {
         System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT THÔNG TIN BƯU KIỆN =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Nhập mã bưu kiện: ",
-                    val -> ParcelRepository.findById(val) != null,
-                    "Không tìm thấy bưu kiện này!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Nhập mã bưu kiện: ");
+                if (ParcelRepository.findById(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Không tìm thấy bưu kiện này! Vui lòng nhập lại.");
+            }
             Parcel existing = ParcelRepository.findById(id);
 
             System.out.println("Thông tin bưu kiện hiện tại:");
@@ -395,9 +412,7 @@ public class CustomerStaffView {
             String receiverName = InputHelper.getOptionalStringInput("Họ tên người nhận [" + existing.getReceiverName() + "]: ");
             if (receiverName.isEmpty()) receiverName = existing.getReceiverName();
 
-            String receiverPhone = InputHelper.getOptionalValidatedStringInput("SĐT người nhận [" + existing.getReceiverPhone() + "]: ",
-                    val -> val.matches("\\d{9,11}"),
-                    "Số điện thoại người nhận phải có từ 9 đến 11 số!");
+            String receiverPhone = InputHelper.getOptionalPhoneInput("SĐT người nhận [" + existing.getReceiverPhone() + "]: ");
             if (receiverPhone.isEmpty()) receiverPhone = existing.getReceiverPhone();
 
             String pickupAddress = InputHelper.getOptionalStringInput("Địa chỉ lấy hàng [" + existing.getPickupAddress() + "]: ");
@@ -452,9 +467,12 @@ public class CustomerStaffView {
         System.out.println(BOLD_CYAN + "\n===== XÓA BƯU KIỆN =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Nhập mã bưu kiện: ",
-                    val -> ParcelRepository.findById(val) != null,
-                    "Không tìm thấy bưu kiện này!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Nhập mã bưu kiện: ");
+                if (ParcelRepository.findById(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Không tìm thấy bưu kiện này! Vui lòng nhập lại.");
+            }
             Parcel existing = ParcelRepository.findById(id);
 
             System.out.println("Thông tin bưu kiện:");
@@ -571,9 +589,12 @@ public class CustomerStaffView {
         System.out.println(BOLD_CYAN + "\n===== XEM LỊCH SỬ GIAO HÀNG CỦA KHÁCH HÀNG =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String customerId = InputHelper.getStringInput("Nhập mã khách hàng (VD: KH001): ",
-                    val -> CustomerRepository.findById(val) != null,
-                    "Không tìm thấy khách hàng với mã này!");
+            String customerId;
+            while (true) {
+                customerId = InputHelper.getStringInput("Nhập mã khách hàng (VD: KH001): ");
+                if (CustomerRepository.findById(customerId) != null) break;
+                System.out.println("  ⚠ Lỗi: Không tìm thấy khách hàng với mã này! Vui lòng nhập lại.");
+            }
             Customer c = CustomerStaffService.findCustomer(customerId);
 
             System.out.println(BOLD_GREEN + "\nThông tin khách hàng:" + RESET);

@@ -216,7 +216,7 @@ public class BillingReportView {
                 com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(o.getParcelId());
                 if (parcel != null) {
                     double baseFee = parcel.calculateFee();
-                    double urgent = "Urgent".equalsIgnoreCase(o.getDeliveryType()) ? 20000.0 : 0.0;
+                    double urgent = "Urgent".equalsIgnoreCase(o.getDeliveryType()) ? BillingReportService.URGENT_CHARGE : 0.0;
                     totalFee = baseFee + urgent;
                 }
                 String totalFeeStr = String.format("%,.0f", totalFee);
@@ -238,13 +238,14 @@ public class BillingReportView {
             System.out.println(tableHeader);
             System.out.println();
 
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
-                    val -> {
-                        var o = BillingReportService.findOrderById(val);
-                        return o != null && "Delivered".equalsIgnoreCase(o.getStatus())
-                                && !BillingReportService.invoiceExistsForOrder(val);
-                    },
-                    "Đơn hàng không tồn tại, chưa ở trạng thái 'Delivered', hoặc đã có hóa đơn!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
+                var _o = BillingReportService.findOrderById(orderId);
+                if (_o != null && "Delivered".equalsIgnoreCase(_o.getStatus())
+                        && !BillingReportService.invoiceExistsForOrder(orderId)) break;
+                System.out.println("  ⚠ Lỗi: Đơn hàng không tồn tại, chưa ở trạng thái 'Delivered', hoặc đã có hóa đơn! Vui lòng nhập lại.");
+            }
 
             System.out.println("\nXác nhận tạo hóa đơn cho đơn hàng này?");
             System.out.println("  1. Tạo hóa đơn");
@@ -284,9 +285,12 @@ public class BillingReportView {
 
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn muốn xem: ",
-                    val -> BillingReportService.findInvoiceById(val) != null,
-                    "Không tìm thấy hóa đơn này!");
+            String invoiceId;
+            while (true) {
+                invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn muốn xem: ");
+                if (BillingReportService.findInvoiceById(invoiceId) != null) break;
+                System.out.println("  ⚠ Lỗi: Không tìm thấy hóa đơn này! Vui lòng nhập lại.");
+            }
             Invoice invoice = BillingReportService.findInvoiceById(invoiceId);
             printInvoiceDetail(invoice);
         } catch (FormCancelledException e) {
@@ -341,12 +345,13 @@ public class BillingReportView {
 
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn cần ghi nhận thanh toán: ",
-                    val -> {
-                        Invoice inv = BillingReportService.findInvoiceById(val);
-                        return inv != null && "Unpaid".equalsIgnoreCase(inv.getPaymentStatus());
-                    },
-                    "Mã hóa đơn không tồn tại hoặc đã được thanh toán!");
+            String invoiceId;
+            while (true) {
+                invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn cần ghi nhận thanh toán: ");
+                Invoice _inv = BillingReportService.findInvoiceById(invoiceId);
+                if (_inv != null && "Unpaid".equalsIgnoreCase(_inv.getPaymentStatus())) break;
+                System.out.println("  ⚠ Lỗi: Mã hóa đơn không tồn tại hoặc đã được thanh toán! Vui lòng nhập lại.");
+            }
 
             String paymentMethod = InputHelper.getStringInput("Phương thức thanh toán (Cash/Banking/...): ");
             LocalDate paymentDate = InputHelper.getDateInput("Ngày thanh toán (DD/MM/YYYY)", false);
@@ -393,12 +398,13 @@ public class BillingReportView {
 
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn cần đối soát: ",
-                    val -> {
-                        Invoice inv = BillingReportService.findInvoiceById(val);
-                        return inv != null && "Collected".equalsIgnoreCase(inv.getPaymentStatus());
-                    },
-                    "Mã hóa đơn không tồn tại hoặc không ở trạng thái 'Collected'!");
+            String invoiceId;
+            while (true) {
+                invoiceId = InputHelper.getStringInput("Nhập mã hóa đơn cần đối soát: ");
+                Invoice _inv = BillingReportService.findInvoiceById(invoiceId);
+                if (_inv != null && "Collected".equalsIgnoreCase(_inv.getPaymentStatus())) break;
+                System.out.println("  ⚠ Lỗi: Mã hóa đơn không tồn tại hoặc không ở trạng thái 'Collected'! Vui lòng nhập lại.");
+            }
 
             String paymentMethod = InputHelper.getStringInput("Phương thức thanh toán bàn giao (Cash/Banking/...): ");
             LocalDate paymentDate = InputHelper.getDateInput("Ngày đối soát nhận tiền (DD/MM/YYYY)", false);
@@ -651,13 +657,14 @@ public class BillingReportView {
                 return;
             }
 
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng tương ứng: ",
-                    val -> {
-                        var o = BillingReportService.findOrderById(val);
-                        return o != null && "Delivered".equalsIgnoreCase(o.getStatus())
-                                && !BillingReportService.invoiceExistsForOrder(val);
-                    },
-                    "Đơn hàng không tồn tại, chưa 'Delivered' hoặc đã có hóa đơn!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng tương ứng: ");
+                var _o = BillingReportService.findOrderById(orderId);
+                if (_o != null && "Delivered".equalsIgnoreCase(_o.getStatus())
+                        && !BillingReportService.invoiceExistsForOrder(orderId)) break;
+                System.out.println("  ⚠ Lỗi: Đơn hàng không tồn tại, chưa 'Delivered' hoặc đã có hóa đơn! Vui lòng nhập lại.");
+            }
 
             var order = BillingReportService.findOrderById(orderId);
             Invoice suggested = BillingReportService.createInvoice(order);
@@ -730,20 +737,22 @@ public class BillingReportView {
         System.out.println("\n" + PURPLE + "─── Sửa trạng thái hóa đơn ───" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Nhập mã hóa đơn cần sửa: ",
-                    val -> BillingReportService.findInvoiceById(val) != null,
-                    "Mã hóa đơn không tồn tại!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Nhập mã hóa đơn cần sửa: ");
+                if (BillingReportService.findInvoiceById(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Mã hóa đơn không tồn tại! Vui lòng nhập lại.");
+            }
             Invoice existing = BillingReportService.findInvoiceById(id);
 
             System.out.println("\nThông tin hiện tại:");
             printInvoiceDetail(existing);
             System.out.println("(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-            String newStatus = InputHelper.getOptionalValidatedStringInput(
+            String newStatus = InputHelper.getOptionalChoiceInput(
                     "Trạng thái thanh toán [" + existing.getPaymentStatus() + "] (Unpaid/Partially Paid/Paid): ",
-                    val -> val.equalsIgnoreCase("Unpaid") || val.equalsIgnoreCase("Partially Paid")
-                            || val.equalsIgnoreCase("Paid"),
-                    "Vui lòng nhập 'Unpaid', 'Partially Paid' hoặc 'Paid'!");
+                    "Vui lòng nhập 'Unpaid', 'Partially Paid' hoặc 'Paid'!",
+                    "Unpaid", "Partially Paid", "Paid");
             if (newStatus.isEmpty()) {
                 newStatus = existing.getPaymentStatus();
             }
@@ -817,9 +826,12 @@ public class BillingReportView {
         System.out.println("\n" + PURPLE + "─── Xóa hóa đơn ───" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Nhập mã hóa đơn cần xóa: ",
-                    val -> BillingReportService.findInvoiceById(val) != null,
-                    "Không tìm thấy hóa đơn!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Nhập mã hóa đơn cần xóa: ");
+                if (BillingReportService.findInvoiceById(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Không tìm thấy hóa đơn! Vui lòng nhập lại.");
+            }
             Invoice existing = BillingReportService.findInvoiceById(id);
 
             System.out.println("\nThông tin hóa đơn:");

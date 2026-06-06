@@ -45,20 +45,32 @@ public class ParcelOrderView {
         System.out.println(BOLD_CYAN + "\n=== THÊM KIỆN HÀNG MỚI ===" + RESET);
         System.out.println("(Nhập 'cancel' tại bất kỳ trường nào để hủy thao tác)");
         try {
-            String id = InputHelper.getStringInput("Mã kiện hàng: ",
-                    val -> !ParcelRepository.existsById(val),
-                    "Mã kiện hàng đã tồn tại trong hệ thống!");
-            String senderId = InputHelper.getStringInput("Mã khách hàng gửi: ",
-                    val -> CustomerRepository.findById(val) != null,
-                    "Mã khách hàng gửi không tồn tại trong hệ thống!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Mã kiện hàng: ");
+                if (!ParcelRepository.existsById(id)) break;
+                System.out.println("  ⚠ Lỗi: Mã kiện hàng đã tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
+            String senderId;
+            while (true) {
+                senderId = InputHelper.getStringInput("Mã khách hàng gửi: ");
+                if (CustomerRepository.findById(senderId) != null) break;
+                System.out.println("  ⚠ Lỗi: Mã khách hàng gửi không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
             String receiverName = InputHelper.getValidNameInput("Tên người nhận: ");
             String receiverPhone = InputHelper.getPhoneInput("SĐT người nhận: ");
             String pickupAddress = InputHelper.getStringInput("Địa chỉ lấy hàng: ");
             String deliveryAddress = InputHelper.getStringInput("Địa chỉ giao hàng: ");
             double weight = InputHelper.getDoubleInput("Trọng lượng (kg): ", 0.1);
-            String type = InputHelper.getStringInput("Loại kiện (Document/Goods): ",
-                    val -> val.equalsIgnoreCase("Document") || val.equalsIgnoreCase("Goods"),
-                    "Loại kiện hàng không hợp lệ (Chỉ nhận 'Document' hoặc 'Goods')!");
+            String type = InputHelper.getOptionalChoiceInput("Loại kiện (Document/Goods): ",
+                    "Loại kiện hàng không hợp lệ (Chỉ nhận 'Document' hoặc 'Goods')!",
+                    "Document", "Goods");
+            while (type.isEmpty()) {
+                System.out.println("  ⚠ Lỗi: Loại kiện không được để trống! Vui lòng nhập lại.");
+                type = InputHelper.getOptionalChoiceInput("Loại kiện (Document/Goods): ",
+                        "Loại kiện hàng không hợp lệ (Chỉ nhận 'Document' hoặc 'Goods')!",
+                        "Document", "Goods");
+            }
 
             System.out.println("\nXác nhận lưu thông tin kiện hàng này?");
             System.out.println("  1. Lưu");
@@ -117,18 +129,28 @@ public class ParcelOrderView {
         System.out.println(BOLD_CYAN + "\n=== TẠO ĐƠN GIAO HÀNG ===" + RESET);
         System.out.println("(Nhập 'cancel' tại bất kỳ trường nào để hủy thao tác)");
         try {
-            String orderId = InputHelper.getStringInput("Mã đơn hàng: ",
-                    val -> !DeliveryOrderRepository.existsById(val),
-                    "Mã đơn hàng đã tồn tại trong hệ thống!");
-            String parcelId = InputHelper.getStringInput("Mã kiện hàng cần chuyển: ",
-                    val -> {
-                        Parcel p = ParcelRepository.findById(val);
-                        return p != null && "Pending".equalsIgnoreCase(p.getStatus());
-                    },
-                    "Kiện hàng không tồn tại hoặc không ở trạng thái Pending!");
-            String deliveryType = InputHelper.getStringInput("Loại đơn hàng (Standard/Urgent): ",
-                    val -> val.equalsIgnoreCase("Standard") || val.equalsIgnoreCase("Urgent"),
-                    "Loại đơn hàng không hợp lệ (Chỉ nhận Standard hoặc Urgent)!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Mã đơn hàng: ");
+                if (!DeliveryOrderRepository.existsById(orderId)) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng đã tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
+            String parcelId;
+            while (true) {
+                parcelId = InputHelper.getStringInput("Mã kiện hàng cần chuyển: ");
+                Parcel _p = ParcelRepository.findById(parcelId);
+                if (_p != null && "Pending".equalsIgnoreCase(_p.getStatus())) break;
+                System.out.println("  ⚠ Lỗi: Kiện hàng không tồn tại hoặc không ở trạng thái Pending! Vui lòng nhập lại.");
+            }
+            String deliveryType = InputHelper.getOptionalChoiceInput("Loại đơn hàng (Standard/Urgent): ",
+                    "Loại đơn hàng không hợp lệ (Chỉ nhận Standard hoặc Urgent)!",
+                    "Standard", "Urgent");
+            while (deliveryType.isEmpty()) {
+                System.out.println("  ⚠ Lỗi: Loại đơn hàng không được để trống! Vui lòng nhập lại.");
+                deliveryType = InputHelper.getOptionalChoiceInput("Loại đơn hàng (Standard/Urgent): ",
+                        "Loại đơn hàng không hợp lệ (Chỉ nhận Standard hoặc Urgent)!",
+                        "Standard", "Urgent");
+            }
 
             System.out.println("\nChọn hình thức thanh toán:");
             System.out.println("  1. Sender Pay (Trả trước - Người gửi trả tại quầy)");
@@ -187,15 +209,23 @@ public class ParcelOrderView {
         System.out.println(BOLD_CYAN + "\n=== CẬP NHẬT TRẠNG THÁI ĐƠN ===" + RESET);
         System.out.println("(Nhập 'cancel' tại bất kỳ trường nào để hủy thao tác)");
         try {
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
-                    val -> DeliveryOrderRepository.existsById(val),
-                    "Mã đơn hàng không tồn tại trong hệ thống!");
-            String status = InputHelper.getStringInput(
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
+                if (DeliveryOrderRepository.existsById(orderId)) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
+            String status = InputHelper.getOptionalChoiceInput(
                     "Nhập trạng thái mới (Assigned/Picked Up/In Transit/Delivered/Cancelled/Failed): ",
-                    val -> val.equalsIgnoreCase("Assigned") || val.equalsIgnoreCase("Picked Up")
-                            || val.equalsIgnoreCase("In Transit") || val.equalsIgnoreCase("Delivered")
-                            || val.equalsIgnoreCase("Cancelled") || val.equalsIgnoreCase("Failed"),
-                    "Trạng thái không hợp lệ!");
+                    "Trạng thái không hợp lệ!",
+                    "Assigned", "Picked Up", "In Transit", "Delivered", "Cancelled", "Failed");
+            while (status.isEmpty()) {
+                System.out.println("  ⚠ Lỗi: Trạng thái không được để trống! Vui lòng nhập lại.");
+                status = InputHelper.getOptionalChoiceInput(
+                        "Nhập trạng thái mới (Assigned/Picked Up/In Transit/Delivered/Cancelled/Failed): ",
+                        "Trạng thái không hợp lệ!",
+                        "Assigned", "Picked Up", "In Transit", "Delivered", "Cancelled", "Failed");
+            }
 
             System.out.println("\nXác nhận cập nhật trạng thái đơn hàng này?");
             System.out.println("  1. Đồng ý");
@@ -222,9 +252,12 @@ public class ParcelOrderView {
         System.out.println(BOLD_CYAN + "\n=== XEM CHI TIẾT ĐƠN HÀNG ===" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ",
-                    val -> DeliveryOrderRepository.existsById(val),
-                    "Mã đơn hàng không tồn tại trong hệ thống!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
+                if (DeliveryOrderRepository.existsById(orderId)) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
             try {
                 DeliveryOrder order = OrderService.getOrderDetail(orderId);
                 com.cdms.model.Parcel parcel = ParcelRepository.findById(order.getParcelId());
@@ -313,9 +346,12 @@ public class ParcelOrderView {
         System.out.println(BOLD_CYAN + "\n=== TÌM KIẾM ĐƠN THEO KHÁCH HÀNG ===" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String customerId = InputHelper.getStringInput("Nhập mã khách hàng: ",
-                    val -> CustomerRepository.findById(val) != null,
-                    "Mã khách hàng không tồn tại trong hệ thống!");
+            String customerId;
+            while (true) {
+                customerId = InputHelper.getStringInput("Nhập mã khách hàng: ");
+                if (CustomerRepository.findById(customerId) != null) break;
+                System.out.println("  ⚠ Lỗi: Mã khách hàng không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
 
             try {
                 List<DeliveryOrder> orders = OrderService.searchOrdersByCustomer(customerId);
@@ -345,9 +381,12 @@ public class ParcelOrderView {
         System.out.println(BOLD_CYAN + "\n=== HỦY ĐƠN GIAO HÀNG ===" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng cần hủy: ",
-                    val -> DeliveryOrderRepository.existsById(val),
-                    "Mã đơn hàng không tồn tại trong hệ thống!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng cần hủy: ");
+                if (DeliveryOrderRepository.existsById(orderId)) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
 
             System.out.println("\nXác nhận hủy đơn hàng này?");
             System.out.println("  1. Đồng ý hủy đơn");

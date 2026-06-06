@@ -177,61 +177,6 @@ public class InputHelper {
         }
     }
 
-    /**
-     * Yêu cầu nhập số điện thoại hợp lệ và duy nhất (kiểm tra qua Predicate).
-     *
-     * @param prompt            Thông báo hiển thị
-     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp lệ/duy nhất, false nếu trùng)
-     * @param errorMessage      Thông báo lỗi khi bị trùng
-     * @return Số điện thoại hợp lệ và duy nhất
-     */
-    public static String getPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator, String errorMessage) {
-        while (true) {
-            String phone = getPhoneInput(prompt);
-            if (uniquenessValidator.test(phone)) {
-                return phone;
-            }
-            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
-        }
-    }
-
-    /**
-     * Nhập chuỗi và kiểm tra tính hợp lệ qua một Predicate tùy chọn ngay lập tức.
-     *
-     * @param prompt       Thông báo hiển thị
-     * @param validator    Hàm kiểm tra tính hợp lệ
-     * @param errorMessage Thông báo lỗi khi không hợp lệ
-     * @return Chuỗi hợp lệ
-     */
-    public static String getStringInput(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {
-        while (true) {
-            String val = getStringInput(prompt);
-            if (validator.test(val)) {
-                return val;
-            }
-            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
-        }
-    }
-
-    /**
-     * Nhập số thực và kiểm tra tính hợp lệ qua DoublePredicate tùy chọn ngay lập tức.
-     *
-     * @param prompt       Thông báo hiển thị
-     * @param min          Giá trị tối thiểu
-     * @param validator    Hàm kiểm tra tính hợp lệ
-     * @param errorMessage Thông báo lỗi khi không hợp lệ
-     * @return Số thực hợp lệ
-     */
-    public static double getDoubleInput(String prompt, double min, java.util.function.DoublePredicate validator, String errorMessage) {
-        while (true) {
-            double val = getDoubleInput(prompt, min);
-            if (validator.test(val)) {
-                return val;
-            }
-            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
-        }
-    }
-
     // ---------------------------------------------------------
     // 4. NHẬP CHUỖI TÙY CHỌN (cho phép để trống)
     // ---------------------------------------------------------
@@ -254,48 +199,58 @@ public class InputHelper {
     }
 
     /**
-     * Nhập chuỗi tùy chọn và kiểm tra tính hợp lệ nếu người dùng không để trống.
-     *
-     * @param prompt       Thông báo hiển thị
-     * @param validator    Hàm kiểm tra tính hợp lệ
-     * @param errorMessage Thông báo lỗi khi không hợp lệ
-     * @return Chuỗi hợp lệ hoặc rỗng
+     * Nhập chuỗi tùy chọn và validate họ tên (không được chứa chữ số).
+     * Nếu Enter bỏ qua, trả về "".
      */
-    public static String getOptionalValidatedStringInput(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {
+    public static String getOptionalValidNameInput(String prompt) {
         while (true) {
             String val = getOptionalStringInput(prompt);
             if (val.isEmpty()) {
                 return val;
             }
-            if (validator.test(val)) {
+            if (val.matches(".*\\d.*")) {
+                System.out.println("  ⚠ Lỗi: Họ tên không được chứa chữ số! Vui lòng nhập lại.");
+                continue;
+            }
+            return val;
+        }
+    }
+
+    /**
+     * Nhập chuỗi tùy chọn và validate theo danh sách giá trị hợp lệ (case-insensitive).
+     * Nếu Enter bỏ qua, trả về "".
+     */
+    public static String getOptionalChoiceInput(String prompt, String errorMessage, String... validValues) {
+        while (true) {
+            String val = getOptionalStringInput(prompt);
+            if (val.isEmpty()) {
                 return val;
+            }
+            for (String v : validValues) {
+                if (v.equalsIgnoreCase(val)) {
+                    return val;
+                }
             }
             System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
         }
     }
 
     /**
-     * Nhập số điện thoại tùy chọn (cho phép Enter bỏ qua), nếu nhập thì phải hợp lệ định dạng và duy nhất.
-     *
-     * @param prompt            Thông báo hiển thị
-     * @param uniquenessValidator Hàm kiểm tra tính duy nhất (trả về true nếu hợp lệ/duy nhất, false nếu trùng)
-     * @param errorMessage      Thông báo lỗi khi bị trùng
-     * @return Số điện thoại hợp lệ hoặc rỗng
+     * Nhập số điện thoại tùy chọn (cho phép Enter bỏ qua).
+     * Nếu nhập thì phải đúng định dạng 0\d{8,10}.
+     * Kiểm tra trùng lặp do caller xử lý sau khi method trả về.
      */
-    public static String getOptionalPhoneInput(String prompt, java.util.function.Predicate<String> uniquenessValidator, String errorMessage) {
+    public static String getOptionalPhoneInput(String prompt) {
         while (true) {
             String phone = getOptionalStringInput(prompt);
             if (phone.isEmpty()) {
                 return phone;
             }
-            if (!phone.matches("\\d{9,11}")) {
-                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)! Vui lòng nhập lại.");
+            if (!phone.matches("0\\d{8,10}")) {
+                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải bắt đầu bằng 0 và gồm 9-11 chữ số)! Vui lòng nhập lại.");
                 continue;
             }
-            if (uniquenessValidator.test(phone)) {
-                return phone;
-            }
-            System.out.println("  ⚠ Lỗi: " + errorMessage + " Vui lòng nhập lại.");
+            return phone;
         }
     }
 

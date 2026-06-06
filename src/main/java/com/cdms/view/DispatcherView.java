@@ -30,11 +30,12 @@ public class DispatcherView {
     private static final String BOLD_WHITE = "\u001B[1;37m";
 
     private static int getVisualWidth(String str) {
-        if (str == null) return 0;
+        if (str == null)
+            return 0;
         // Strip ANSI escape sequences
         String stripped = str.replaceAll("\\u001B\\[[;\\d]*[a-zA-Z]", "");
         int width = 0;
-        for (int i = 0; i < stripped.length(); ) {
+        for (int i = 0; i < stripped.length();) {
             int cp = stripped.codePointAt(i);
             width += getCodePointWidth(cp);
             i += Character.charCount(cp);
@@ -95,22 +96,22 @@ public class DispatcherView {
             System.out.println(
                     BOLD_YELLOW + "  ⚡ ϞϞ(๑⚈ ‿ ⚈๑)ϞϞ ⚡   " + BOLD_RED + "DISPATCHER - MENU CHÍNH     " + RESET);
             System.out.println(BOLD_YELLOW + "╔═══════════════════════════════════════════════════════╗" + RESET);
-            
+
             String group1 = BOLD_CYAN + "  [QUẢN LÝ SHIPPER]";
-            String line1  = BOLD_WHITE + "  1. " + WHITE + "Thêm nhân viên giao hàng";
-            String line2  = BOLD_WHITE + "  2. " + WHITE + "Phân công đơn cho shipper";
-            String line3  = BOLD_WHITE + "  3. " + WHITE + "Xem đơn đã giao của shipper";
-            String line4  = BOLD_WHITE + "  4. " + WHITE + "Xem danh sách shipper";
-            String line5  = BOLD_WHITE + "  5. " + WHITE + "Cập nhật thông tin shipper";
-            String line6  = BOLD_WHITE + "  6. " + WHITE + "Xóa nhân viên giao hàng";
+            String line1 = BOLD_WHITE + "  1. " + WHITE + "Thêm nhân viên giao hàng";
+            String line2 = BOLD_WHITE + "  2. " + WHITE + "Phân công đơn cho shipper";
+            String line3 = BOLD_WHITE + "  3. " + WHITE + "Xem đơn đã giao của shipper";
+            String line4 = BOLD_WHITE + "  4. " + WHITE + "Xem danh sách shipper";
+            String line5 = BOLD_WHITE + "  5. " + WHITE + "Cập nhật thông tin shipper";
+            String line6 = BOLD_WHITE + "  6. " + WHITE + "Xóa nhân viên giao hàng";
             String lineSep = " ";
             String group2 = BOLD_CYAN + "  [THEO DÕI GIAO HÀNG]";
-            String line7  = BOLD_WHITE + "  7. " + WHITE + "Cập nhật trạng thái đơn";
-            String line8  = BOLD_WHITE + "  8. " + WHITE + "Hiển thị đơn đang giao";
-            String line9  = BOLD_WHITE + "  9. " + WHITE + "Hiển thị đơn giao thất bại";
+            String line7 = BOLD_WHITE + "  7. " + WHITE + "Cập nhật trạng thái đơn";
+            String line8 = BOLD_WHITE + "  8. " + WHITE + "Hiển thị đơn đang giao";
+            String line9 = BOLD_WHITE + "  9. " + WHITE + "Hiển thị đơn giao thất bại";
             String line10 = BOLD_WHITE + "  10." + WHITE + " Tìm kiếm shipper theo Tên/SĐT";
             String line11 = BOLD_WHITE + "  11." + WHITE + " Xem tất cả đơn hàng";
-            String line0  = BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính";
+            String line0 = BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính";
 
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(group1, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line1, 55) + BOLD_YELLOW + "║" + RESET);
@@ -128,7 +129,7 @@ public class DispatcherView {
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line11, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineSep, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line0, 55) + BOLD_YELLOW + "║" + RESET);
-            
+
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
             int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-11): " + RESET, 0, 11);
@@ -184,13 +185,19 @@ public class DispatcherView {
         System.out.println(BOLD_CYAN + "\n===== THÊM NHÂN VIÊN GIAO HÀNG MỚI =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Mã shipper (VD: NV001): ",
-                    val -> CustomerStaffService.findStaff(val) == null,
-                    "Mã shipper đã tồn tại trong hệ thống!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Mã shipper (VD: NV001): ");
+                if (CustomerStaffService.findStaff(id) == null) break;
+                System.out.println("  ⚠ Lỗi: Mã shipper đã tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
             String name = InputHelper.getValidNameInput("Họ tên: ");
-            String phone = InputHelper.getPhoneInput("Số điện thoại: ",
-                    val -> DeliveryStaffRepository.findByPhone(val) == null,
-                    "Số điện thoại đã được sử dụng bởi shipper khác!");
+            String phone;
+            while (true) {
+                phone = InputHelper.getPhoneInput("Số điện thoại: ");
+                if (DeliveryStaffRepository.findByPhone(phone) == null) break;
+                System.out.println("  ⚠ Lỗi: Số điện thoại đã được sử dụng bởi shipper khác! Vui lòng nhập lại.");
+            }
             String vehicleType = InputHelper.getStringInput("Loại phương tiện (Motorbike/Truck/...): ");
 
             System.out.println("\nXác nhận lưu thông tin shipper này?");
@@ -207,7 +214,7 @@ public class DispatcherView {
         } catch (FormCancelledException e) {
             System.out.println(BOLD_RED + "\n❌ Đã hủy thao tác.\n" + RESET);
         } finally {
-            InputHelper.pressEnterToContinue(); // UX-04
+            InputHelper.pressEnterToContinue();
         }
     }
 
@@ -246,9 +253,12 @@ public class DispatcherView {
         System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT NHÂN VIÊN GIAO HÀNG =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Mã shipper cần cập nhật: ",
-                    val -> CustomerStaffService.findStaff(val) != null,
-                    "Mã shipper không tồn tại trong hệ thống!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Mã shipper cần cập nhật: ");
+                if (CustomerStaffService.findStaff(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Mã shipper không tồn tại trong hệ thống! Vui lòng nhập lại.");
+            }
             DeliveryStaff existing = CustomerStaffService.findStaff(id);
 
             System.out.println("\nThông tin hiện tại:");
@@ -263,17 +273,18 @@ public class DispatcherView {
                     "+------------+----------------------+-----------------+--------------+----------+--------------------+");
             System.out.println("\n(Nhấn Enter để giữ nguyên giá trị cũ)\n");
 
-            String newName = InputHelper.getOptionalValidatedStringInput("Tên mới [" + existing.getName() + "]: ",
-                    val -> !val.matches("\\d+"),
-                    "Tên shipper không được phép là số!");
+            String newName = InputHelper.getOptionalValidNameInput("Tên mới [" + existing.getName() + "]: ");
             if (newName.isEmpty()) {
                 newName = existing.getName();
             }
 
-            String newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ",
-                    val -> val.equalsIgnoreCase(existing.getPhone())
-                            || DeliveryStaffRepository.findByPhone(val) == null,
-                    "Số điện thoại đã được sử dụng bởi shipper khác!");
+            String newPhone;
+            while (true) {
+                newPhone = InputHelper.getOptionalPhoneInput("Số điện thoại mới [" + existing.getPhone() + "]: ");
+                if (newPhone.isEmpty()) break;
+                if (newPhone.equalsIgnoreCase(existing.getPhone()) || DeliveryStaffRepository.findByPhone(newPhone) == null) break;
+                System.out.println("  ⚠ Lỗi: Số điện thoại đã được sử dụng bởi shipper khác! Vui lòng nhập lại.");
+            }
             if (newPhone.isEmpty()) {
                 newPhone = existing.getPhone();
             }
@@ -284,11 +295,10 @@ public class DispatcherView {
                 newVehicle = existing.getVehicleType();
             }
 
-            String newStatus = InputHelper.getOptionalValidatedStringInput(
+            String newStatus = InputHelper.getOptionalChoiceInput(
                     "Trạng thái mới [" + existing.getStatus() + "] (Active/Inactive/Fired): ",
-                    val -> val.equalsIgnoreCase("Active") || val.equalsIgnoreCase("Inactive")
-                            || val.equalsIgnoreCase("Fired"),
-                    "Trạng thái không hợp lệ (Chỉ nhận Active, Inactive hoặc Fired)!");
+                    "Trạng thái không hợp lệ (Chỉ nhận Active, Inactive hoặc Fired)!",
+                    "Active", "Inactive", "Fired");
             if (newStatus.isEmpty()) {
                 newStatus = existing.getStatus();
             }
@@ -319,9 +329,12 @@ public class DispatcherView {
         System.out.println(BOLD_CYAN + "\n===== XÓA NHÂN VIÊN GIAO HÀNG =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String id = InputHelper.getStringInput("Mã shipper cần xóa: ",
-                    val -> CustomerStaffService.findStaff(val) != null,
-                    "Không tìm thấy shipper!");
+            String id;
+            while (true) {
+                id = InputHelper.getStringInput("Mã shipper cần xóa: ");
+                if (CustomerStaffService.findStaff(id) != null) break;
+                System.out.println("  ⚠ Lỗi: Không tìm thấy shipper! Vui lòng nhập lại.");
+            }
             DeliveryStaff existing = CustomerStaffService.findStaff(id);
 
             System.out.println("\nThông tin shipper sẽ bị xóa:");
@@ -410,12 +423,13 @@ public class DispatcherView {
             }
             System.out.println();
 
-            String orderId = InputHelper.getStringInput("Nhập mã đơn hàng cần phân công: ",
-                    val -> {
-                        DeliveryOrder o = DeliveryOrderRepository.findById(val);
-                        return o != null && "Pending".equalsIgnoreCase(o.getStatus());
-                    },
-                    "Mã đơn hàng không hợp lệ (đã phân công, bị hủy hoặc không tồn tại)!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Nhập mã đơn hàng cần phân công: ");
+                DeliveryOrder _o = DeliveryOrderRepository.findById(orderId);
+                if (_o != null && "Pending".equalsIgnoreCase(_o.getStatus())) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không hợp lệ (đã phân công, bị hủy hoặc không tồn tại)! Vui lòng nhập lại.");
+            }
 
             // Hiển thị chi tiết đơn trước khi chọn shipper
             DeliveryOrder order = DeliveryOrderRepository.findById(orderId);
@@ -426,12 +440,13 @@ public class DispatcherView {
             System.out.println(order);
             System.out.println("+------------+------------+------------+------------+------------+--------------+");
 
-            String staffId = InputHelper.getStringInput("Nhập mã shipper phân công (Staff ID): ",
-                    val -> {
-                        var s = CustomerStaffService.findStaff(val);
-                        return s != null && "Active".equalsIgnoreCase(s.getStatus());
-                    },
-                    "Mã shipper không tồn tại hoặc không ở trạng thái Active!");
+            String staffId;
+            while (true) {
+                staffId = InputHelper.getStringInput("Nhập mã shipper phân công (Staff ID): ");
+                var _s = CustomerStaffService.findStaff(staffId);
+                if (_s != null && "Active".equalsIgnoreCase(_s.getStatus())) break;
+                System.out.println("  ⚠ Lỗi: Mã shipper không tồn tại hoặc không ở trạng thái Active! Vui lòng nhập lại.");
+            }
 
             System.out.println("\nXác nhận phân công đơn hàng cho shipper này?");
             System.out.println("  1. Phân công");
@@ -470,9 +485,12 @@ public class DispatcherView {
             }
             System.out.println();
 
-            String staffId = InputHelper.getStringInput("Mã nhân viên giao hàng (Staff ID): ",
-                    val -> CustomerStaffService.findStaff(val) != null,
-                    "Mã shipper không tồn tại!");
+            String staffId;
+            while (true) {
+                staffId = InputHelper.getStringInput("Mã nhân viên giao hàng (Staff ID): ");
+                if (CustomerStaffService.findStaff(staffId) != null) break;
+                System.out.println("  ⚠ Lỗi: Mã shipper không tồn tại! Vui lòng nhập lại.");
+            }
             try {
                 List<DeliveryOrder> orders = com.cdms.service.TrackingService.getDeliveredOrdersByStaff(staffId);
                 if (orders.isEmpty()) {
@@ -504,9 +522,12 @@ public class DispatcherView {
         System.out.println(BOLD_CYAN + "\n===== CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG =====" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            String orderId = InputHelper.getStringInput("Mã đơn hàng: ",
-                    val -> DeliveryOrderRepository.existsById(val),
-                    "Mã đơn hàng không tồn tại!");
+            String orderId;
+            while (true) {
+                orderId = InputHelper.getStringInput("Mã đơn hàng: ");
+                if (DeliveryOrderRepository.existsById(orderId)) break;
+                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại! Vui lòng nhập lại.");
+            }
 
             // Hiển thị trạng thái hiện tại trước khi cập nhật với đầy đủ cước phí
             DeliveryOrder current = DeliveryOrderRepository.findById(orderId);
@@ -515,12 +536,17 @@ public class DispatcherView {
             System.out.println("Trạng thái hiện tại: " + BOLD_WHITE + current.getStatus() + RESET);
             System.out.println();
 
-            String status = InputHelper.getStringInput(
+            String status = InputHelper.getOptionalChoiceInput(
                     "Trạng thái mới (Picked Up/In Transit/Delivered/Failed/Cancelled): ",
-                    val -> val.equalsIgnoreCase("Picked Up") || val.equalsIgnoreCase("In Transit")
-                            || val.equalsIgnoreCase("Delivered") || val.equalsIgnoreCase("Failed")
-                            || val.equalsIgnoreCase("Cancelled"),
-                    "Trạng thái không hợp lệ!");
+                    "Trạng thái không hợp lệ!",
+                    "Picked Up", "In Transit", "Delivered", "Failed", "Cancelled");
+            while (status.isEmpty()) {
+                System.out.println("  ⚠ Lỗi: Trạng thái không được để trống! Vui lòng nhập lại.");
+                status = InputHelper.getOptionalChoiceInput(
+                        "Trạng thái mới (Picked Up/In Transit/Delivered/Failed/Cancelled): ",
+                        "Trạng thái không hợp lệ!",
+                        "Picked Up", "In Transit", "Delivered", "Failed", "Cancelled");
+            }
 
             System.out.println("\nXác nhận cập nhật trạng thái đơn hàng?");
             System.out.println("  1. Cập nhật");
@@ -685,7 +711,9 @@ public class DispatcherView {
                 com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(order.getParcelId());
                 if (parcel != null) {
                     double baseFee = parcel.calculateFee();
-                    double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? com.cdms.service.BillingReportService.URGENT_CHARGE : 0.0;
+                    double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType())
+                            ? com.cdms.service.BillingReportService.URGENT_CHARGE
+                            : 0.0;
                     totalFee = baseFee + urgent;
                 }
             }
