@@ -1,8 +1,8 @@
 // ============================================================
 // File: BillingReportService.java
 // Package: com.cdms.service
-// Description: Phân hệ Thanh toán và Báo cáo cho vai trò Manager.
-//              Cung cấp tất cả chức năng B16-B22.
+// Description: Nghiệp vụ Thanh toán & Báo cáo cho Manager: tạo
+//              hóa đơn, đối soát COD, thống kê doanh thu, top shipper.
 // Phân công: Huỳnh Lê Quốc Cường (Developer D - Thành viên 5)
 // ============================================================
 package com.cdms.service;
@@ -13,8 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
-
 import com.cdms.model.DeliveryOrder;
 import com.cdms.model.DeliveryStaff;
 import com.cdms.model.Invoice;
@@ -26,14 +24,15 @@ import com.cdms.repository.ParcelRepository;
 
 public class BillingReportService {
 
-    private static final double URGENT_CHARGE = 20_000.0;
+    public static final double URGENT_CHARGE = 20_000.0;
 
+    // Utility class — không cho tạo đối tượng
     private BillingReportService() {
     }
 
-    // ============================================================
+    // ----------------------------------------------------------
     // TÌM KIẾM / LOOKUP
-    // ============================================================
+    // ----------------------------------------------------------
 
     public static DeliveryOrder findOrderById(String orderId) {
         return DeliveryOrderRepository.findById(orderId);
@@ -53,18 +52,20 @@ public class BillingReportService {
 
     /** Trả về danh sách hóa đơn chưa thanh toán (paymentStatus = "Unpaid"). */
     public static List<Invoice> getUnpaidInvoices() {
-        return InvoiceRepository.findAll().stream()
-                .filter(inv -> "Unpaid".equalsIgnoreCase(inv.getPaymentStatus()))
-                .collect(Collectors.toList());
+        List<Invoice> result = new java.util.ArrayList<>();
+        for (Invoice inv : InvoiceRepository.findAll()) {
+            if ("Unpaid".equalsIgnoreCase(inv.getPaymentStatus())) {
+                result.add(inv);
+            }
+        }
+        return result;
     }
 
     public static List<DeliveryStaff> getTopShippers(int limit) {
         return DeliveryStaffRepository.findTopShippers(limit);
     }
 
-    /**
-     * B21 / BR19 — Lấy danh sách Top Shipper tích cực nhất trong một khoảng thời gian được chọn.
-     */
+    /** B21 — Top Shipper theo số đơn đã giao trong khoảng thời gian [start, end]. */
     public static List<DeliveryStaff> getTopShippersInPeriod(LocalDate start, LocalDate end, int limit) {
         if (start == null || end == null) {
             throw new IllegalArgumentException("Khoảng thời gian không được để trống!");
@@ -73,40 +74,63 @@ public class BillingReportService {
             throw new IllegalArgumentException("Ngày bắt đầu không được sau ngày kết thúc!");
         }
 
-        // Thống kê số đơn hàng hoàn thành của shipper trong khoảng [start, end]
-        Map<String, Long> counts = DeliveryOrderRepository.findAll().stream()
-                .filter(o -> "Delivered".equalsIgnoreCase(o.getStatus()) && o.getDeliveryDate() != null)
-                .filter(o -> !o.getDeliveryDate().isBefore(start) && !o.getDeliveryDate().isAfter(end))
-                .filter(o -> o.getStaffId() != null)
-                .collect(Collectors.groupingBy(DeliveryOrder::getStaffId, Collectors.counting()));
+        // Đếm số đơn hoàn thành của từng shipper trong khoảng [start, end]
+        Map<String, Integer> counts = new java.util.HashMap<>();
+        for (DeliveryOrder o : DeliveryOrderRepository.findAll()) {
+            if (!"Delivered".equalsIgnoreCase(o.getStatus())) continue;
+            if (o.getDeliveryDate() == null) continue;
+            if (o.getDeliveryDate().isBefore(start) || o.getDeliveryDate().isAfter(end)) continue;
+            if (o.getStaffId() == null) continue;
 
-        return counts.entrySet().stream()
-                .map(entry -> {
-                    DeliveryStaff original = DeliveryStaffRepository.findById(entry.getKey());
-                    if (original == null) return null;
-                    // Tạo bản sao tạm thời để chứa số lượng đơn đã giao trong giai đoạn này
-                    return new DeliveryStaff(
-                            original.getId(),
-                            original.getName(),
-                            original.getPhone(),
-                            original.getVehicleType(),
-                            original.getStatus(),
-                            entry.getValue().intValue()
-                    );
-                })
-                .filter(java.util.Objects::nonNull)
-                .sorted((s1, s2) -> Integer.compare(s2.getDeliveredOrdersCount(), s1.getDeliveredOrdersCount()))
-                .limit(limit)
-                .collect(Collectors.toList());
+            String sid = o.getStaffId();
+            if (counts.containsKey(sid)) {
+                counts.put(sid, counts.get(sid) + 1);
+            } else {
+                counts.put(sid, 1);
+            }
+        }
+
+        // Tạo bản sao DeliveryStaff với số đơn trong kỳ (không sửa dữ liệu gốc)
+        List<DeliveryStaff> staffInPeriod = new java.util.ArrayList<>();
+        for (Map.Entry<String, Integer> entry : counts.entrySet()) {
+            DeliveryStaff original = DeliveryStaffRepository.findById(entry.getKey());
+            if (original == null) continue;
+            staffInPeriod.add(new DeliveryStaff(
+                    original.getId(),
+                    original.getName(),
+                    original.getPhone(),
+                    original.getVehicleType(),
+                    original.getStatus(),
+                    entry.getValue()
+            ));
+        }
+
+        // Sắp xếp giảm dần theo số đơn đã giao trong kỳ
+        for (int i = 0; i < staffInPeriod.size() - 1; i++) {
+            for (int j = 0; j < staffInPeriod.size() - 1 - i; j++) {
+                if (staffInPeriod.get(j).getDeliveredOrdersCount() < staffInPeriod.get(j + 1).getDeliveredOrdersCount()) {
+                    DeliveryStaff temp = staffInPeriod.get(j);
+                    staffInPeriod.set(j, staffInPeriod.get(j + 1));
+                    staffInPeriod.set(j + 1, temp);
+                }
+            }
+        }
+
+        // Lấy tối đa [limit] người đứng đầu
+        List<DeliveryStaff> result = new java.util.ArrayList<>();
+        for (int i = 0; i < staffInPeriod.size() && i < limit; i++) {
+            result.add(staffInPeriod.get(i));
+        }
+        return result;
     }
 
     public static boolean invoiceExistsForOrder(String orderId) {
         return InvoiceRepository.existsByOrderId(orderId);
     }
 
-    // ============================================================
+    // ----------------------------------------------------------
     // TẠO / GHI NHẬN HÓA ĐƠN
-    // ============================================================
+    // ----------------------------------------------------------
 
     public static String generateNextInvoiceId() {
         List<Invoice> invoices = InvoiceRepository.findAll();
@@ -127,10 +151,7 @@ public class BillingReportService {
         return "INV" + String.format("%03d", maxNum + 1);
     }
 
-    /**
-     * Tạo Invoice từ DeliveryOrder (chưa lưu vào repository).
-     * Tính phí từ Parcel.calculateFee() + phụ phí hỏa tốc nếu Urgent.
-     */
+    /** Tạo đối tượng Invoice từ đơn hàng (chưa lưu). Phí = Parcel.calculateFee() + phụ phí hỏa tốc nếu Urgent. */
     public static Invoice createInvoice(DeliveryOrder order) {
         if (order == null)
             return null;
@@ -150,9 +171,8 @@ public class BillingReportService {
     }
 
     /**
-     * B16 — Tạo và lưu hóa đơn cho đơn hàng đã giao.
-     * Trả về null nếu đơn không tồn tại hoặc kiện hàng không hợp lệ.
-     * Nếu hóa đơn đã tồn tại, trả về hóa đơn cũ (không tạo lại).
+     * B16 — Tạo và lưu hóa đơn cho đơn hàng đã giao thành công.
+     * Trả về hóa đơn cũ nếu đã tồn tại; trả về null nếu đơn chưa Delivered.
      */
     public static Invoice createInvoiceForDeliveredOrder(String orderId) {
         DeliveryOrder order = findOrderById(orderId);
@@ -171,7 +191,7 @@ public class BillingReportService {
                 invoice.setPaymentMethod("Cash"); // Mặc định đã thanh toán tại quầy
                 invoice.setPaymentDate(order.getOrderDate() != null ? order.getOrderDate() : LocalDate.now());
             } else {
-                // Đơn hàng COD (hoặc đơn hàng cũ chưa có paymentTerms): Shipper đã thu tiền mặt khi giao hàng thành công
+                // Đơn COD: Shipper đã thu tiền mặt khi giao hàng thành công → trạng thái "Collected"
                 invoice.setPaymentStatus("Collected");
                 invoice.setPaymentDate(order.getDeliveryDate() != null ? order.getDeliveryDate() : LocalDate.now());
             }
@@ -180,10 +200,7 @@ public class BillingReportService {
         return invoice;
     }
 
-    /**
-     * B18 — Ghi nhận thanh toán cho hóa đơn.
-     * Trả về false nếu hóa đơn không tồn tại hoặc đã được thanh toán.
-     */
+    /** B18 — Ghi nhận thanh toán cho hóa đơn. Trả về false nếu không tìm thấy hoặc đã Paid. */
     public static boolean recordPayment(String invoiceId, String paymentMethod, LocalDate paymentDate) {
         Invoice invoice = findInvoiceById(invoiceId);
         if (invoice == null)
@@ -191,7 +208,7 @@ public class BillingReportService {
         if ("Paid".equalsIgnoreCase(invoice.getPaymentStatus()))
             return false;
 
-        // BUG-12: Ràng buộc ngày thanh toán không được trước ngày giao đơn hàng thực tế
+        // Ngày thanh toán không được trước ngày giao hàng thực tế
         DeliveryOrder order = DeliveryOrderRepository.findById(invoice.getOrderId());
         if (order != null && order.getDeliveryDate() != null && paymentDate.isBefore(order.getDeliveryDate())) {
             throw new IllegalArgumentException("Ngày thanh toán không được trước ngày giao đơn hàng thực tế (" + order.getDeliveryDate() + ")!");
@@ -207,15 +224,16 @@ public class BillingReportService {
      * Lấy danh sách hóa đơn đã được Shipper thu hộ COD nhưng chưa đối soát (paymentStatus = "Collected").
      */
     public static List<Invoice> getCollectedInvoices() {
-        return InvoiceRepository.findAll().stream()
-                .filter(inv -> "Collected".equalsIgnoreCase(inv.getPaymentStatus()))
-                .collect(Collectors.toList());
+        List<Invoice> result = new java.util.ArrayList<>();
+        for (Invoice inv : InvoiceRepository.findAll()) {
+            if ("Collected".equalsIgnoreCase(inv.getPaymentStatus())) {
+                result.add(inv);
+            }
+        }
+        return result;
     }
 
-    /**
-     * Stage 3: Đối soát tiền COD (Chuyển trạng thái "Collected" sang "Paid").
-     * Trả về false nếu hóa đơn không tồn tại hoặc không ở trạng thái "Collected".
-     */
+    /** Đối soát COD — chuyển trạng thái từ "Collected" sang "Paid". Trả về false nếu không hợp lệ. */
     public static boolean reconcileInvoice(String invoiceId, String paymentMethod, LocalDate paymentDate) {
         Invoice invoice = findInvoiceById(invoiceId);
         if (invoice == null)
@@ -235,9 +253,9 @@ public class BillingReportService {
         return InvoiceRepository.update(invoice);
     }
 
-    // ============================================================
+    // ----------------------------------------------------------
     // CRUD HÓA ĐƠN
-    // ============================================================
+    // ----------------------------------------------------------
 
     public static String addInvoice(Invoice invoice) {
         if (InvoiceRepository.findById(invoice.getId()) != null) {
@@ -261,14 +279,11 @@ public class BillingReportService {
                 : "❌ Không tìm thấy hóa đơn '" + invoiceId + "'!";
     }
 
-    // ============================================================
-    // THỐNG KÊ ĐƠN HÀNG (B22)
-    // ============================================================
+    // ----------------------------------------------------------
+    // THỐNG KÊ & BÁO CÁO
+    // ----------------------------------------------------------
 
-    /**
-     * B22 — Thống kê đơn hàng theo trạng thái.
-     * Bao gồm: Pending, Assigned, In Transit, Delivered, Failed.
-     */
+    /** B22 — Thống kê số đơn hàng theo từng trạng thái và tỷ lệ giao thành công. */
     public static Map<String, Object> getDeliveryStatistics() {
         long totalOrders = DeliveryOrderRepository.findAll().size();
         long delivered = DeliveryOrderRepository.countByStatus("Delivered");
@@ -298,59 +313,72 @@ public class BillingReportService {
      * Lấy danh sách đơn hàng đã bị hủy hoặc giao thất bại phục vụ hoàn tiền.
      */
     public static List<DeliveryOrder> getCancelledOrFailedOrders() {
-        return DeliveryOrderRepository.findAll().stream()
-                .filter(o -> "Cancelled".equalsIgnoreCase(o.getStatus()) || "Failed".equalsIgnoreCase(o.getStatus()))
-                .collect(Collectors.toList());
+        List<DeliveryOrder> result = new java.util.ArrayList<>();
+        for (DeliveryOrder o : DeliveryOrderRepository.findAll()) {
+            if ("Cancelled".equalsIgnoreCase(o.getStatus()) || "Failed".equalsIgnoreCase(o.getStatus())) {
+                result.add(o);
+            }
+        }
+        return result;
     }
 
 
-    // ============================================================
-    // DOANH THU — tính từ Invoice đã Paid (B19, B20)
-    // ============================================================
+    // ----------------------------------------------------------
+    // DOANH THU (chỉ tính hóa đơn đã Paid)
+    // ----------------------------------------------------------
 
-    /**
-     * B19 — Doanh thu theo từng ngày thanh toán.
-     * Chỉ tính hóa đơn Paid có paymentDate != null, group by paymentDate.
-     */
+    /** B19 — Doanh thu theo ngày thanh toán (Map: ngày → tổng tiền). */
     public static Map<LocalDate, Double> calculateDailyRevenue() {
         Map<LocalDate, Double> result = new TreeMap<>();
         for (Invoice inv : InvoiceRepository.findPaidInvoices()) {
-            result.merge(inv.getPaymentDate(), inv.getTotalAmount(), Double::sum);
+            LocalDate date = inv.getPaymentDate();
+            if (result.containsKey(date)) {
+                result.put(date, result.get(date) + inv.getTotalAmount());
+            } else {
+                result.put(date, inv.getTotalAmount());
+            }
         }
         return result;
     }
 
-    /**
-     * B20 — Doanh thu theo từng tháng (tất cả năm).
-     * Chỉ tính hóa đơn Paid có paymentDate != null, group by YearMonth.
-     */
+    /** B20 — Doanh thu theo tháng, tất cả các năm (Map: tháng/năm → tổng tiền). */
     public static Map<YearMonth, Double> calculateMonthlyRevenue() {
         Map<YearMonth, Double> result = new TreeMap<>();
         for (Invoice inv : InvoiceRepository.findPaidInvoices()) {
-            result.merge(YearMonth.from(inv.getPaymentDate()), inv.getTotalAmount(), Double::sum);
+            YearMonth ym = YearMonth.from(inv.getPaymentDate());
+            if (result.containsKey(ym)) {
+                result.put(ym, result.get(ym) + inv.getTotalAmount());
+            } else {
+                result.put(ym, inv.getTotalAmount());
+            }
         }
         return result;
     }
 
-    /**
-     * B20 — Doanh thu theo từng tháng trong một năm cụ thể.
-     */
+    /** B20 — Doanh thu theo từng tháng trong một năm cụ thể (Map: tháng/năm → tổng tiền). */
     public static Map<YearMonth, Double> calculateMonthlyRevenueByYear(int year) {
         Map<YearMonth, Double> result = new TreeMap<>();
         for (Invoice inv : InvoiceRepository.findByPaymentYear(year)) {
-            result.merge(YearMonth.from(inv.getPaymentDate()), inv.getTotalAmount(), Double::sum);
+            YearMonth ym = YearMonth.from(inv.getPaymentDate());
+            if (result.containsKey(ym)) {
+                result.put(ym, result.get(ym) + inv.getTotalAmount());
+            } else {
+                result.put(ym, inv.getTotalAmount());
+            }
         }
         return result;
     }
 
-    /**
-     * Doanh thu theo từng năm.
-     * Chỉ tính hóa đơn Paid có paymentDate != null, group by year.
-     */
+    /** Doanh thu theo từng năm (Map: năm → tổng tiền). */
     public static Map<Integer, Double> calculateAnnualRevenue() {
         Map<Integer, Double> result = new TreeMap<>();
         for (Invoice inv : InvoiceRepository.findPaidInvoices()) {
-            result.merge(inv.getPaymentDate().getYear(), inv.getTotalAmount(), Double::sum);
+            int year = inv.getPaymentDate().getYear();
+            if (result.containsKey(year)) {
+                result.put(year, result.get(year) + inv.getTotalAmount());
+            } else {
+                result.put(year, inv.getTotalAmount());
+            }
         }
         return result;
     }

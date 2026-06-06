@@ -152,8 +152,8 @@ public class InputHelper {
     public static String getValidNameInput(String prompt) {
         while (true) {
             String name = getStringInput(prompt);
-            if (name.matches("\\d+")) {
-                System.out.println("  ⚠ Lỗi: Họ tên không được phép là số! Vui lòng nhập lại.");
+            if (name.matches(".*\\d.*")) {
+                System.out.println("  ⚠ Lỗi: Họ tên không được chứa chữ số! Vui lòng nhập lại.");
                 continue;
             }
             return name;
@@ -169,8 +169,8 @@ public class InputHelper {
     public static String getPhoneInput(String prompt) {
         while (true) {
             String phone = getStringInput(prompt);
-            if (!phone.matches("\\d{9,11}")) {
-                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải gồm 9-11 chữ số)! Vui lòng nhập lại.");
+            if (!phone.matches("0\\d{8,10}")) {
+                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải bắt đầu bằng 0 và gồm 9-11 chữ số)! Vui lòng nhập lại.");
                 continue;
             }
             return phone;

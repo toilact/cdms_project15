@@ -1,10 +1,9 @@
 // ============================================================
 // File: ParcelDeserializer.java
 // Package: com.cdms.core
-// Description: Custom JsonDeserializer cho lớp trừu tượng Parcel.
-//              Gson không thể tự động deserialize một abstract class.
-//              Lớp này đọc thuộc tính "type" trong JSON để quyết định
-//              tạo đối tượng DocumentParcel hay GoodsParcel.
+// Description: JsonDeserializer tùy chỉnh cho lớp abstract Parcel.
+//              Đọc trường "type" trong JSON để tạo đúng lớp con:
+//              "Document" → DocumentParcel, "Goods" → GoodsParcel.
 // ============================================================
 package com.cdms.core;
 
@@ -17,25 +16,14 @@ import java.lang.reflect.Type;
 
 public class ParcelDeserializer implements JsonDeserializer<Parcel> {
 
-    /**
-     * Deserialize một phần tử JSON thành đối tượng Parcel cụ thể.
-     * Dựa trên giá trị trường "type":
-     *   - "Document" → DocumentParcel
-     *   - "Goods"    → GoodsParcel
-     *
-     * @param json    Phần tử JSON gốc
-     * @param typeOfT Kiểu Java mục tiêu (Parcel)
-     * @param context Context Gson để ủy quyền deserialize
-     * @return Đối tượng DocumentParcel hoặc GoodsParcel
-     * @throws JsonParseException Nếu type không hợp lệ
-     */
+    /** Đọc trường "type" rồi tạo DocumentParcel hoặc GoodsParcel tương ứng. */
     @Override
     public Parcel deserialize(JsonElement json, Type typeOfT,
                               JsonDeserializationContext context) throws JsonParseException {
 
         JsonObject jsonObject = json.getAsJsonObject();
 
-        // Đọc trường "type" để xác định lớp con cụ thể
+        // Đọc trường "type" để xác định lớp con cần tạo
         String type = jsonObject.has("type") ? jsonObject.get("type").getAsString() : "";
 
         switch (type) {

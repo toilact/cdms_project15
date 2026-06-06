@@ -1,15 +1,14 @@
 // ============================================================
 // File: Parcel.java
 // Package: com.cdms.model
-// Description: Lớp cha TRỪU TƯỢNG đại diện cho Kiện hàng.
-//              Áp dụng Inheritance & Polymorphism qua hàm
-//              abstract calculateFee().
+// Description: Lớp cha trừu tượng đại diện cho Kiện hàng.
+//              Lớp con ghi đè calculateFee() để tính phí riêng.
 // ============================================================
 package com.cdms.model;
 
 public abstract class Parcel {
 
-    // ===== PRIVATE FIELDS (Encapsulation) =====
+    // --- Thuộc tính ---
     private String id;
     private String senderId;
     private String receiverName;
@@ -20,14 +19,14 @@ public abstract class Parcel {
     private String type;       // "Document" hoặc "Goods"
     private String status;     // Mặc định "Pending"
 
-    // ===== CONSTRUCTORS =====
+    // --- Constructors ---
 
-    /** Constructor không tham số (cần cho Gson deserialization) */
+    /** Constructor rỗng — Gson cần để deserialize từ JSON. */
     public Parcel() {
         this.status = "Pending";
     }
 
-    /** Constructor đầy đủ tham số */
+    /** Constructor đầy đủ. */
     public Parcel(String id, String senderId, String receiverName,
                   String receiverPhone, String pickupAddress,
                   String deliveryAddress, double weight, String type) {
@@ -42,16 +41,12 @@ public abstract class Parcel {
         this.status = "Pending";
     }
 
-    // ===== PHƯƠNG THỨC TRỪU TƯỢNG (Polymorphism) =====
+    // --- Phương thức trừu tượng ---
 
-    /**
-     * Tính phí giao hàng. Mỗi lớp con (DocumentParcel, GoodsParcel)
-     * sẽ override phương thức này với công thức tính phí riêng.
-     * @return Phí giao hàng (VND)
-     */
+    /** Tính phí giao hàng (VND). Mỗi lớp con tự định nghĩa công thức riêng. */
     public abstract double calculateFee();
 
-    // ===== GETTERS =====
+    // --- Getters ---
 
     public String getId() {
         return id;
@@ -89,7 +84,7 @@ public abstract class Parcel {
         return status;
     }
 
-    // ===== SETTERS =====
+    // --- Setters ---
 
     public void setId(String id) {
         this.id = id;
@@ -127,7 +122,7 @@ public abstract class Parcel {
         this.status = status;
     }
 
-    // ===== toString() =====
+    // --- toString ---
 
     @Override
     public String toString() {

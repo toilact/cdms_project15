@@ -1,8 +1,8 @@
 // ============================================================
 // File: JSONDataManager.java
 // Package: com.cdms.core
-// Description: Quản lý toàn bộ dữ liệu in-memory (RAM) và
-//              đồng bộ xuống/lên file JSON trong thư mục data/.
+// Description: Lưu trữ toàn bộ dữ liệu trong RAM (in-memory) và
+//              đồng bộ với các file JSON trong thư mục data/.
 // Phân công: Đỗ Chí Thành (Leader - Thành viên 1)
 // ============================================================
 package com.cdms.core;
@@ -41,32 +41,26 @@ public class JSONDataManager {
     public static List<DeliveryStaff> staffs = new ArrayList<>();
     public static List<Invoice> invoices = new ArrayList<>();
 
-    // ===== GSON INSTANCE =====
-    /**
-     * Cấu hình Gson:
-     * - PrettyPrinting: File JSON dễ đọc cho dev.
-     * - LocalDateAdapter: Xử lý Java 8+ LocalDate.
-     * - ParcelDeserializer: Xử lý abstract class Parcel → DocumentParcel /
-     * GoodsParcel.
-     */
+    // Gson được cấu hình thêm 2 adapter:
+    //   LocalDateAdapter     — xử lý kiểu LocalDate (Java 8+)
+    //   ParcelDeserializer   — phân biệt DocumentParcel / GoodsParcel khi đọc JSON
     private static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
             .registerTypeAdapter(Parcel.class, new ParcelDeserializer())
             .create();
 
-    // ===== Ngăn khởi tạo đối tượng (Utility class) =====
+    // Utility class — không cho tạo đối tượng
     private JSONDataManager() {
     }
 
-    // ==========================================================
+    // ----------------------------------------------------------
     // ĐỌC DỮ LIỆU (LOAD)
-    // ==========================================================
+    // ----------------------------------------------------------
 
     /**
-     * Nạp toàn bộ dữ liệu từ các file JSON trong thư mục data/ vào RAM.
-     * Nếu thư mục data/ chưa tồn tại, tự động tạo mới.
-     * Nếu file JSON chưa tồn tại hoặc rỗng, khởi tạo List rỗng.
+     * Nạp toàn bộ dữ liệu từ thư mục data/ vào RAM.
+     * Tự tạo thư mục nếu chưa có; file thiếu → khởi tạo danh sách rỗng.
      */
     public static void loadAllData() {
         ensureDataDirectory();
@@ -101,14 +95,7 @@ public class JSONDataManager {
         System.out.println("📂 Nạp dữ liệu hoàn tất!\n");
     }
 
-    /**
-     * Đọc một file JSON và chuyển đổi thành List<T>.
-     *
-     * @param filePath Đường dẫn file JSON
-     * @param type     Kiểu TypeToken cho Gson
-     * @param <T>      Kiểu phần tử trong List
-     * @return List đối tượng đã deserialize, hoặc List rỗng nếu file không tồn tại
-     */
+    /** Đọc file JSON tại filePath, trả về List<T>; trả về rỗng nếu file không tồn tại. */
     private static <T> List<T> loadList(String filePath, Type type) {
         Path path = Paths.get(filePath);
 
@@ -129,14 +116,11 @@ public class JSONDataManager {
         }
     }
 
-    // ==========================================================
+    // ----------------------------------------------------------
     // GHI DỮ LIỆU (SAVE)
-    // ==========================================================
+    // ----------------------------------------------------------
 
-    /**
-     * Ghi đè toàn bộ dữ liệu in-memory hiện tại xuống các file JSON.
-     * Được gọi mỗi khi có thay đổi dữ liệu hoặc khi thoát ứng dụng.
-     */
+    /** Ghi toàn bộ dữ liệu RAM xuống các file JSON. Gọi sau mỗi thao tác thay đổi. */
     public static void saveAllData() {
         ensureDataDirectory();
 
@@ -147,13 +131,7 @@ public class JSONDataManager {
         saveList(INVOICES_FILE, invoices);
     }
 
-    /**
-     * Ghi một List<T> xuống file JSON (ghi đè toàn bộ nội dung cũ).
-     *
-     * @param filePath Đường dẫn file JSON
-     * @param list     Danh sách đối tượng cần lưu
-     * @param <T>      Kiểu phần tử trong List
-     */
+    /** Ghi đè List<T> xuống file JSON tại filePath. */
     private static <T> void saveList(String filePath, List<T> list) {
         try (Writer writer = new OutputStreamWriter(
                 new FileOutputStream(filePath), StandardCharsets.UTF_8)) {
@@ -165,13 +143,11 @@ public class JSONDataManager {
         }
     }
 
-    // ==========================================================
+    // ----------------------------------------------------------
     // TIỆN ÍCH NỘI BỘ
-    // ==========================================================
+    // ----------------------------------------------------------
 
-    /**
-     * Kiểm tra và tạo thư mục data/ nếu chưa tồn tại.
-     */
+    /** Tạo thư mục data/ nếu chưa tồn tại. */
     private static void ensureDataDirectory() {
         Path dirPath = Paths.get(DATA_DIR);
         if (!Files.exists(dirPath)) {

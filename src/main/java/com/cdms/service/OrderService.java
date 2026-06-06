@@ -1,8 +1,8 @@
 // ============================================================
 // File: OrderService.java
 // Package: com.cdms.service
-// Description: Lớp xử lý nghiệp vụ cho Đơn hàng (DeliveryOrder)
-//              (Refactored to use Repository Layer)
+// Description: Xử lý nghiệp vụ Đơn giao hàng: tạo đơn từ bưu kiện,
+//              cập nhật trạng thái, tìm kiếm, hủy đơn.
 // Phân công: Trương Đan Huy (Developer B - Thành viên 3)
 // ============================================================
 package com.cdms.service;
@@ -17,13 +17,11 @@ import java.util.List;
 
 public class OrderService {
 
-    // Private constructor để ngăn khởi tạo đối tượng (Static Utility Class)
+    // Utility class — không cho tạo đối tượng
     private OrderService() {
     }
 
-    /**
-     * Định dạng trạng thái đơn hàng về dạng Mixed Case chuẩn của hệ thống
-     */
+    /** Chuẩn hóa tên trạng thái đơn hàng về dạng Mixed Case (vd: "In Transit"). */
     public static String formatStatus(String status) {
         if (status == null) return null;
         String s = status.trim();
@@ -37,7 +35,8 @@ public class OrderService {
     }
 
     /**
-     * Chuyển kiện hàng thành đơn hàng
+     * Tạo đơn giao hàng từ một bưu kiện có sẵn.
+     * Kiểm tra trùng mã, bưu kiện tồn tại, trạng thái Pending, loại giao và hình thức thanh toán.
      */
     public static DeliveryOrder convertParcelToOrder(String orderId, String parcelId,
                                                      String deliveryType, String paymentTerms) {
@@ -102,18 +101,16 @@ public class OrderService {
         newOrder.setPaymentTerms(paymentTermsFormatted);
         newOrder.addNote("Đơn hàng được tạo từ kiện hàng: " + parcelId);
 
-        // Kiện hàng chuyển sang trạng thái Pending Order để tránh việc liên kết trùng lặp đơn hàng
+        // Đánh dấu bưu kiện đã có đơn, tránh tạo đơn trùng
         parcel.setStatus("Pending Order");
 
-        // Lưu dữ liệu qua Repository (sẽ tự động gọi JSONDataManager.saveAllData())
+        // Lưu đơn mới vào Repository (tự động ghi file JSON)
         DeliveryOrderRepository.add(newOrder);
 
         return newOrder;
     }
 
-    /**
-     * Cập nhật trạng thái đơn hàng (Sử dụng Repository Layer)
-     */
+    /** Cập nhật trạng thái đơn hàng, ủy quyền kiểm tra state-machine cho TrackingService. */
     public static DeliveryOrder updateOrderStatus(String orderId, String newStatus) {
         if (orderId == null || orderId.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã đơn hàng không được để trống!");
@@ -127,16 +124,14 @@ public class OrderService {
             throw new IllegalArgumentException("Không tìm thấy đơn hàng với mã: " + orderId);
         }
 
-        // Format và kiểm tra trạng thái hợp lệ
+        // Chuẩn hóa và kiểm tra trạng thái hợp lệ
         String formattedStatus = formatStatus(newStatus);
         
-        // Delegate tới TrackingService để sử dụng State Machine validation và cập nhật đồng bộ
+        // Ủy quyền cho TrackingService để xác thực state-machine và cập nhật đồng bộ
         return TrackingService.updateStatus(orderId, formattedStatus);
     }
 
-    /**
-     * Xem chi tiết đơn hàng (Sử dụng Repository Layer)
-     */
+    /** Lấy chi tiết đơn hàng theo mã, ném ngoại lệ nếu không tìm thấy. */
     public static DeliveryOrder getOrderDetail(String orderId) {
         if (orderId == null || orderId.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã đơn hàng không được để trống!");
@@ -148,34 +143,37 @@ public class OrderService {
         return order;
     }
 
-    /**
-     * Tìm kiếm đơn hàng theo khách hàng (Sử dụng Repository Layer)
-     */
+    /** Tìm tất cả đơn hàng liên quan đến một khách hàng (qua các bưu kiện của họ). */
     public static List<DeliveryOrder> searchOrdersByCustomer(String customerId) {
         if (customerId == null || customerId.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã khách hàng không được để trống!");
         }
         
         // Tìm tất cả kiện hàng của khách hàng gửi trước từ Repository
-        List<String> parcelIds = ParcelRepository.findAll().stream()
-                .filter(p -> p.getSenderId().equalsIgnoreCase(customerId.trim()))
-                .map(Parcel::getId)
-                .toList();
+        List<String> parcelIds = new java.util.ArrayList<>();
+        for (Parcel p : ParcelRepository.findAll()) {
+            if (p.getSenderId().equalsIgnoreCase(customerId.trim())) {
+                parcelIds.add(p.getId());
+            }
+        }
 
-        return DeliveryOrderRepository.findAll().stream()
-                .filter(o -> parcelIds.contains(o.getParcelId()))
-                .toList();
+        // Tìm tất cả đơn hàng chứa những kiện hàng đó
+        List<DeliveryOrder> result = new java.util.ArrayList<>();
+        for (DeliveryOrder o : DeliveryOrderRepository.findAll()) {
+            if (parcelIds.contains(o.getParcelId())) {
+                result.add(o);
+            }
+        }
+        return result;
     }
 
-    /**
-     * Hủy đơn hàng (Sử dụng Repository Layer)
-     */
+    /** Hủy đơn hàng — thực chất là cập nhật trạng thái sang "Cancelled". */
     public static DeliveryOrder cancelOrder(String orderId) {
         if (orderId == null || orderId.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã đơn hàng không được để trống!");
         }
 
-        // Hủy đơn hàng thực chất là cập nhật trạng thái sang "Cancelled" đi kèm với các kiểm tra logic
+        // Hủy đơn = cập nhật trạng thái "Cancelled" kèm kiểm tra logic
         return TrackingService.updateStatus(orderId, "Cancelled");
     }
 }

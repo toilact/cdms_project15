@@ -1,9 +1,8 @@
 // ============================================================
 // File: LocalDateAdapter.java
 // Package: com.cdms.core
-// Description: Custom Gson TypeAdapter cho java.time.LocalDate.
-//              Gson mặc định không hỗ trợ Java 8+ Date/Time API,
-//              nên cần adapter riêng để serialize/deserialize.
+// Description: TypeAdapter cho Gson để đọc/ghi LocalDate dạng
+//              chuỗi "yyyy-MM-dd" (Gson không tự hỗ trợ Java 8+).
 // ============================================================
 package com.cdms.core;
 
@@ -18,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LocalDateAdapter extends TypeAdapter<LocalDate> {
 
-    /** Định dạng lưu trữ ngày trong file JSON: yyyy-MM-dd (ISO standard) */
+    // Định dạng ISO: yyyy-MM-dd (ví dụ: 2025-12-31)
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
     @Override

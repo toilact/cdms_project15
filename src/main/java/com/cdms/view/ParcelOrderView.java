@@ -392,7 +392,7 @@ public class ParcelOrderView {
             com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(order.getParcelId());
             if (parcel != null) {
                 double baseFee = parcel.calculateFee();
-                double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? 20000.0 : 0.0;
+                double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? com.cdms.service.BillingReportService.URGENT_CHARGE : 0.0;
                 totalFee = baseFee + urgent;
             }
         }
@@ -460,11 +460,12 @@ public class ParcelOrderView {
             return;
         }
 
-        List<String> formattedLines = orders.stream().map(order -> {
+        List<String> formattedLines = new java.util.ArrayList<>();
+        for (DeliveryOrder order : orders) {
             String pt = order.getPaymentTerms() != null ? order.getPaymentTerms() : "Receiver Pay";
             String ptFormatted = "Sender Pay".equalsIgnoreCase(pt) ? "Sender (Prepaid)" : "Receiver (COD)";
 
-            // Tính toán cước phí tương ứng (lấy từ hóa đơn hoặc tính động)
+            // Tính cước phí từ hóa đơn hoặc tính động nếu chưa có hóa đơn
             double totalFee = 0.0;
             com.cdms.model.Invoice invoice = com.cdms.repository.InvoiceRepository.findByOrderId(order.getId());
             if (invoice != null) {
@@ -473,7 +474,7 @@ public class ParcelOrderView {
                 com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(order.getParcelId());
                 if (parcel != null) {
                     double baseFee = parcel.calculateFee();
-                    double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? 20000.0 : 0.0;
+                    double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? com.cdms.service.BillingReportService.URGENT_CHARGE : 0.0;
                     totalFee = baseFee + urgent;
                 }
             }
@@ -497,7 +498,6 @@ public class ParcelOrderView {
                 }
             }
 
-            // Chọn màu cho Trạng thái Thanh toán để UI cực kỳ cao cấp
             String payStatusColored;
             if ("Paid".equalsIgnoreCase(payStatus) || "Paid (Quầy)".equalsIgnoreCase(payStatus)) {
                 payStatusColored = BOLD_GREEN + String.format("%-15s", payStatus) + RESET;
@@ -507,7 +507,6 @@ public class ParcelOrderView {
                 payStatusColored = BOLD_RED + String.format("%-15s", payStatus) + RESET;
             }
 
-            // Chọn màu cho Trạng thái đơn hàng
             String statusColor = BOLD_YELLOW;
             if ("Delivered".equalsIgnoreCase(order.getStatus())) {
                 statusColor = BOLD_GREEN;
@@ -516,7 +515,7 @@ public class ParcelOrderView {
                 statusColor = BOLD_RED;
             }
 
-            return String.format(
+            formattedLines.add(String.format(
                     "| %-10s | %-10s | %-10s | %-10s | " + statusColor + "%-10s" + RESET + " | %-18s | %15s | %s |",
                     order.getId(),
                     order.getParcelId(),
@@ -525,8 +524,8 @@ public class ParcelOrderView {
                     order.getStatus(),
                     ptFormatted,
                     totalFeeStr,
-                    payStatusColored);
-        }).toList();
+                    payStatusColored));
+        }
 
         String tableHeader = "+------------+------------+------------+------------+------------+--------------------+-----------------+-----------------+";
         System.out.println(tableHeader);

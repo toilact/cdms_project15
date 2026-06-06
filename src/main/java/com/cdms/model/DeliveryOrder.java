@@ -1,8 +1,8 @@
 // ============================================================
 // File: DeliveryOrder.java
 // Package: com.cdms.model
-// Description: Lớp thực thể đại diện cho Đơn giao hàng.
-//              Sử dụng LocalDate và List<String> cho ghi chú.
+// Description: Thực thể Đơn giao hàng — liên kết một Parcel với
+//              một Shipper, theo dõi trạng thái và ghi chú hành trình.
 // ============================================================
 package com.cdms.model;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DeliveryOrder {
 
-    // ===== PRIVATE FIELDS (Encapsulation) =====
+    // --- Thuộc tính ---
     private String id;
     private String parcelId;
     private String staffId;
@@ -25,15 +25,15 @@ public class DeliveryOrder {
     private List<String> notes;      // Danh sách ghi chú giao hàng
     private String paymentTerms;     // "Sender Pay" (Người gửi trả) hoặc "Receiver Pay" (Người nhận trả - COD)
 
-    // ===== CONSTRUCTORS =====
+    // --- Constructors ---
 
-    /** Constructor không tham số */
+    /** Constructor rỗng — Gson cần để deserialize từ JSON. */
     public DeliveryOrder() {
         this.status = "Pending";
         this.notes = new ArrayList<>();
     }
 
-    /** Constructor đầy đủ tham số (không bao gồm paymentTerms) */
+    /** Constructor đầy đủ (không có paymentTerms — tự đặt null). */
     public DeliveryOrder(String id, String parcelId, String staffId,
                          LocalDate orderDate, LocalDate expectedDeliveryDate,
                          LocalDate pickupDate, LocalDate deliveryDate,
@@ -41,7 +41,7 @@ public class DeliveryOrder {
         this(id, parcelId, staffId, null, orderDate, expectedDeliveryDate, pickupDate, deliveryDate, deliveryType, status, notes);
     }
 
-    /** Constructor đầy đủ tham số bao gồm cả paymentTerms */
+    /** Constructor đầy đủ bao gồm cả paymentTerms. */
     public DeliveryOrder(String id, String parcelId, String staffId, String paymentTerms,
                          LocalDate orderDate, LocalDate expectedDeliveryDate,
                          LocalDate pickupDate, LocalDate deliveryDate,
@@ -59,7 +59,7 @@ public class DeliveryOrder {
         this.notes = (notes != null) ? notes : new ArrayList<>();
     }
 
-    // ===== GETTERS =====
+    // --- Getters ---
 
     public String getPaymentTerms() {
         return paymentTerms;
@@ -105,7 +105,7 @@ public class DeliveryOrder {
         return notes;
     }
 
-    // ===== SETTERS =====
+    // --- Setters ---
 
     public void setId(String id) {
         this.id = id;
@@ -151,19 +151,16 @@ public class DeliveryOrder {
         this.paymentTerms = paymentTerms;
     }
 
-    // ===== HELPER: Thêm ghi chú =====
+    // --- Helper ---
 
-    /**
-     * Thêm một dòng ghi chú mới vào danh sách ghi chú giao hàng.
-     * @param note Nội dung ghi chú
-     */
+    /** Thêm một ghi chú hành trình vào danh sách, bỏ qua nếu rỗng. */
     public void addNote(String note) {
         if (note != null && !note.trim().isEmpty()) {
             this.notes.add(note);
         }
     }
 
-    // ===== toString() =====
+    // --- toString ---
 
     @Override
     public String toString() {

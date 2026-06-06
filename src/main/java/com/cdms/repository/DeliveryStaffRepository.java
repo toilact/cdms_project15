@@ -1,14 +1,13 @@
 // ============================================================
 // File: DeliveryStaffRepository.java
 // Package: com.cdms.repository
-// Description: Repository quản lý CRUD cho DeliveryStaff.
+// Description: Các thao tác CRUD cho danh sách DeliveryStaff
+//              trong bộ nhớ (JSONDataManager.staffs).
 // ============================================================
 package com.cdms.repository;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.cdms.core.JSONDataManager;
 import com.cdms.model.DeliveryStaff;
@@ -60,11 +59,16 @@ public class DeliveryStaffRepository {
      */
     public static List<DeliveryStaff> findByName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            return List.of();
+            return new ArrayList<>();
         }
-        return JSONDataManager.staffs.stream()
-                .filter(staff -> staff.getName().toLowerCase().contains(name.trim().toLowerCase()))
-                .collect(Collectors.toList());
+        List<DeliveryStaff> result = new ArrayList<>();
+        String keyword = name.trim().toLowerCase();
+        for (DeliveryStaff staff : JSONDataManager.staffs) {
+            if (staff.getName().toLowerCase().contains(keyword)) {
+                result.add(staff);
+            }
+        }
+        return result;
     }
 
     /**
@@ -103,20 +107,45 @@ public class DeliveryStaffRepository {
         if (staffId == null) {
             return false;
         }
-        boolean removed = JSONDataManager.staffs.removeIf(staff -> staffId.equalsIgnoreCase(staff.getId()));
-        if (removed) {
-            JSONDataManager.saveAllData();
+        DeliveryStaff toRemove = null;
+        for (DeliveryStaff staff : JSONDataManager.staffs) {
+            if (staffId.equalsIgnoreCase(staff.getId())) {
+                toRemove = staff;
+                break;
+            }
         }
-        return removed;
+        if (toRemove != null) {
+            JSONDataManager.staffs.remove(toRemove);
+            JSONDataManager.saveAllData();
+            return true;
+        }
+        return false;
     }
 
     /**
-     * Lấy danh sách Top Shipper có số đơn giao thành công cao nhất
+     * Lấy danh sách Top Shipper có số đơn giao thành công cao nhất.
+     * Sắp xếp giảm dần theo deliveredOrdersCount, lấy tối đa [limit] người.
      */
     public static List<DeliveryStaff> findTopShippers(int limit) {
-        return JSONDataManager.staffs.stream()
-                .sorted(Comparator.comparingInt(DeliveryStaff::getDeliveredOrdersCount).reversed())
-                .limit(limit)
-                .collect(Collectors.toList());
+        // Sao chép danh sách để không làm ảnh hưởng dữ liệu gốc
+        List<DeliveryStaff> sorted = new ArrayList<>(JSONDataManager.staffs);
+
+        // Sắp xếp bong bóng giảm dần theo số đơn đã giao
+        for (int i = 0; i < sorted.size() - 1; i++) {
+            for (int j = 0; j < sorted.size() - 1 - i; j++) {
+                if (sorted.get(j).getDeliveredOrdersCount() < sorted.get(j + 1).getDeliveredOrdersCount()) {
+                    DeliveryStaff temp = sorted.get(j);
+                    sorted.set(j, sorted.get(j + 1));
+                    sorted.set(j + 1, temp);
+                }
+            }
+        }
+
+        // Lấy tối đa [limit] phần tử đầu tiên
+        List<DeliveryStaff> result = new ArrayList<>();
+        for (int i = 0; i < sorted.size() && i < limit; i++) {
+            result.add(sorted.get(i));
+        }
+        return result;
     }
 }

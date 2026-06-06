@@ -1,13 +1,14 @@
 // ============================================================
 // File: DeliveryStaff.java
 // Package: com.cdms.model
-// Description: Lớp thực thể đại diện cho Nhân viên giao hàng
+// Description: Thực thể Nhân viên giao hàng (Shipper) — người
+//              được phân công vận chuyển và giao bưu kiện.
 // ============================================================
 package com.cdms.model;
 
 public class DeliveryStaff {
 
-    // ===== PRIVATE FIELDS (Encapsulation) =====
+    // --- Thuộc tính ---
     private String id;
     private String name;
     private String phone;
@@ -15,15 +16,15 @@ public class DeliveryStaff {
     private String status;               // "Active" hoặc "Inactive"
     private int deliveredOrdersCount;    // Số đơn đã giao thành công
 
-    // ===== CONSTRUCTORS =====
+    // --- Constructors ---
 
-    /** Constructor không tham số */
+    /** Constructor rỗng — Gson cần để deserialize từ JSON. */
     public DeliveryStaff() {
         this.status = "Active";
         this.deliveredOrdersCount = 0;
     }
 
-    /** Constructor đầy đủ tham số */
+    /** Constructor đầy đủ. */
     public DeliveryStaff(String id, String name, String phone,
                          String vehicleType, String status,
                          int deliveredOrdersCount) {
@@ -35,7 +36,7 @@ public class DeliveryStaff {
         this.deliveredOrdersCount = deliveredOrdersCount;
     }
 
-    // ===== GETTERS =====
+    // --- Getters ---
 
     public String getId() {
         return id;
@@ -61,7 +62,7 @@ public class DeliveryStaff {
         return deliveredOrdersCount;
     }
 
-    // ===== SETTERS =====
+    // --- Setters ---
 
     public void setId(String id) {
         this.id = id;
@@ -87,7 +88,7 @@ public class DeliveryStaff {
         this.deliveredOrdersCount = deliveredOrdersCount;
     }
 
-    // ===== toString() =====
+    // --- toString ---
 
     @Override
     public String toString() {

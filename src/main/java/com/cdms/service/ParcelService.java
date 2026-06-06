@@ -1,8 +1,8 @@
 // ============================================================
 // File: ParcelService.java
 // Package: com.cdms.service
-// Description: Lớp xử lý nghiệp vụ cho Kiện hàng (Parcel)
-//              (Refactored to use Repository Layer)
+// Description: Xử lý nghiệp vụ tạo và xóa Kiện hàng (Parcel).
+//              Kiểm tra ràng buộc trước khi lưu qua Repository.
 // Phân công: Trương Đan Huy (Developer B - Thành viên 3)
 // ============================================================
 package com.cdms.service;
@@ -39,6 +39,19 @@ public class ParcelService {
         // 2. Kiểm tra khách hàng gửi tồn tại (Sử dụng Repository Layer)
         if (CustomerRepository.findById(senderId.trim()) == null) {
             throw new IllegalArgumentException("ID người gửi không tồn tại trong hệ thống!");
+        }
+
+        if (receiverName == null || receiverName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên người nhận không được để trống!");
+        }
+        if (receiverPhone == null || receiverPhone.trim().isEmpty()) {
+            throw new IllegalArgumentException("Số điện thoại người nhận không được để trống!");
+        }
+        if (pickupAddress == null || pickupAddress.trim().isEmpty()) {
+            throw new IllegalArgumentException("Địa chỉ lấy hàng không được để trống!");
+        }
+        if (deliveryAddress == null || deliveryAddress.trim().isEmpty()) {
+            throw new IllegalArgumentException("Địa chỉ giao hàng không được để trống!");
         }
 
         if (weight <= 0) {
@@ -87,8 +100,13 @@ public class ParcelService {
         }
 
         // B2: Kiểm tra xem có đơn hàng nào liên kết với kiện hàng này trong dữ liệu hay không
-        boolean hasOrder = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
-                .anyMatch(o -> finalId.equalsIgnoreCase(o.getParcelId()));
+        boolean hasOrder = false;
+        for (com.cdms.model.DeliveryOrder o : com.cdms.repository.DeliveryOrderRepository.findAll()) {
+            if (finalId.equalsIgnoreCase(o.getParcelId())) {
+                hasOrder = true;
+                break;
+            }
+        }
         if (hasOrder) {
             return "❌ Lỗi: Không thể xóa bưu kiện vì đang liên kết với đơn giao hàng trong hệ thống!";
         }

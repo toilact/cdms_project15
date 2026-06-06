@@ -189,9 +189,12 @@ public class BillingReportView {
         System.out.println("\n" + PURPLE + "─── Tính hóa đơn cho đơn hàng đã giao ───" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
-            List<com.cdms.model.DeliveryOrder> pendingInvoiceOrders = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
-                    .filter(o -> "Delivered".equalsIgnoreCase(o.getStatus()) && !BillingReportService.invoiceExistsForOrder(o.getId()))
-                    .toList();
+            List<com.cdms.model.DeliveryOrder> pendingInvoiceOrders = new java.util.ArrayList<>();
+            for (com.cdms.model.DeliveryOrder o : com.cdms.repository.DeliveryOrderRepository.findAll()) {
+                if ("Delivered".equalsIgnoreCase(o.getStatus()) && !BillingReportService.invoiceExistsForOrder(o.getId())) {
+                    pendingInvoiceOrders.add(o);
+                }
+            }
 
             System.out.println(BOLD_YELLOW + "\nDanh sách đơn hàng đã Delivered chưa tạo hóa đơn:" + RESET);
             if (pendingInvoiceOrders.isEmpty()) {
@@ -306,11 +309,12 @@ public class BillingReportView {
                 "Mã HĐ", "Mã Đơn", "Trạng thái TT", "Tổng (VND)");
         System.out.println("+------------+------------+-----------------+--------------------+");
 
-        List<String> formatted = invoices.stream()
-                .map(inv -> String.format("| %-10s | %-10s | %-15s | %,18.0f |",
-                        inv.getId(), inv.getOrderId(),
-                        inv.getPaymentStatus(), inv.getTotalAmount()))
-                .toList();
+        List<String> formatted = new java.util.ArrayList<>();
+        for (com.cdms.model.Invoice inv : invoices) {
+            formatted.add(String.format("| %-10s | %-10s | %-15s | %,18.0f |",
+                    inv.getId(), inv.getOrderId(),
+                    inv.getPaymentStatus(), inv.getTotalAmount()));
+        }
 
         InputHelper.printPaginatedList(formatted, 10,
                 "+------------+------------+-----------------+--------------------+");

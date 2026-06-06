@@ -1,14 +1,13 @@
 // ============================================================
 // File: DeliveryOrderRepository.java
 // Package: com.cdms.repository
-// Description: Repository quản lý CRUD cho DeliveryOrder.
+// Description: Các thao tác CRUD cho danh sách DeliveryOrder
+//              trong bộ nhớ (JSONDataManager.orders).
 // ============================================================
 package com.cdms.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import com.cdms.core.JSONDataManager;
 import com.cdms.model.DeliveryOrder;
 
@@ -44,11 +43,15 @@ public class DeliveryOrderRepository {
      */
     public static List<DeliveryOrder> findByStatus(String status) {
         if (status == null) {
-            return List.of();
+            return new ArrayList<>();
         }
-        return JSONDataManager.orders.stream()
-                .filter(order -> status.equalsIgnoreCase(order.getStatus()))
-                .collect(Collectors.toList());
+        List<DeliveryOrder> result = new ArrayList<>();
+        for (DeliveryOrder order : JSONDataManager.orders) {
+            if (status.equalsIgnoreCase(order.getStatus())) {
+                result.add(order);
+            }
+        }
+        return result;
     }
 
     /**
@@ -82,9 +85,13 @@ public class DeliveryOrderRepository {
         if (status == null) {
             return 0;
         }
-        return JSONDataManager.orders.stream()
-                .filter(order -> status.equalsIgnoreCase(order.getStatus()))
-                .count();
+        int count = 0;
+        for (DeliveryOrder order : JSONDataManager.orders) {
+            if (status.equalsIgnoreCase(order.getStatus())) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /**
@@ -104,8 +111,12 @@ public class DeliveryOrderRepository {
         if (id == null) {
             return false;
         }
-        return JSONDataManager.orders.stream()
-                .anyMatch(o -> id.equalsIgnoreCase(o.getId()));
+        for (DeliveryOrder order : JSONDataManager.orders) {
+            if (id.equalsIgnoreCase(order.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -113,10 +124,14 @@ public class DeliveryOrderRepository {
      */
     public static List<DeliveryOrder> findByStaffId(String staffId) {
         if (staffId == null) {
-            return List.of();
+            return new ArrayList<>();
         }
-        return JSONDataManager.orders.stream()
-                .filter(order -> staffId.equalsIgnoreCase(order.getStaffId()))
-                .collect(Collectors.toList());
+        List<DeliveryOrder> result = new ArrayList<>();
+        for (DeliveryOrder order : JSONDataManager.orders) {
+            if (staffId.equalsIgnoreCase(order.getStaffId())) {
+                result.add(order);
+            }
+        }
+        return result;
     }
 }

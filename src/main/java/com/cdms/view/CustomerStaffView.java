@@ -303,10 +303,13 @@ public class CustomerStaffView {
             System.out.println(existing);
             System.out.println("+------------+----------------------+-----------------+--------------------------------+");
 
-            // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
-            long parcelCount = ParcelRepository.findAll().stream()
-                    .filter(p -> id.equalsIgnoreCase(p.getSenderId()))
-                    .count();
+            // Cảnh báo nếu khách hàng đang có bưu kiện liên kết
+            int parcelCount = 0;
+            for (Parcel p : ParcelRepository.findAll()) {
+                if (id.equalsIgnoreCase(p.getSenderId())) {
+                    parcelCount++;
+                }
+            }
             if (parcelCount > 0) {
                 System.out.println(BOLD_RED + "⚠️ CẢNH BÁO: Khách hàng này đang có " + parcelCount + " bưu kiện liên kết trong hệ thống!" + RESET);
             }
@@ -461,9 +464,14 @@ public class CustomerStaffView {
             System.out.println(existing);
             System.out.println("+------------+------------+-----------------+------------+-------------+------------+----------------------+");
 
-            // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
-            boolean hasOrder = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
-                    .anyMatch(o -> id.equalsIgnoreCase(o.getParcelId()));
+            // Cảnh báo nếu bưu kiện đang liên kết với một đơn giao hàng
+            boolean hasOrder = false;
+            for (com.cdms.model.DeliveryOrder o : com.cdms.repository.DeliveryOrderRepository.findAll()) {
+                if (id.equalsIgnoreCase(o.getParcelId())) {
+                    hasOrder = true;
+                    break;
+                }
+            }
             if (hasOrder) {
                 System.out.println(BOLD_RED + "⚠️ CẢNH BÁO: Bưu kiện này đang được liên kết với một đơn giao hàng trong hệ thống!" + RESET);
             }
@@ -516,9 +524,12 @@ public class CustomerStaffView {
                 }
             } else if (type == 2) {
                 String name = InputHelper.getStringInput("Nhập tên người nhận: ");
-                List<Parcel> result = ParcelRepository.findAll().stream()
-                        .filter(p -> p.getReceiverName().toLowerCase().contains(name.toLowerCase()))
-                        .toList();
+                List<Parcel> result = new java.util.ArrayList<>();
+                for (Parcel p : ParcelRepository.findAll()) {
+                    if (p.getReceiverName().toLowerCase().contains(name.toLowerCase())) {
+                        result.add(p);
+                    }
+                }
                 if (result.isEmpty()) {
                     System.out.println("Không tìm thấy bưu kiện nào có người nhận là: " + name);
                 } else {
@@ -530,9 +541,12 @@ public class CustomerStaffView {
                 }
             } else {
                 String status = InputHelper.getStringInput("Nhập trạng thái bưu kiện (Pending/Assigned/In Transit/Delivered/Failed/Cancelled): ");
-                List<Parcel> result = ParcelRepository.findAll().stream()
-                        .filter(p -> status.equalsIgnoreCase(p.getStatus()))
-                        .toList();
+                List<Parcel> result = new java.util.ArrayList<>();
+                for (Parcel p : ParcelRepository.findAll()) {
+                    if (status.equalsIgnoreCase(p.getStatus())) {
+                        result.add(p);
+                    }
+                }
                 if (result.isEmpty()) {
                     System.out.println("Không tìm thấy bưu kiện nào có trạng thái: " + status);
                 } else {
@@ -582,13 +596,14 @@ public class CustomerStaffView {
                     "Mã Đơn", "Mã Kiện", "Mã Shipper", "Dịch Vụ", "Trạng Thái", "Ngày Tạo");
             System.out.println("+------------+------------+------------+------------+------------+--------------+");
             
-            List<String> formattedHistory = orders.stream()
-                    .map(o -> String.format("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |",
-                            o.getId(), o.getParcelId(),
-                            (o.getStaffId() != null ? o.getStaffId() : "Chưa phân"),
-                            o.getDeliveryType(), o.getStatus(),
-                            (o.getOrderDate() != null ? o.getOrderDate().toString() : "N/A")))
-                    .toList();
+            List<String> formattedHistory = new java.util.ArrayList<>();
+            for (DeliveryOrder o : orders) {
+                formattedHistory.add(String.format("| %-10s | %-10s | %-10s | %-10s | %-10s | %-12s |",
+                        o.getId(), o.getParcelId(),
+                        (o.getStaffId() != null ? o.getStaffId() : "Chưa phân"),
+                        o.getDeliveryType(), o.getStatus(),
+                        (o.getOrderDate() != null ? o.getOrderDate().toString() : "N/A")));
+            }
             
             // Sử dụng phân trang tập trung
             InputHelper.printPaginatedList(formattedHistory, 10, "+------------+------------+------------+------------+------------+--------------+");

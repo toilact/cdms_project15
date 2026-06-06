@@ -1,7 +1,8 @@
 // ============================================================
 // File: ParcelRepository.java
 // Package: com.cdms.repository
-// Description: Repository quản lý truy vấn Parcel.
+// Description: Các thao tác CRUD cho danh sách Parcel
+//              trong bộ nhớ (JSONDataManager.parcels).
 // ============================================================
 package com.cdms.repository;
 
@@ -55,8 +56,12 @@ public class ParcelRepository {
         if (id == null) {
             return false;
         }
-        return JSONDataManager.parcels.stream()
-                .anyMatch(p -> id.equalsIgnoreCase(p.getId()));
+        for (Parcel p : JSONDataManager.parcels) {
+            if (id.equalsIgnoreCase(p.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -83,10 +88,18 @@ public class ParcelRepository {
         if (parcelId == null) {
             return false;
         }
-        boolean removed = JSONDataManager.parcels.removeIf(p -> parcelId.equalsIgnoreCase(p.getId()));
-        if (removed) {
-            JSONDataManager.saveAllData();
+        Parcel toRemove = null;
+        for (Parcel p : JSONDataManager.parcels) {
+            if (parcelId.equalsIgnoreCase(p.getId())) {
+                toRemove = p;
+                break;
+            }
         }
-        return removed;
+        if (toRemove != null) {
+            JSONDataManager.parcels.remove(toRemove);
+            JSONDataManager.saveAllData();
+            return true;
+        }
+        return false;
     }
 }

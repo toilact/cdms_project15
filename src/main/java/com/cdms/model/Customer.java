@@ -1,25 +1,25 @@
 // ============================================================
 // File: Customer.java
 // Package: com.cdms.model
-// Description: Lớp thực thể đại diện cho Khách hàng gửi hàng
+// Description: Thực thể Khách hàng — người tạo bưu kiện gửi đi.
 // ============================================================
 package com.cdms.model;
 
 public class Customer {
 
-    // ===== PRIVATE FIELDS (Encapsulation) =====
+    // --- Thuộc tính ---
     private String id;
     private String name;
     private String phone;
     private String address;
 
-    // ===== CONSTRUCTORS =====
+    // --- Constructors ---
 
-    /** Constructor không tham số (cần cho Gson deserialization) */
+    /** Constructor rỗng — Gson cần để deserialize từ JSON. */
     public Customer() {
     }
 
-    /** Constructor đầy đủ tham số */
+    /** Constructor đầy đủ. */
     public Customer(String id, String name, String phone, String address) {
         this.id = id;
         this.name = name;
@@ -27,7 +27,7 @@ public class Customer {
         this.address = address;
     }
 
-    // ===== GETTERS =====
+    // --- Getters ---
 
     public String getId() {
         return id;
@@ -45,7 +45,7 @@ public class Customer {
         return address;
     }
 
-    // ===== SETTERS =====
+    // --- Setters ---
 
     public void setId(String id) {
         this.id = id;
@@ -63,7 +63,7 @@ public class Customer {
         this.address = address;
     }
 
-    // ===== toString() =====
+    // --- toString ---
 
     @Override
     public String toString() {

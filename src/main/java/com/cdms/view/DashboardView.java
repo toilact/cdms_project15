@@ -1,13 +1,11 @@
 // ============================================================
 // File: DashboardView.java
 // Package: com.cdms.view
-// Description: Giao diện bảng điều khiển trung tâm (Dashboard)
-//              hệ thống CDMS hiển thị thống kê thời gian thực.
-//              Thiết kế bởi Senior UI Designer.
+// Description: Màn hình Dashboard hiển thị thống kê toàn hệ thống
+//              theo thời gian thực khi khởi động Main Menu.
 // ============================================================
 package com.cdms.view;
 
-import com.cdms.model.DeliveryStaff;
 import com.cdms.model.Invoice;
 import com.cdms.repository.CustomerRepository;
 import com.cdms.repository.ParcelRepository;
@@ -25,7 +23,6 @@ public class DashboardView {
     private static final String BOLD_RED     = "\u001B[1;31m";
     private static final String BOLD_WHITE   = "\u001B[1;37m";
     private static final String BOLD_PURPLE  = "\u001B[1;35m";
-    private static final String WHITE        = "\u001B[37m";
 
     // Ngăn khởi tạo đối tượng
     private DashboardView() {
@@ -81,30 +78,34 @@ public class DashboardView {
      * với phong cách thiết kế UI bảng Console tối giản và sang trọng bậc nhất.
      */
     public static void showDashboard() {
-        // 1. Tính toán các chỉ số thời gian thực từ các Repositories (BUG-09)
+        // Lấy số liệu thực tế từ các Repository
         int totalCustomers = CustomerRepository.findAll().size();
         int totalParcels   = ParcelRepository.findAll().size();
         int totalOrders    = DeliveryOrderRepository.findAll().size();
         
-        // Đếm số lượng shipper đang hoạt động
-        long activeShippersCount = DeliveryStaffRepository.findAll().stream()
-                .filter(s -> "Active".equalsIgnoreCase(s.getStatus()))
-                .count();
+        // Đếm số shipper đang Active
+        int activeShippersCount = 0;
+        for (com.cdms.model.DeliveryStaff s : DeliveryStaffRepository.findAll()) {
+            if ("Active".equalsIgnoreCase(s.getStatus())) {
+                activeShippersCount++;
+            }
+        }
         int totalShippers = DeliveryStaffRepository.findAll().size();
 
-        // Tính toán doanh thu thực tế đã thanh toán (Paid Invoices)
-        double totalRevenue = InvoiceRepository.findPaidInvoices().stream()
-                .mapToDouble(Invoice::getTotalAmount)
-                .sum();
+        // Tính tổng doanh thu từ các hóa đơn đã Paid
+        double totalRevenue = 0;
+        for (Invoice inv : InvoiceRepository.findPaidInvoices()) {
+            totalRevenue += inv.getTotalAmount();
+        }
 
-        // Đếm số lượng đơn theo các trạng thái (UX-12)
+        // Đếm số đơn theo từng trạng thái
         long deliveredOrders = DeliveryOrderRepository.countByStatus("Delivered");
         long inTransitOrders = DeliveryOrderRepository.countByStatus("In Transit");
         long failedOrders    = DeliveryOrderRepository.countByStatus("Failed");
         long cancelledOrders = DeliveryOrderRepository.countByStatus("Cancelled");
         long assignedOrders  = DeliveryOrderRepository.countByStatus("Assigned") + DeliveryOrderRepository.countByStatus("Picked Up");
 
-        // 2. In Banner nghệ thuật CDMS phối màu mượt mà
+        // In banner ASCII art CDMS
         System.out.println(BOLD_CYAN + "   ▄████████ ▀█████████▄   ▄▄▄▄███▄▄▄▄    ▄████████ " + RESET);
         System.out.println(BOLD_CYAN + "  ███    ███   ███    ███ ▄██▀▀███▀▀██▄  ███    ███ " + RESET);
         System.out.println(BOLD_CYAN + "  ███    █▀    ███    ███ ███  ███  ███  ███    █▀  " + RESET);
@@ -116,7 +117,7 @@ public class DashboardView {
         System.out.println(BOLD_WHITE + "   🚚 GIẢI PHÁP QUẢN LÝ GIAO HÀNG CHUYÊN NGHIỆP  " + RESET);
         System.out.println();
 
-        // 3. Thiết kế khung thẻ thông tin (Dynamic Data Cards) cực kỳ sang trọng
+        // In bảng thống kê dạng card
         System.out.println(BOLD_YELLOW + "╔═════════════════════════════════════════════════════════════════════════╗" + RESET);
         String title = BOLD_YELLOW + "                    📊 DỰ ÁN CDMS - GIÁM SÁT THỜI GIAN THỰC";
         System.out.println(BOLD_YELLOW + "║" + RESET + padRight(title, 73) + BOLD_YELLOW + "║" + RESET);

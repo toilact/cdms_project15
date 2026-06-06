@@ -336,11 +336,14 @@ public class DispatcherView {
                     "+------------+----------------------+-----------------+--------------+----------+--------------------+");
 
             // Kiểm tra ràng buộc và cảnh báo ảnh hưởng khi xóa (UX-09)
-            long activeOrders = DeliveryOrderRepository.findByStaffId(id).stream()
-                    .filter(o -> !"Delivered".equalsIgnoreCase(o.getStatus())
-                            && !"Cancelled".equalsIgnoreCase(o.getStatus())
-                            && !"Failed".equalsIgnoreCase(o.getStatus()))
-                    .count();
+            int activeOrders = 0;
+            for (DeliveryOrder o : DeliveryOrderRepository.findByStaffId(id)) {
+                if (!"Delivered".equalsIgnoreCase(o.getStatus())
+                        && !"Cancelled".equalsIgnoreCase(o.getStatus())
+                        && !"Failed".equalsIgnoreCase(o.getStatus())) {
+                    activeOrders++;
+                }
+            }
             if (activeOrders > 0) {
                 System.out.println(BOLD_RED + "⚠️ CẢNH BÁO: Shipper này đang chịu trách nhiệm cho " + activeOrders
                         + " đơn hàng chưa hoàn thành!" + RESET);
@@ -373,9 +376,12 @@ public class DispatcherView {
         System.out.println("(Nhập 'cancel' để hủy)");
         try {
             // Hiển thị danh sách các shipper Active khả dụng (UX-02)
-            List<DeliveryStaff> activeStaffs = DeliveryStaffRepository.findAll().stream()
-                    .filter(s -> "Active".equalsIgnoreCase(s.getStatus()))
-                    .toList();
+            List<DeliveryStaff> activeStaffs = new java.util.ArrayList<>();
+            for (DeliveryStaff s : DeliveryStaffRepository.findAll()) {
+                if ("Active".equalsIgnoreCase(s.getStatus())) {
+                    activeStaffs.add(s);
+                }
+            }
             System.out.println(BOLD_YELLOW + "\nDanh sách shipper đang hoạt động (Active):" + RESET);
             if (activeStaffs.isEmpty()) {
                 System.out.println("  ❌ Không có shipper nào khả dụng!");
@@ -387,9 +393,12 @@ public class DispatcherView {
             }
 
             // Hiển thị danh sách các đơn hàng chưa gán shipper hoặc đang Pending (UX-03)
-            List<DeliveryOrder> pendingOrders = DeliveryOrderRepository.findAll().stream()
-                    .filter(o -> "Pending".equalsIgnoreCase(o.getStatus()))
-                    .toList();
+            List<DeliveryOrder> pendingOrders = new java.util.ArrayList<>();
+            for (DeliveryOrder o : DeliveryOrderRepository.findAll()) {
+                if ("Pending".equalsIgnoreCase(o.getStatus())) {
+                    pendingOrders.add(o);
+                }
+            }
             System.out.println(BOLD_YELLOW + "\nDanh sách đơn hàng chưa phân công (Pending):" + RESET);
             if (pendingOrders.isEmpty()) {
                 System.out.println("  (Không có đơn hàng nào cần phân công.)");
@@ -562,30 +571,29 @@ public class DispatcherView {
     // ----------------------------------------------------------
     private static void handleShowFailed() {
         System.out.println(BOLD_CYAN + "\n===== DANH SÁCH ĐƠN GIAO THẤT BẠI HOẶC BỊ HỦY =====" + RESET);
-        List<DeliveryOrder> orders = com.cdms.service.TrackingService.getFailedOrders();
+        List<DeliveryOrder> orders = com.cdms.service.TrackingService.getFailedAndCancelledOrders();
         if (orders.isEmpty()) {
             System.out.println("Không có đơn hàng nào giao thất bại (Failed) hoặc bị hủy (Cancelled).");
             InputHelper.pressEnterToContinue();
             return;
         }
 
-        List<String> formattedFailed = orders.stream()
-                .map(o -> {
-                    String reason = (o.getNotes() != null && !o.getNotes().isEmpty())
-                            ? o.getNotes().get(o.getNotes().size() - 1)
-                            : "Không có ghi chú";
-                    // Giới hạn độ dài lý do để không bị vỡ bảng
-                    if (reason.length() > 30) {
-                        reason = reason.substring(0, 27) + "...";
-                    }
-                    return String.format("| %-10s | %-10s | %-10s | %-10s | %-12s | %-30s |",
-                            o.getId(), o.getParcelId(),
-                            (o.getStaffId() != null ? o.getStaffId() : "Chưa phân"),
-                            o.getDeliveryType(),
-                            o.getStatus(),
-                            reason);
-                })
-                .toList();
+        List<String> formattedFailed = new java.util.ArrayList<>();
+        for (DeliveryOrder o : orders) {
+            String reason = (o.getNotes() != null && !o.getNotes().isEmpty())
+                    ? o.getNotes().get(o.getNotes().size() - 1)
+                    : "Không có ghi chú";
+            // Giới hạn độ dài lý do để không bị vỡ bảng
+            if (reason.length() > 30) {
+                reason = reason.substring(0, 27) + "...";
+            }
+            formattedFailed.add(String.format("| %-10s | %-10s | %-10s | %-10s | %-12s | %-30s |",
+                    o.getId(), o.getParcelId(),
+                    (o.getStaffId() != null ? o.getStaffId() : "Chưa phân"),
+                    o.getDeliveryType(),
+                    o.getStatus(),
+                    reason));
+        }
 
         System.out.println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng giao thất bại hoặc bị hủy:" + RESET);
         System.out.println(
@@ -663,11 +671,12 @@ public class DispatcherView {
             return;
         }
 
-        List<String> formattedLines = orders.stream().map(order -> {
+        List<String> formattedLines = new java.util.ArrayList<>();
+        for (DeliveryOrder order : orders) {
             String pt = order.getPaymentTerms() != null ? order.getPaymentTerms() : "Receiver Pay";
             String ptFormatted = "Sender Pay".equalsIgnoreCase(pt) ? "Sender (Prepaid)" : "Receiver (COD)";
 
-            // Tính toán cước phí tương ứng (lấy từ hóa đơn hoặc tính động)
+            // Tính cước phí từ hóa đơn hoặc tính động nếu chưa có hóa đơn
             double totalFee = 0.0;
             com.cdms.model.Invoice invoice = com.cdms.repository.InvoiceRepository.findByOrderId(order.getId());
             if (invoice != null) {
@@ -676,7 +685,7 @@ public class DispatcherView {
                 com.cdms.model.Parcel parcel = com.cdms.repository.ParcelRepository.findById(order.getParcelId());
                 if (parcel != null) {
                     double baseFee = parcel.calculateFee();
-                    double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? 20000.0 : 0.0;
+                    double urgent = "Urgent".equalsIgnoreCase(order.getDeliveryType()) ? com.cdms.service.BillingReportService.URGENT_CHARGE : 0.0;
                     totalFee = baseFee + urgent;
                 }
             }
@@ -700,7 +709,6 @@ public class DispatcherView {
                 }
             }
 
-            // Chọn màu cho Trạng thái Thanh toán để UI cực kỳ cao cấp
             String payStatusColored;
             if ("Paid".equalsIgnoreCase(payStatus) || "Paid (Quầy)".equalsIgnoreCase(payStatus)) {
                 payStatusColored = BOLD_GREEN + String.format("%-15s", payStatus) + RESET;
@@ -710,7 +718,6 @@ public class DispatcherView {
                 payStatusColored = BOLD_RED + String.format("%-15s", payStatus) + RESET;
             }
 
-            // Chọn màu cho Trạng thái đơn hàng
             String statusColor = BOLD_YELLOW;
             if ("Delivered".equalsIgnoreCase(order.getStatus())) {
                 statusColor = BOLD_GREEN;
@@ -719,7 +726,7 @@ public class DispatcherView {
                 statusColor = BOLD_RED;
             }
 
-            return String.format(
+            formattedLines.add(String.format(
                     "| %-10s | %-10s | %-10s | %-10s | " + statusColor + "%-10s" + RESET + " | %-18s | %15s | %s |",
                     order.getId(),
                     order.getParcelId(),
@@ -728,8 +735,8 @@ public class DispatcherView {
                     order.getStatus(),
                     ptFormatted,
                     totalFeeStr,
-                    payStatusColored);
-        }).toList();
+                    payStatusColored));
+        }
 
         String tableHeader = "+------------+------------+------------+------------+------------+--------------------+-----------------+-----------------+";
         System.out.println(BOLD_GREEN + "✅ Tìm thấy " + orders.size() + " đơn hàng trong hệ thống:" + RESET);

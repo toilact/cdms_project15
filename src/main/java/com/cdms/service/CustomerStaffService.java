@@ -1,16 +1,9 @@
 // ============================================================
 // File: CustomerStaffService.java
 // Package: com.cdms.service
+// Description: Xử lý nghiệp vụ quản lý Khách hàng và Shipper.
+//              Chỉ gọi Repository, không in ra màn hình.
 // Phân công: Nguyên Quốc Cường (Developer A - Thành viên 2)
-// ============================================================
-// MỤC ĐÍCH:
-//   Xử lý toàn bộ logic nghiệp vụ liên quan đến quản lý
-//   Khách hàng (Customer) và Nhân viên giao hàng (DeliveryStaff).
-//
-// NGUYÊN TẮC:
-//   - Gọi Repository để lấy/lưu dữ liệu (KHÔNG truy cập thẳng JSONDataManager).
-//   - KHÔNG chứa Scanner hay System.out.println().
-//   - Trả về kết quả (String, List, boolean...) cho View hiển thị.
 // ============================================================
 package com.cdms.service;
 
@@ -23,40 +16,25 @@ import com.cdms.repository.DeliveryStaffRepository;
 
 public class CustomerStaffService {
 
-    // Ngăn khởi tạo đối tượng (Utility class - chỉ dùng static)
+    // Utility class — không cho tạo đối tượng
     private CustomerStaffService() {
     }
 
-    // ==========================================================
-    //         QUẢN LÝ KHÁCH HÀNG (CUSTOMER)
-    // ==========================================================
+    // ----------------------------------------------------------
+    // QUẢN LÝ KHÁCH HÀNG
+    // ----------------------------------------------------------
 
-    /**
-     * Lấy danh sách tất cả khách hàng.
-     *
-     * @return List<Customer>
-     */
+    /** Trả về danh sách tất cả khách hàng. */
     public static List<Customer> getAllCustomers() {
         return CustomerRepository.findAll();
     }
 
-    /**
-     * Tìm khách hàng theo mã.
-     *
-     * @param customerId Mã khách hàng (ví dụ: "KH001")
-     * @return Customer hoặc null
-     */
+    /** Tìm khách hàng theo mã, trả về null nếu không tìm thấy. */
     public static Customer findCustomer(String customerId) {
         return CustomerRepository.findById(customerId);
     }
 
-    /**
-     * Thêm một khách hàng mới vào hệ thống.
-     * Kiểm tra dữ liệu đầu vào, trùng mã, và trùng số điện thoại.
-     *
-     * @param customer Đối tượng Customer cần thêm
-     * @return Thông báo kết quả (String) để View hiển thị
-     */
+    /** Thêm khách hàng mới. Kiểm tra trùng mã và trùng SĐT trước khi lưu. */
     public static String addCustomer(Customer customer) {
         // Kiểm tra dữ liệu đầu vào hợp lệ
         if (customer == null || customer.getId() == null || customer.getId().trim().isEmpty()) {
@@ -80,12 +58,7 @@ public class CustomerStaffService {
         return "✅ Đã thêm khách hàng: " + customer.getId() + " - " + customer.getName();
     }
 
-    /**
-     * Cập nhật thông tin khách hàng.
-     *
-     * @param updated Đối tượng Customer với thông tin mới
-     * @return Thông báo kết quả (String) để View hiển thị
-     */
+    /** Cập nhật thông tin khách hàng, trả về thông báo kết quả. */
     public static String updateCustomer(Customer updated) {
         if (updated == null || updated.getId() == null) {
             return "❌ Lỗi: Dữ liệu khách hàng không hợp lệ.";
@@ -101,12 +74,15 @@ public class CustomerStaffService {
         if (customerId == null || customerId.trim().isEmpty()) {
             return "❌ Lỗi: Mã khách hàng không được để trống.";
         }
-        final String finalCustomerId = customerId.trim();
-        
+        String finalCustomerId = customerId.trim();
+
         // Kiểm tra xem khách hàng có bưu kiện nào liên kết không
-        long parcelCount = com.cdms.repository.ParcelRepository.findAll().stream()
-                .filter(p -> finalCustomerId.equalsIgnoreCase(p.getSenderId()))
-                .count();
+        int parcelCount = 0;
+        for (com.cdms.model.Parcel p : com.cdms.repository.ParcelRepository.findAll()) {
+            if (finalCustomerId.equalsIgnoreCase(p.getSenderId())) {
+                parcelCount++;
+            }
+        }
         if (parcelCount > 0) {
             return "❌ Lỗi: Không thể xóa khách hàng vì có " + parcelCount + " bưu kiện liên kết với khách hàng này!";
         }
@@ -118,36 +94,21 @@ public class CustomerStaffService {
         return "❌ Lỗi: Không tìm thấy khách hàng với mã '" + customerId + "'!";
     }
 
-    // ==========================================================
-    //       QUẢN LÝ NHÂN VIÊN GIAO HÀNG (DELIVERY STAFF)
-    // ==========================================================
+    // ----------------------------------------------------------
+    // QUẢN LÝ SHIPPER
+    // ----------------------------------------------------------
 
-    /**
-     * Lấy danh sách tất cả nhân viên giao hàng.
-     *
-     * @return List<DeliveryStaff>
-     */
+    /** Trả về danh sách tất cả nhân viên giao hàng. */
     public static List<DeliveryStaff> getAllStaffs() {
         return DeliveryStaffRepository.findAll();
     }
 
-    /**
-     * Tìm nhân viên giao hàng theo mã.
-     *
-     * @param staffId Mã nhân viên
-     * @return DeliveryStaff hoặc null
-     */
+    /** Tìm shipper theo mã, trả về null nếu không tìm thấy. */
     public static DeliveryStaff findStaff(String staffId) {
         return DeliveryStaffRepository.findById(staffId);
     }
 
-    /**
-     * Thêm nhân viên giao hàng mới.
-     * Kiểm tra dữ liệu đầu vào, trùng mã, và trùng số điện thoại.
-     *
-     * @param staff Đối tượng DeliveryStaff cần thêm
-     * @return Thông báo kết quả (String) để View hiển thị
-     */
+    /** Thêm shipper mới. Kiểm tra trùng mã và trùng SĐT trước khi lưu. */
     public static String addStaff(DeliveryStaff staff) {
         if (staff == null || staff.getId() == null || staff.getId().trim().isEmpty()) {
             return "❌ Lỗi: Mã shipper không được để trống.";
@@ -168,12 +129,7 @@ public class CustomerStaffService {
         return "✅ Đã thêm shipper: " + staff.getId() + " - " + staff.getName();
     }
 
-    /**
-     * Cập nhật thông tin nhân viên giao hàng.
-     *
-     * @param updated Đối tượng DeliveryStaff với thông tin mới
-     * @return Thông báo kết quả (String) để View hiển thị
-     */
+    /** Cập nhật thông tin shipper, trả về thông báo kết quả. */
     public static String updateStaff(DeliveryStaff updated) {
         if (updated == null || updated.getId() == null) {
             return "❌ Lỗi: Dữ liệu shipper không hợp lệ.";
@@ -185,33 +141,34 @@ public class CustomerStaffService {
         return "❌ Lỗi: Không tìm thấy shipper với mã '" + updated.getId() + "'!";
     }
 
-    /**
-     * Xóa nhân viên giao hàng theo mã.
-     *
-     * @param staffId Mã nhân viên cần xóa
-     * @return Thông báo kết quả (String) để View hiển thị
-     */
+    /** Xóa shipper — chặn nếu còn đơn hàng chưa hoàn thành hoặc có lịch sử giao. */
     public static String deleteStaff(String staffId) {
         if (staffId == null || staffId.trim().isEmpty()) {
             return "❌ Lỗi: Mã shipper không được để trống.";
         }
-        final String finalStaffId = staffId.trim();
+        String finalStaffId = staffId.trim();
 
         // 1. Kiểm tra xem shipper có đơn hàng nào chưa hoàn thành hay không
-        long activeOrders = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
-                .filter(o -> finalStaffId.equalsIgnoreCase(o.getStaffId()))
-                .filter(o -> !"Delivered".equalsIgnoreCase(o.getStatus()) 
-                        && !"Cancelled".equalsIgnoreCase(o.getStatus())
-                        && !"Failed".equalsIgnoreCase(o.getStatus()))
-                .count();
+        int activeOrders = 0;
+        for (com.cdms.model.DeliveryOrder o : com.cdms.repository.DeliveryOrderRepository.findAll()) {
+            if (finalStaffId.equalsIgnoreCase(o.getStaffId())
+                    && !"Delivered".equalsIgnoreCase(o.getStatus())
+                    && !"Cancelled".equalsIgnoreCase(o.getStatus())
+                    && !"Failed".equalsIgnoreCase(o.getStatus())) {
+                activeOrders++;
+            }
+        }
         if (activeOrders > 0) {
             return "❌ Lỗi: Không thể xóa shipper vì đang chịu trách nhiệm cho " + activeOrders + " đơn hàng chưa hoàn thành!";
         }
 
         // 2. Kiểm tra xem shipper có bất kỳ đơn hàng lịch sử nào không
-        long completedOrders = com.cdms.repository.DeliveryOrderRepository.findAll().stream()
-                .filter(o -> finalStaffId.equalsIgnoreCase(o.getStaffId()))
-                .count();
+        int completedOrders = 0;
+        for (com.cdms.model.DeliveryOrder o : com.cdms.repository.DeliveryOrderRepository.findAll()) {
+            if (finalStaffId.equalsIgnoreCase(o.getStaffId())) {
+                completedOrders++;
+            }
+        }
         if (completedOrders > 0) {
             return "❌ Lỗi: Không thể xóa shipper này vì đã có dữ liệu giao hàng lịch sử trong hệ thống! Vui lòng chuyển trạng thái shipper sang 'Fired' (Đã sa thải) để ngừng hoạt động.";
         }

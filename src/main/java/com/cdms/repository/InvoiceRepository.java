@@ -1,14 +1,13 @@
 // ============================================================
 // File: InvoiceRepository.java
 // Package: com.cdms.repository
-// Description: Repository quản lý CRUD cho Invoice.
+// Description: Các thao tác CRUD cho danh sách Invoice
+//              trong bộ nhớ (JSONDataManager.invoices).
 // ============================================================
 package com.cdms.repository;
 
 import java.time.YearMonth;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import com.cdms.core.JSONDataManager;
 import com.cdms.model.Invoice;
 
@@ -53,10 +52,13 @@ public class InvoiceRepository {
      * Trả về danh sách hóa đơn đã thanh toán (paymentStatus = "Paid").
      */
     public static List<Invoice> findPaidInvoices() {
-        return JSONDataManager.invoices.stream()
-                .filter(inv -> "Paid".equalsIgnoreCase(inv.getPaymentStatus())
-                        && inv.getPaymentDate() != null)
-                .collect(Collectors.toList());
+        List<Invoice> result = new java.util.ArrayList<>();
+        for (Invoice inv : JSONDataManager.invoices) {
+            if ("Paid".equalsIgnoreCase(inv.getPaymentStatus()) && inv.getPaymentDate() != null) {
+                result.add(inv);
+            }
+        }
+        return result;
     }
 
     /**
@@ -64,20 +66,28 @@ public class InvoiceRepository {
      */
     public static List<Invoice> findByPaymentYearMonth(YearMonth yearMonth) {
         if (yearMonth == null) {
-            return List.of();
+            return new java.util.ArrayList<>();
         }
-        return findPaidInvoices().stream()
-                .filter(inv -> YearMonth.from(inv.getPaymentDate()).equals(yearMonth))
-                .collect(Collectors.toList());
+        List<Invoice> result = new java.util.ArrayList<>();
+        for (Invoice inv : findPaidInvoices()) {
+            if (YearMonth.from(inv.getPaymentDate()).equals(yearMonth)) {
+                result.add(inv);
+            }
+        }
+        return result;
     }
 
     /**
      * Trả về danh sách hóa đơn đã thanh toán trong một năm cụ thể.
      */
     public static List<Invoice> findByPaymentYear(int year) {
-        return findPaidInvoices().stream()
-                .filter(inv -> inv.getPaymentDate().getYear() == year)
-                .collect(Collectors.toList());
+        List<Invoice> result = new java.util.ArrayList<>();
+        for (Invoice inv : findPaidInvoices()) {
+            if (inv.getPaymentDate().getYear() == year) {
+                result.add(inv);
+            }
+        }
+        return result;
     }
 
     public static void add(Invoice invoice) {

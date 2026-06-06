@@ -1,8 +1,8 @@
 // ============================================================
 // File: Invoice.java
 // Package: com.cdms.model
-// Description: Lớp thực thể đại diện cho Hóa đơn thanh toán.
-//              Tổng phí = baseFee + urgentCharge.
+// Description: Thực thể Hóa đơn thanh toán cho một đơn giao hàng.
+//              Tổng phí = phí cơ bản (Parcel) + phụ phí hỏa tốc.
 // ============================================================
 package com.cdms.model;
 
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class Invoice {
 
-    // ===== PRIVATE FIELDS (Encapsulation) =====
+    // --- Thuộc tính ---
     private String id;
     private String orderId;
     private double baseFee;            // Phí cơ bản (từ Parcel.calculateFee())
@@ -20,14 +20,14 @@ public class Invoice {
     private String paymentMethod;      // "Cash", "Banking", ...
     private LocalDate paymentDate;
 
-    // ===== CONSTRUCTORS =====
+    // --- Constructors ---
 
-    /** Constructor không tham số */
+    /** Constructor rỗng — Gson cần để deserialize từ JSON. */
     public Invoice() {
         this.paymentStatus = "Unpaid";
     }
 
-    /** Constructor đầy đủ tham số */
+    /** Constructor đầy đủ. */
     public Invoice(String id, String orderId, double baseFee,
                    double urgentCharge, double totalAmount,
                    String paymentStatus, String paymentMethod,
@@ -42,7 +42,7 @@ public class Invoice {
         this.paymentDate = paymentDate;
     }
 
-    // ===== GETTERS =====
+    // --- Getters ---
 
     public String getId() {
         return id;
@@ -76,7 +76,7 @@ public class Invoice {
         return paymentDate;
     }
 
-    // ===== SETTERS =====
+    // --- Setters ---
 
     public void setId(String id) {
         this.id = id;
@@ -110,7 +110,7 @@ public class Invoice {
         this.paymentDate = paymentDate;
     }
 
-    // ===== toString() =====
+    // --- toString ---
 
     @Override
     public String toString() {
