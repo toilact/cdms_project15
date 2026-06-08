@@ -205,49 +205,6 @@ public class ParcelOrderView {
         }
     }
 
-    public static void executeUpdateOrderStatus() {
-        System.out.println(BOLD_CYAN + "\n=== CẬP NHẬT TRẠNG THÁI ĐƠN ===" + RESET);
-        System.out.println("(Nhập 'cancel' tại bất kỳ trường nào để hủy thao tác)");
-        try {
-            String orderId;
-            while (true) {
-                orderId = InputHelper.getStringInput("Nhập mã đơn hàng: ");
-                if (DeliveryOrderRepository.existsById(orderId)) break;
-                System.out.println("  ⚠ Lỗi: Mã đơn hàng không tồn tại trong hệ thống! Vui lòng nhập lại.");
-            }
-            String status = InputHelper.getOptionalChoiceInput(
-                    "Nhập trạng thái mới (Assigned/Picked Up/In Transit/Delivered/Cancelled/Failed): ",
-                    "Trạng thái không hợp lệ!",
-                    "Assigned", "Picked Up", "In Transit", "Delivered", "Cancelled", "Failed");
-            while (status.isEmpty()) {
-                System.out.println("  ⚠ Lỗi: Trạng thái không được để trống! Vui lòng nhập lại.");
-                status = InputHelper.getOptionalChoiceInput(
-                        "Nhập trạng thái mới (Assigned/Picked Up/In Transit/Delivered/Cancelled/Failed): ",
-                        "Trạng thái không hợp lệ!",
-                        "Assigned", "Picked Up", "In Transit", "Delivered", "Cancelled", "Failed");
-            }
-
-            System.out.println("\nXác nhận cập nhật trạng thái đơn hàng này?");
-            System.out.println("  1. Đồng ý");
-            System.out.println("  2. Hủy (Cancel)");
-            int confirm = InputHelper.getIntInput("Lựa chọn (1-2): ", 1, 2);
-
-            if (confirm == 1) {
-                try {
-                    DeliveryOrder order = OrderService.updateOrderStatus(orderId, status);
-                    System.out.println(BOLD_GREEN + "✅ Cập nhật trạng thái thành công!" + RESET);
-                    ParcelOrderView.printSingleOrderDetails(order);
-                } catch (Exception e) {
-                    System.out.println(BOLD_RED + "❌ Lỗi: " + e.getMessage() + RESET);
-                }
-            } else {
-                System.out.println(BOLD_RED + "❌ Đã hủy thao tác cập nhật trạng thái." + RESET);
-            }
-        } catch (FormCancelledException e) {
-            System.out.println(BOLD_RED + "\n❌ Đã hủy thao tác (Người dùng chủ động hủy bỏ).\n" + RESET);
-        }
-    }
-
     public static void executeViewOrderDetail() {
         System.out.println(BOLD_CYAN + "\n=== XEM CHI TIẾT ĐƠN HÀNG ===" + RESET);
         System.out.println("(Nhập 'cancel' để hủy)");

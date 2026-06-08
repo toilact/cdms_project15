@@ -104,7 +104,6 @@ public class CustomerStaffView {
             String line10 = BOLD_WHITE + "  10." + WHITE + " Tìm kiếm bưu kiện";
             String group3 = BOLD_CYAN + "  [QUẢN LÝ ĐƠN GIAO HÀNG]";
             String line11 = BOLD_WHITE + "  11." + WHITE + " Tạo đơn giao hàng mới";
-            String line12 = BOLD_WHITE + "  12." + WHITE + " Cập nhật trạng thái đơn";
             String line13 = BOLD_WHITE + "  13." + WHITE + " Xem chi tiết đơn giao hàng";
             String line14 = BOLD_WHITE + "  14." + WHITE + " Tìm kiếm đơn theo KH";
             String line15 = BOLD_WHITE + "  15." + WHITE + " Hủy đơn giao hàng";
@@ -128,7 +127,6 @@ public class CustomerStaffView {
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineSep, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(group3, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line11, 55) + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line12, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line13, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line14, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line15, 55) + BOLD_YELLOW + "║" + RESET);
@@ -153,7 +151,6 @@ public class CustomerStaffView {
                 case 9:  handleDeleteParcel(); break;
                 case 10: handleSearchParcel(); break;
                 case 11: ParcelOrderView.executeCreateOrder(); break;
-                case 12: ParcelOrderView.executeUpdateOrderStatus(); break;
                 case 13: ParcelOrderView.executeViewOrderDetail(); break;
                 case 14: ParcelOrderView.executeSearchOrdersByCustomer(); break;
                 case 15: ParcelOrderView.executeCancelOrder(); break;
