@@ -39,7 +39,10 @@ public class CustomerRepository {
         JSONDataManager.saveAllData(); // Đồng bộ ngay sau khi thay đổi
     }
 
-    /** Cập nhật thông tin khách hàng. Trả về true nếu thành công, false nếu không tìm thấy. */
+    /**
+     * Cập nhật thông tin khách hàng. Trả về true nếu thành công, false nếu không
+     * tìm thấy.
+     */
     public static boolean update(Customer updated) {
         List<Customer> list = JSONDataManager.customers;
         for (int i = 0; i < list.size(); i++) {
@@ -52,7 +55,9 @@ public class CustomerRepository {
         return false;
     }
 
-    /** Xóa khách hàng theo mã. Trả về true nếu thành công, false nếu không tìm thấy. */
+    /**
+     * Xóa khách hàng theo mã. Trả về true nếu thành công, false nếu không tìm thấy.
+     */
     public static boolean delete(String customerId) {
         Customer toRemove = null;
         for (Customer c : JSONDataManager.customers) {
@@ -98,4 +103,3 @@ public class CustomerRepository {
         return null;
     }
 }
-

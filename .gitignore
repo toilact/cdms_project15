@@ -5,16 +5,9 @@ target/
 .DS_Store
 *.log
 data/*.json
-
-# Loại bỏ tất cả các file Markdown...
 *.md
-# ...nhưng giữ lại README.md
 !README.md
-
-# PDF documents
 PROJECT 15.pdf
 *.pdf
-
-# Backups and data
 data_backup/
 data/*.json

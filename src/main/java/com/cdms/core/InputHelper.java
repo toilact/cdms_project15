@@ -19,8 +19,7 @@ public class InputHelper {
     public static final Scanner scanner = new Scanner(System.in);
 
     /** Định dạng ngày tháng chuẩn: DD/MM/YYYY */
-    private static final DateTimeFormatter DATE_FORMAT =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     // ===== Ngăn khởi tạo đối tượng (Utility class) =====
     private InputHelper() {
@@ -107,9 +106,6 @@ public class InputHelper {
                 double value = Double.parseDouble(line);
                 if (value >= min && value <= max) {
                     return value;
-                }
-                if (max == Double.MAX_VALUE) {
-                    System.out.printf("  ⚠ Vui lòng nhập số >= %.1f.%n", min);
                 } else {
                     System.out.printf("  ⚠ Vui lòng nhập số từ %.1f đến %.1f.%n", min, max);
                 }
@@ -170,7 +166,8 @@ public class InputHelper {
         while (true) {
             String phone = getStringInput(prompt);
             if (!phone.matches("0\\d{8,10}")) {
-                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải bắt đầu bằng 0 và gồm 9-11 chữ số)! Vui lòng nhập lại.");
+                System.out.println(
+                        "  ⚠ Lỗi: Số điện thoại không hợp lệ (phải bắt đầu bằng 0 và gồm 9-11 chữ số)! Vui lòng nhập lại.");
                 continue;
             }
             return phone;
@@ -184,7 +181,8 @@ public class InputHelper {
     /**
      * Nhập chuỗi tùy chọn — cho phép người dùng nhấn Enter để bỏ qua.
      * Trả về chuỗi đã trim, có thể là rỗng "".
-     * Dùng trong chức năng cập nhật thông tin để giữ nguyên giá trị cũ nếu không nhập.
+     * Dùng trong chức năng cập nhật thông tin để giữ nguyên giá trị cũ nếu không
+     * nhập.
      *
      * @param prompt Thông báo hiển thị
      * @return Chuỗi đã trim (có thể rỗng nếu người dùng chỉ nhấn Enter)
@@ -217,7 +215,8 @@ public class InputHelper {
     }
 
     /**
-     * Nhập chuỗi tùy chọn và validate theo danh sách giá trị hợp lệ (case-insensitive).
+     * Nhập chuỗi tùy chọn và validate theo danh sách giá trị hợp lệ
+     * (case-insensitive).
      * Nếu Enter bỏ qua, trả về "".
      */
     public static String getOptionalChoiceInput(String prompt, String errorMessage, String... validValues) {
@@ -247,7 +246,8 @@ public class InputHelper {
                 return phone;
             }
             if (!phone.matches("0\\d{8,10}")) {
-                System.out.println("  ⚠ Lỗi: Số điện thoại không hợp lệ (phải bắt đầu bằng 0 và gồm 9-11 chữ số)! Vui lòng nhập lại.");
+                System.out.println(
+                        "  ⚠ Lỗi: Số điện thoại không hợp lệ (phải bắt đầu bằng 0 và gồm 9-11 chữ số)! Vui lòng nhập lại.");
                 continue;
             }
             return phone;
@@ -312,8 +312,8 @@ public class InputHelper {
     /**
      * Hiển thị phân trang cho danh sách bất kỳ kèm đường kẻ phân cách tùy chọn.
      *
-     * @param list Danh sách cần hiển thị
-     * @param pageSize Số lượng dòng hiển thị trên một trang
+     * @param list      Danh sách cần hiển thị
+     * @param pageSize  Số lượng dòng hiển thị trên một trang
      * @param separator Đường kẻ bảng phân cách (ví dụ: "+---+"), có thể null
      */
     public static <T> void printPaginatedList(java.util.List<T> list, int pageSize, String separator) {
@@ -329,7 +329,8 @@ public class InputHelper {
                 if (separator != null && !separator.isEmpty()) {
                     System.out.println(separator);
                 }
-                System.out.print("\u001B[1;33m👉 Nhấn Enter để xem tiếp (" + count + "/" + list.size() + ") hoặc nhập 'q' để dừng: \u001B[0m");
+                System.out.print("\u001B[1;33m👉 Nhấn Enter để xem tiếp (" + count + "/" + list.size()
+                        + ") hoặc nhập 'q' để dừng: \u001B[0m");
                 String input = scanner.nextLine().trim();
                 if (input.equalsIgnoreCase("q")) {
                     System.out.println("  🛑 Đã dừng hiển thị.");
