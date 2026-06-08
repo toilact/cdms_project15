@@ -104,11 +104,11 @@ public class CustomerStaffView {
             String line10 = BOLD_WHITE + "  10." + WHITE + " Tìm kiếm bưu kiện";
             String group3 = BOLD_CYAN + "  [QUẢN LÝ ĐƠN GIAO HÀNG]";
             String line11 = BOLD_WHITE + "  11." + WHITE + " Tạo đơn giao hàng mới";
-            String line13 = BOLD_WHITE + "  13." + WHITE + " Xem chi tiết đơn giao hàng";
-            String line14 = BOLD_WHITE + "  14." + WHITE + " Tìm kiếm đơn theo KH";
-            String line15 = BOLD_WHITE + "  15." + WHITE + " Hủy đơn giao hàng";
-            String line16 = BOLD_WHITE + "  16." + WHITE + " Xem lịch sử giao hàng của một KH";
-            String line17 = BOLD_WHITE + "  17." + WHITE + " Xem danh sách đơn giao hàng";
+            String line12 = BOLD_WHITE + "  12." + WHITE + " Xem chi tiết đơn giao hàng";
+            String line13 = BOLD_WHITE + "  13." + WHITE + " Tìm kiếm đơn theo KH";
+            String line14 = BOLD_WHITE + "  14." + WHITE + " Hủy đơn giao hàng";
+            String line15 = BOLD_WHITE + "  15." + WHITE + " Xem lịch sử giao hàng của một KH";
+            String line16 = BOLD_WHITE + "  16." + WHITE + " Xem danh sách đơn giao hàng";
             String line0  = BOLD_RED + "  0. " + BOLD_WHITE + "Quay lại Menu chính";
 
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(group1, 55) + BOLD_YELLOW + "║" + RESET);
@@ -127,17 +127,17 @@ public class CustomerStaffView {
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineSep, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(group3, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line11, 55) + BOLD_YELLOW + "║" + RESET);
+            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line12, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line13, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line14, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line15, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line16, 55) + BOLD_YELLOW + "║" + RESET);
-            System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line17, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(lineSep, 55) + BOLD_YELLOW + "║" + RESET);
             System.out.println(BOLD_YELLOW + "║" + RESET + padRight(line0, 55) + BOLD_YELLOW + "║" + RESET);
             
             System.out.println(BOLD_YELLOW + "╚═══════════════════════════════════════════════════════╝" + RESET);
 
-            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-17): " + RESET, 0, 17);
+            int choice = InputHelper.getIntInput(BOLD_YELLOW + "Chọn chức năng (0-16): " + RESET, 0, 16);
 
             switch (choice) {
                 case 1:  handleAddCustomer(); break;
@@ -151,11 +151,11 @@ public class CustomerStaffView {
                 case 9:  handleDeleteParcel(); break;
                 case 10: handleSearchParcel(); break;
                 case 11: ParcelOrderView.executeCreateOrder(); break;
-                case 13: ParcelOrderView.executeViewOrderDetail(); break;
-                case 14: ParcelOrderView.executeSearchOrdersByCustomer(); break;
-                case 15: ParcelOrderView.executeCancelOrder(); break;
-                case 16: handleViewCustomerDeliveryHistory(); break;
-                case 17: ParcelOrderView.executeViewOrders(); break;
+                case 12: ParcelOrderView.executeViewOrderDetail(); break;
+                case 13: ParcelOrderView.executeSearchOrdersByCustomer(); break;
+                case 14: ParcelOrderView.executeCancelOrder(); break;
+                case 15: handleViewCustomerDeliveryHistory(); break;
+                case 16: ParcelOrderView.executeViewOrders(); break;
                 case 0:
                     running = false;
                     System.out.println("  ↩ Quay lại Menu chính...\n");
