@@ -115,12 +115,6 @@ public class TrackingService {
 
         if ("Pending".equalsIgnoreCase(currentStatus) && "Assigned".equalsIgnoreCase(formattedNewStatus)) {
             validTransition = true;
-        } else if ("Pending".equalsIgnoreCase(currentStatus) && "Picked Up".equalsIgnoreCase(formattedNewStatus)) {
-            if (order.getPickupDate() == null) {
-                throw new IllegalStateException(
-                        "Không thể chuyển sang trạng thái Picked Up vì chưa cập nhật ngày nhận thực tế!");
-            }
-            validTransition = true;
         } else if ("Assigned".equalsIgnoreCase(currentStatus) && "Picked Up".equalsIgnoreCase(formattedNewStatus)) {
             if (order.getPickupDate() == null) {
                 throw new IllegalStateException(
@@ -128,12 +122,6 @@ public class TrackingService {
             }
             validTransition = true;
         } else if ("Picked Up".equalsIgnoreCase(currentStatus) && "In Transit".equalsIgnoreCase(formattedNewStatus)) {
-            validTransition = true;
-        } else if ("Pending".equalsIgnoreCase(currentStatus) && "In Transit".equalsIgnoreCase(formattedNewStatus)) {
-            if (order.getPickupDate() == null) {
-                throw new IllegalStateException(
-                        "Không thể chuyển sang trạng thái In Transit vì chưa cập nhật ngày nhận thực tế!");
-            }
             validTransition = true;
         } else if ("Assigned".equalsIgnoreCase(currentStatus) && "In Transit".equalsIgnoreCase(formattedNewStatus)) {
             if (order.getPickupDate() == null) {
@@ -167,6 +155,12 @@ public class TrackingService {
             }
             if ("Failed".equalsIgnoreCase(currentStatus)) {
                 throw new IllegalStateException("Không thể hủy đơn hàng đã giao thất bại!");
+            }
+            if ("Picked Up".equalsIgnoreCase(currentStatus)) {
+                throw new IllegalStateException("Không thể hủy đơn hàng đã được shipper lấy hàng!");
+            }
+            if ("In Transit".equalsIgnoreCase(currentStatus)) {
+                throw new IllegalStateException("Không thể hủy đơn hàng đang trên đường vận chuyển!");
             }
             validTransition = true;
         }
